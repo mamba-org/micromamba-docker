@@ -1,0 +1,3 @@
+sut:
+  build: .
+  command: /bin/bash -c 'source /root/.bashrc; micromamba install -y -c anaconda python=3.8.5'
