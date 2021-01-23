@@ -1,27 +1,44 @@
 # micromamba_docker
-Micromamba for fast building of small conda-based containers.
+[Micromamba](https://github.com/mamba-org/mamba#micromamba) for fast building of small [conda](https://docs.conda.io/)-based containers. 
+
+Images available on [Dockerhub](https://hub.docker.com/) at [willholtz/micromamba](https://hub.docker.com/r/willholtz/micromamba). Source code on [GitHub](https://github.com/) at [buildcrew/micromamba_docker](https://github.com/buildcrew/micromamba_docker/).
 
 ## Typical Usage
 
+### From a yaml spec file
+
 1. Create define your desired environment in a spec file:
+
 ```
 name: base
 channels:
-  - conda-forge
+  - anaconda
 dependencies:
-  - python >=3.6,<3.7
-  - ipykernel >=5.1
-  - ipywidgets
+  - python=3.9.1
+  - requests=2.25.1
+  - pyopenssl=20.0.1
 ```
-2. Install from the spec file in your Dockerfile:
-```
-FROM micromamba
 
-COPY env.yaml /root/env.yaml
-RUN /bin/bash -c 'source $HOME/.bashrc \
-    && micromamba install -y -f /root/env.yaml'
+2. Install from the spec file in your Dockerfile:
+
 ```
-As shown above, you must source .bashrc for the `micromamba install` command to work within a Dockerfile. When actually running the micromamba image this is not required, as the /root/.bashrc is automatically sourced. The installed micromamba/conda environment will be automatically activated in the child image such that installed programs will be in your PATH.
+FROM willholtz/micromamba
+COPY env.yaml /root/env.yaml
+RUN micromamba install -y -n base -f /root/env.yaml
+```
+
+### Spec passed on command line
+
+1. Pass package names in a RUN command in your Dockerfile:
+
+```
+FROM willholtz/micromamba
+RUN micromamba install -y -n base -c anaconda \
+    python=3.9.1 \
+    requests=2.25.1 \
+    pyopenssl=20.0.1
+
+```
 
 ## Parent container choice
 
