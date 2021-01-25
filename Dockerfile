@@ -1,7 +1,7 @@
 ARG BASE_IMAGE=debian:buster-slim
 
 FROM curlimages/curl AS unpack
-ARG VERSION=0.7.9
+ARG VERSION=0.7.10
 RUN curl -L https://micromamba.snakepit.net/api/micromamba/linux-64/$VERSION | \
     tar -xj -C /tmp bin/micromamba
 

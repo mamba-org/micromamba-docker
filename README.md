@@ -42,4 +42,4 @@ RUN micromamba install -y -n base -c anaconda \
 
 ## Parent container choice
 
-As noted in the [micromamba documentation](https://github.com/mamba-org/mamba/blob/master/docs/source/micromamba.md#Installation), even though this image uses a staticaly linked binary, a glibc system is required. Therefore Alpine Linux does not work natively. To keep the image small, a Debian slim image is used as the parent.
+As noted in the [micromamba documentation](https://github.com/mamba-org/mamba/blob/master/docs/source/micromamba.md#Installation), even though this image uses a (partially) staticaly linked binary, a glibc system is required. Therefore Alpine Linux does not work natively. To keep the image small, a Debian slim image is used as the parent. On going efforts to generate a fully statically linked binary are documented in [mamba github issue #572](https://github.com/mamba-org/mamba/issues/572). If the offical micromamba builds become fully statically linked, then this repo will add images with parent image Alpine or scratch.
