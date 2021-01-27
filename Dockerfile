@@ -9,7 +9,10 @@ FROM $BASE_IMAGE
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV MAMBA_ROOT_PREFIX=/opt/conda
 ENV PATH $MAMBA_ROOT_PREFIX/bin:$MAMBA_ROOT_PREFIX/condabin:$PATH
-CMD ["/bin/bash"]
+
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=unpack /tmp/bin/micromamba /bin/micromamba
 
@@ -22,4 +25,4 @@ RUN ln -s /bin/micromamba /bin/mamba && \
     echo "source $MAMBA_ROOT_PREFIX/etc/profile.d/mamba.sh" >> ~/.bashrc && \
     echo "micromamba activate base" >> ~/.bashrc
 
-
+CMD ["/bin/bash"]
