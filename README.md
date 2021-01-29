@@ -1,7 +1,7 @@
-# micromamba_docker
+# micromamba-docker
 [Micromamba](https://github.com/mamba-org/mamba#micromamba) for fast building of small [conda](https://docs.conda.io/)-based containers. 
 
-Images available on [Dockerhub](https://hub.docker.com/) at [willholtz/micromamba](https://hub.docker.com/r/willholtz/micromamba). Source code on [GitHub](https://github.com/) at [buildcrew/micromamba_docker](https://github.com/buildcrew/micromamba_docker/).
+Images available on [Dockerhub](https://hub.docker.com/) at [willholtz/micromamba](https://hub.docker.com/r/willholtz/micromamba). Source code on [GitHub](https://github.com/) at [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/).
 
 ## Typical Usage
 
