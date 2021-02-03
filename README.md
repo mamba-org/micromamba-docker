@@ -22,7 +22,7 @@ dependencies:
 2. Install from the spec file in your Dockerfile:
 
 ```
-FROM willholtz/micromamba:0.7.10
+FROM willholtz/micromamba:0.7.12
 COPY env.yaml /root/env.yaml
 RUN micromamba install -y -n base -f /root/env.yaml && \
     rm /opt/conda/pkgs/cache/*
@@ -33,7 +33,7 @@ RUN micromamba install -y -n base -f /root/env.yaml && \
 1. Pass package names in a RUN command in your Dockerfile:
 
 ```
-FROM willholtz/micromamba:0.7.10
+FROM willholtz/micromamba:0.7.12
 RUN micromamba install -y -n base -c anaconda \
        pyopenssl=20.0.1  \
        python=3.9.1 \
@@ -48,6 +48,7 @@ As noted in the [micromamba documentation](https://github.com/mamba-org/mamba/bl
 
 ## Contributors and Acknowledgements
 
-The follow people have directly or indirectly contributed to this project:
+The following people have directly or indirectly contributed to this project:
 * Will Holtz
+* Wolf Vollprecht
 * Thomas Buhrmann (via [this github comment](https://gist.github.com/wolfv/fe1ea521979973ab1d016d95a589dcde#gistcomment-3525280))
