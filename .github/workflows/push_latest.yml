@@ -26,16 +26,16 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-      if: ${{ steps.check_version.outputs.latest_version != "false" }}
+      if: steps.check_version.outputs.latest_version != false
     - name: Build and push Docker images
       id: docker_build
       uses: docker/build-push-action@v2.2.2
       with:
         push: true
-        tags:
-          - "mambaorg/micromamba:${{ steps.check_version.outputs.latest_version }}"
-          - "mambaorg/micromamba:latest"
-      if: ${{ steps.check_version.outputs.latest_version != "false" }}
+        tags: |
+          mambaorg/micromamba:${{ steps.check_version.outputs.latest_version }}
+          mambaorg/micromamba:latest
+      if: steps.check_version.outputs.latest_version != false
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
-      if: ${{ steps.check_version.outputs.latest_version != "false" }}
+      if: steps.check_version.outputs.latest_version != false
