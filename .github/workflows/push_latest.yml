@@ -20,13 +20,12 @@ jobs:
 
         echo "Found Micromamba version that is not released on docker: ${LATEST_VERSION}"
         echo "::set-output name=latest_version::${LATEST_VERSION}"
-
     - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-      if: steps.check_version.outputs.latest_version != false
+      if: steps.check_version.outputs.latest_version != 'no_version_found'
     - name: Build and push Docker images
       id: docker_build
       uses: docker/build-push-action@v2.2.2
@@ -35,7 +34,7 @@ jobs:
         tags: |
           mambaorg/micromamba:${{ steps.check_version.outputs.latest_version }}
           mambaorg/micromamba:latest
-      if: steps.check_version.outputs.latest_version != false
+      if: steps.check_version.outputs.latest_version != 'no_version_found'
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
-      if: steps.check_version.outputs.latest_version != false
+      if: steps.check_version.outputs.latest_version != 'no_version_found'
