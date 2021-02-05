@@ -22,6 +22,7 @@ podman build -t "micromamba:${VERSION}" .
 
 git add README.md $(find . -name Dockerfile)
 git commit -m "micromamba v${VERSION}"
+git push origin
 git tag -a "v${VERSION}" -m "micromamba v${VERSION}"
 git push origin --tags
 
