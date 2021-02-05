@@ -8,6 +8,7 @@ on:
 
 jobs:
   build_docker_image_and_push:
+    if: github.repository == 'mamba-org/micromamba-docker'
     runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v2
