@@ -1,10 +1,14 @@
-name: CI
+name: Push micromamba docker image
 
 on:
   workflow_dispatch:
+  # Run every 6 hours (https://crontab.guru/every-6-hours)
+  schedule:
+  - cron: '0 */6 * * *'
 
 jobs:
   build_docker_image_and_push:
+    if: github.repository == 'mamba-org/micromamba-docker'
     runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v2
@@ -20,13 +24,12 @@ jobs:
 
         echo "Found Micromamba version that is not released on docker: ${LATEST_VERSION}"
         echo "::set-output name=latest_version::${LATEST_VERSION}"
-
     - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-      if: steps.check_version.outputs.latest_version != false
+      if: steps.check_version.outputs.latest_version != 'no_version_found'
     - name: Build and push Docker images
       id: docker_build
       uses: docker/build-push-action@v2.2.2
@@ -35,7 +38,7 @@ jobs:
         tags: |
           mambaorg/micromamba:${{ steps.check_version.outputs.latest_version }}
           mambaorg/micromamba:latest
-      if: steps.check_version.outputs.latest_version != false
+      if: steps.check_version.outputs.latest_version != 'no_version_found'
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
-      if: steps.check_version.outputs.latest_version != false
+      if: steps.check_version.outputs.latest_version != 'no_version_found'

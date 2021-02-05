@@ -23,6 +23,6 @@ if docker_versions:
 	if latest_version not in docker_versions and latest_version > max(docker_versions):
 		print(latest_version)
 	else:
-		print("false")
+		print("no_version_found")
 else:
 	print(latest_version)
