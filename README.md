@@ -1,7 +1,7 @@
 # micromamba-docker
 [Micromamba](https://github.com/mamba-org/mamba#micromamba) for fast building of small [conda](https://docs.conda.io/)-based containers. 
 
-Images available on [Dockerhub](https://hub.docker.com/) at [willholtz/micromamba](https://hub.docker.com/r/willholtz/micromamba). Source code on [GitHub](https://github.com/) at [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/).
+Images available on [Dockerhub](https://hub.docker.com/) at [mambaorg/micromamba](https://hub.docker.com/r/mambaorg/micromamba). Source code on [GitHub](https://github.com/) at [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/).
 
 ## Typical Usage
 
@@ -22,7 +22,7 @@ dependencies:
 2. Install from the spec file in your Dockerfile:
 
 ```
-FROM willholtz/micromamba:0.7.12
+FROM mambaorg/micromamba:0.7.12
 COPY env.yaml /root/env.yaml
 RUN micromamba install -y -n base -f /root/env.yaml && \
     rm /opt/conda/pkgs/cache/*
@@ -33,7 +33,7 @@ RUN micromamba install -y -n base -f /root/env.yaml && \
 1. Pass package names in a RUN command in your Dockerfile:
 
 ```
-FROM willholtz/micromamba:0.7.12
+FROM mambaorg/micromamba:0.7.12
 RUN micromamba install -y -n base -c anaconda \
        pyopenssl=20.0.1  \
        python=3.9.1 \

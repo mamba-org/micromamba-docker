@@ -13,10 +13,10 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 sed -i "s/^ARG VERSION=.*$/ARG VERSION=${VERSION}/" Dockerfile
 
 for f in $(find "${SCRIPT_DIR}/examples" -name Dockerfile); do
-  sed -i  "s%^FROM willholtz/micromamba:.*$%FROM willholtz/micromamba:${VERSION}%" "$f"
+  sed -i  "s%^FROM mambaorg/micromamba:.*$%FROM mambaorg/micromamba:${VERSION}%" "$f"
 done
 
-sed -i "s%willholtz/micromamba:.*$%willholtz/micromamba:${VERSION}%" "${SCRIPT_DIR}/README.md"
+sed -i "s%mambaorg/micromamba:.*$%mambaorg/micromamba:${VERSION}%" "${SCRIPT_DIR}/README.md"
 
 podman build -t "micromamba:${VERSION}" .
 
