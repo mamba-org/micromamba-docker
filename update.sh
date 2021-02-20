@@ -18,7 +18,7 @@ done
 
 sed -i "s%mambaorg/micromamba:.*$%mambaorg/micromamba:${VERSION}%" "${SCRIPT_DIR}/README.md"
 
-podman build -t "micromamba:${VERSION}" .
+podman build --format docker -t "micromamba:${VERSION}" .
 
 git add README.md $(find . -name Dockerfile)
 git commit -m "micromamba v${VERSION}"
