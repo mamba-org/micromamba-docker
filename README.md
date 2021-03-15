@@ -24,7 +24,7 @@ dependencies:
 2. Install from the spec file in your Dockerfile:
 
 ```
-FROM mambaorg/micromamba:0.7.14
+FROM mambaorg/micromamba:0.8.2
 COPY env.yaml /root/env.yaml
 RUN micromamba install -y -n base -f /root/env.yaml && \
     rm /opt/conda/pkgs/cache/*
@@ -35,7 +35,7 @@ RUN micromamba install -y -n base -f /root/env.yaml && \
 1. Pass package names in a RUN command in your Dockerfile:
 
 ```
-FROM mambaorg/micromamba:0.7.14
+FROM mambaorg/micromamba:0.8.2
 RUN micromamba install -y -n base -c conda-forge \
        pyopenssl=20.0.1  \
        python=3.9.1 \

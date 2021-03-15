@@ -3,7 +3,7 @@ ARG BASE_IMAGE=debian:buster-slim
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
 FROM debian:buster-slim AS stage1
-ARG VERSION=0.7.14
+ARG VERSION=0.8.2
 RUN apt-get update && apt-get install -y \
     bzip2 \
     ca-certificates \
