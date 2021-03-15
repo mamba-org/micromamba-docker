@@ -14,7 +14,7 @@ Images available on [Dockerhub](https://hub.docker.com/) at [mambaorg/micromamba
 ```
 name: base
 channels:
-  - anaconda
+  - conda-forge
 dependencies:
   - pyopenssl=20.0.1
   - python=3.9.1
@@ -36,7 +36,7 @@ RUN micromamba install -y -n base -f /root/env.yaml && \
 
 ```
 FROM mambaorg/micromamba:0.7.14
-RUN micromamba install -y -n base -c anaconda \
+RUN micromamba install -y -n base -c conda-forge \
        pyopenssl=20.0.1  \
        python=3.9.1 \
        requests=2.25.1 && \
