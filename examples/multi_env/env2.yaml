@@ -1,0 +1,5 @@
+name: env2
+channels:
+  - conda-forge
+dependencies:
+  - openssl=1.1.1j
