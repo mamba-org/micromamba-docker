@@ -33,7 +33,6 @@ COPY --from=stage1 /tmp/bin/micromamba /bin/micromamba
 RUN ln -s /bin/micromamba /bin/mamba && \
     ln -s /bin/micromamba /bin/conda && \
     ln -s /bin/micromamba /bin/miniconda && \
-    mkdir -p $(dirname $MAMBA_ROOT_PREFIX) && \
     /bin/micromamba shell init -s bash -p $MAMBA_ROOT_PREFIX && \
     echo "micromamba activate base" >> /root/.bashrc
 
