@@ -19,7 +19,7 @@ jobs:
     - name: Check available versions
       id: check_version
       run: |
-        python -m pip install requests
+        python -m pip install requests "semver>=2.13.0,<3.0"
         LATEST_VERSION=$(python check_version.py)
 
         echo "Found Micromamba version that is not released on docker: ${LATEST_VERSION}"
