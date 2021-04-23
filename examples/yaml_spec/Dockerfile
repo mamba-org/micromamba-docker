@@ -1,4 +1,4 @@
 FROM mambaorg/micromamba:0.11.3
 COPY env.yaml /root/env.yaml
 RUN micromamba install -y -n base -f /root/env.yaml && \
-    rm /opt/conda/pkgs/cache/*
+    micromamba clean --all --yes
