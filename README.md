@@ -26,10 +26,10 @@ dependencies:
 2. Install from the spec file in your Dockerfile:
 
 ```
-FROM mambaorg/micromamba:0.8.2
+FROM mambaorg/micromamba:0.11.3
 COPY env.yaml /root/env.yaml
 RUN micromamba install -y -n base -f /root/env.yaml && \
-    rm /opt/conda/pkgs/cache/*
+    micromamba clean --all --yes
 ```
 
 ### Spec passed on command line
@@ -37,24 +37,23 @@ RUN micromamba install -y -n base -f /root/env.yaml && \
 1. Pass package names in a RUN command in your Dockerfile:
 
 ```
-FROM mambaorg/micromamba:0.8.2
+FROM mambaorg/micromamba:0.11.3
 RUN micromamba install -y -n base -c conda-forge \
        pyopenssl=20.0.1  \
        python=3.9.1 \
        requests=2.25.1 && \
-    rm /opt/conda/pkgs/cache/*
-
+    micromamba clean --all --yes
 ```
 
 ## Multiple environments
 
 ```
-FROM mambaorg/micromamba:0.8.2
+FROM mambaorg/micromamba:0.11.3
 COPY env1.yaml /root/env1.yaml
 COPY env2.yaml /root/env2.yaml
 RUN micromamba create -y -f /root/env1.yaml && \
     micromamba create -y -f /root/env2.yaml && \
-    rm /opt/conda/pkgs/cache/*
+    micromamba clean --all --yes
 ```
 
 You will then need to use `micromamba activate envX` to activate env1 or env2. But don't put that `micromamba activate envX` in a Dockerfile RUN command, as it is only valid for the current invocation of your shell.

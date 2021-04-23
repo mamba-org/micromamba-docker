@@ -1,4 +1,4 @@
-FROM mambaorg/micromamba:0.8.2
+FROM mambaorg/micromamba:0.11.3
 COPY env1.yaml /root/env1.yaml
 COPY env2.yaml /root/env2.yaml
 RUN micromamba create -y -f /root/env1.yaml && \
