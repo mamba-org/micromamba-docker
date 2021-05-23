@@ -1,8 +1,14 @@
 setup() {
     load 'test_helper/common-setup'
     _common_setup
-    docker build -t micromamba:test -f ${PROJECT_ROOT}/Dockerfile "$PROJECT_ROOT"
-    docker build -t run-shell-form  -f ${PROJECT_ROOT}/test/run-shell-form.Dockerfile "${PROJECT_ROOT}/test"
+    docker build --quiet \
+                 --tag=micromamba:test \
+		 --file=${PROJECT_ROOT}/Dockerfile \
+		 "$PROJECT_ROOT" > /dev/null
+    docker build --quiet \
+                 --tag=run-shell-form \
+		 --file=${PROJECT_ROOT}/test/run-shell-form.Dockerfile \
+		 "${PROJECT_ROOT}/test" > /dev/null
 }
 
 @test "RUN python -c \"import os; os.system('touch foobar')\"" {
