@@ -67,9 +67,11 @@ Uwe Korn has a nice [blog post on making small containers containing conda envir
 
 As noted in the [micromamba documentation](https://github.com/mamba-org/mamba/blob/master/docs/source/micromamba.md#Installation), the official micromamba binaries require glibc. Therefore Alpine Linux does not work natively. To keep the image small, a Debian slim image is used as the parent. On going efforts to generate a fully statically linked micromamba binary are documented in [mamba github issue #572](https://github.com/mamba-org/mamba/issues/572), but most conda packages also depend on glibc. Therefore using a statically linked micromamba would require either a method to install glibc i(or an equivalent) from a conda package or conda packages that are statically linked against glibc.
 
-## Contributors and Acknowledgements
+## Development
 
-The following people have directly or indirectly contributed to this project:
-* Will Holtz
-* Wolf Vollprecht
-* Thomas Buhrmann (via [this github comment](https://gist.github.com/wolfv/fe1ea521979973ab1d016d95a589dcde#gistcomment-3525280))
+### Testing
+
+The [Bats](https://github.com/bats-core/bats-core) testing framework is used to test the micromamba docker
+images and derived images. When cloning this repo you'll want to use `git clone --recurse-submodules ...`,
+which will bring in the git submodules for Bats. With the submodules present, `./test.sh` will run the test
+suite.
