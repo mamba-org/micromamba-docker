@@ -17,3 +17,5 @@ jobs:
           submodules: recursive
       - name: Run tests
         run: ./test.sh
+        env:
+          DOCKER_BUILDKIT: 1
