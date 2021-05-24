@@ -1,0 +1,17 @@
+name: Test micromamba docker image
+
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    name: Run test suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Run tests
+        run: ./test.sh
