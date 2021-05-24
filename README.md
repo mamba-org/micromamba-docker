@@ -28,7 +28,7 @@ dependencies:
 2. Install from the spec file in your Dockerfile:
 
 ```
-FROM mambaorg/micromamba:0.11.3
+FROM mambaorg/micromamba:0.13.1
 COPY env.yaml /root/env.yaml
 RUN micromamba install -y -n base -f /root/env.yaml && \
     micromamba clean --all --yes
@@ -39,7 +39,7 @@ RUN micromamba install -y -n base -f /root/env.yaml && \
 1. Pass package names in a RUN command in your Dockerfile:
 
 ```
-FROM mambaorg/micromamba:0.11.3
+FROM mambaorg/micromamba:0.13.1
 RUN micromamba install -y -n base -c conda-forge \
        pyopenssl=20.0.1  \
        python=3.9.1 \
@@ -52,7 +52,7 @@ RUN micromamba install -y -n base -c conda-forge \
 This is not a common usage. Most use cases have a single environment per derived image.
 
 ```
-FROM mambaorg/micromamba:0.11.3
+FROM mambaorg/micromamba:0.13.1
 COPY env1.yaml /root/env1.yaml
 COPY env2.yaml /root/env2.yaml
 RUN micromamba create -y -f /root/env1.yaml && \
