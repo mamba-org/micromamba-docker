@@ -1,4 +1,4 @@
-setup() {
+setup_file() {
     load 'test_helper/common-setup'
     _common_setup
     docker build --quiet \
@@ -9,6 +9,11 @@ setup() {
                  --tag=cmd-exec-form \
 		 --file=${PROJECT_ROOT}/test/cmd-exec-form.Dockerfile \
 		 "${PROJECT_ROOT}/test" > /dev/null
+}
+
+setup() {
+    load 'test_helper/common-setup'
+    _common_setup
 }
 
 @test "CMD [\"/opt/conda/bin/python\", \"-c\", \"print('hello')\"]" {
