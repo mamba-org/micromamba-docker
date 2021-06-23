@@ -1,4 +1,4 @@
-FROM mambaorg/micromamba:0.13.1
+FROM mambaorg/micromamba:0.14.0
 RUN micromamba install -y -n base -c conda-forge \
        pyopenssl=20.0.1 \
        python=3.9.1 \

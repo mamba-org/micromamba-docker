@@ -12,6 +12,8 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 DOCKERFILES=$(find . -not -path "./test/bats/*" -name '*Dockerfile')
 
+git checkout -b "release${VERSION}"
+
 for f in $DOCKERFILES; do
   sed -i.bak  "s%^FROM mambaorg/micromamba:.*$%FROM mambaorg/micromamba:${VERSION}%" "$f"
   rm "$f.bak"
