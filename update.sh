@@ -8,11 +8,12 @@ if [[ $# -ne 1 ]]; then
 fi
 
 VERSION="$1"
+BRANCH="release${VERSION}"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 DOCKERFILES=$(find . -not -path "./test/bats/*" -name '*Dockerfile')
 
-git checkout -b "release${VERSION}"
+git checkout -b "$BRANCH"
 
 for f in $DOCKERFILES; do
   sed -i.bak  "s%^FROM mambaorg/micromamba:.*$%FROM mambaorg/micromamba:${VERSION}%" "$f"
@@ -24,6 +25,6 @@ rm "${SCRIPT_DIR}/README.md.bak"
 
 git add README.md $DOCKERFILES
 git commit -m "micromamba v${VERSION}"
-git push origin
+git push --set-upstream origin "$BRANCH"
 git tag -a "v${VERSION}" -m "micromamba v${VERSION}"
-git push origin --tags
+git push --set-upstream origin "$BRANCH" --tags
