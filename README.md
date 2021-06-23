@@ -28,7 +28,7 @@ dependencies:
 2. Install from the spec file in your Dockerfile:
 
 ```
-FROM mambaorg/micromamba:0.13.1
+FROM mambaorg/micromamba:0.14.0
 COPY env.yaml /root/env.yaml
 RUN micromamba install -y -n base -f /root/env.yaml && \
     micromamba clean --all --yes
@@ -39,7 +39,7 @@ RUN micromamba install -y -n base -f /root/env.yaml && \
 1. Pass package names in a RUN command in your Dockerfile:
 
 ```
-FROM mambaorg/micromamba:0.13.1
+FROM mambaorg/micromamba:0.14.0
 RUN micromamba install -y -n base -c conda-forge \
        pyopenssl=20.0.1  \
        python=3.9.1 \
@@ -52,7 +52,7 @@ RUN micromamba install -y -n base -c conda-forge \
 This is not a common usage. Most use cases have a single environment per derived image.
 
 ```
-FROM mambaorg/micromamba:0.13.1
+FROM mambaorg/micromamba:0.14.0
 COPY env1.yaml /root/env1.yaml
 COPY env2.yaml /root/env2.yaml
 RUN micromamba create -y -f /root/env1.yaml && \
@@ -82,4 +82,4 @@ available.
 
 ### Parent container choice
 
-As noted in the [micromamba documentation](https://github.com/mamba-org/mamba/blob/master/docs/source/micromamba.md#Installation), the official micromamba binaries require glibc. Therefore Alpine Linux does not work natively. To keep the image small, a Debian slim image is used as the parent. On going efforts to generate a fully statically linked micromamba binary are documented in [mamba github issue #572](https://github.com/mamba-org/mamba/issues/572), but most conda packages also depend on glibc. Therefore using a statically linked micromamba would require either a method to install glibc i(or an equivalent) from a conda package or conda packages that are statically linked against glibc.
+As noted in the [micromamba documentation](https://github.com/mamba-org/mamba/blob/master/docs/source/micromamba.md#Installation), the official micromamba binaries require glibc. Therefore Alpine Linux does not work natively. To keep the image small, a Debian slim image is used as the parent. On going efforts to generate a fully statically linked micromamba binary are documented in [mamba github issue #572](https://github.com/mamba-org/mamba/issues/572), but most conda packages also depend on glibc. Therefore using a statically linked micromamba would require either a method to install glibc (or an equivalent) from a conda package or conda packages that are statically linked against glibc.
