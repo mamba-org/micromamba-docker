@@ -1,0 +1,5 @@
+name: env2
+channels:
+  - conda-forge
+dependencies:
+  - jq=1.6
