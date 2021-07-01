@@ -13,6 +13,8 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 DOCKERFILES=$(find . -not -path "./test/bats/*" -name '*Dockerfile')
 
+git checkout main
+git pull
 git checkout -b "$BRANCH"
 
 for f in $DOCKERFILES; do
