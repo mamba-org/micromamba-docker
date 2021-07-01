@@ -29,8 +29,8 @@ dependencies:
 
 ```
 FROM mambaorg/micromamba:0.14.0
-COPY env.yaml /root/env.yaml
-RUN micromamba install -y -n base -f /root/env.yaml && \
+COPY env.yaml /tmp/env.yaml
+RUN micromamba install -y -n base -f /tmp/env.yaml && \
     micromamba clean --all --yes
 ```
 
@@ -53,18 +53,21 @@ This is not a common usage. Most use cases have a single environment per derived
 
 ```
 FROM mambaorg/micromamba:0.14.0
-COPY env1.yaml /root/env1.yaml
-COPY env2.yaml /root/env2.yaml
-RUN micromamba create -y -f /root/env1.yaml && \
-    micromamba create -y -f /root/env2.yaml && \
+COPY env1.yaml /tmp/env1.yaml
+COPY env2.yaml /tmp/env2.yaml
+RUN micromamba create -y -f /tmp/env1.yaml && \
+    micromamba create -y -f /tmp/env2.yaml && \
     micromamba clean --all --yes
 ```
 
-You will then need to use `micromamba activate envX` to activate env1 or env2. But don't put that `micromamba activate envX` in a Dockerfile RUN command, as it is only valid for the current invocation of your shell.
+You can then set the active environment by passing the `ENV_NAME` environment variable like:
+```
+docker run -e ENV_NAME=env2 micromamba
+```
 
-### Running as a non-root user
+### Changing the user
 
-By default, micromamba-docker runs as root, but best practice is to run docker containers as a non-root user. Micromamba-docker can be run as any user by passing the `docker run ...` command the `--user=UID:GID` parameters.
+Prior to June 30, 2021, the image defauted to running as root. Now it defaults to running as the non-root user micromamba. Micromamba-docker can be run as any user by passing the `docker run ...` command the `--user=UID:GID` parameters. Running with `--user=root` is supported.
 
 ### Minimizing final image size
 
