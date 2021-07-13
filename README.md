@@ -13,7 +13,7 @@ Use the 'base' environment if you will only have a single environment in your co
 
 #### From a yaml spec file
 
-1. Create define your desired environment in a spec file:
+1. Define your desired environment in a spec file:
 
 ```
 name: base
@@ -67,7 +67,7 @@ docker run -e ENV_NAME=env2 micromamba
 
 ### Changing the user
 
-Prior to June 30, 2021, the image defauted to running as root. Now it defaults to running as the non-root user micromamba. Micromamba-docker can be run as any user by passing the `docker run ...` command the `--user=UID:GID` parameters. Running with `--user=root` is supported.
+Prior to June 30, 2021, the image defaulted to running as root. Now it defaults to running as the non-root user micromamba. Micromamba-docker can be run as any user by passing the `docker run ...` command the `--user=UID:GID` parameters. Running with `--user=root` is supported.
 
 ### Minimizing final image size
 
