@@ -73,6 +73,14 @@ Prior to June 30, 2021, the image defaulted to running as root. Now it defaults 
 
 Uwe Korn has a nice [blog post on making small containers containing conda environments](https://uwekorn.com/2021/03/01/deploying-conda-environments-in-docker-how-to-do-it-right.html) that is a good resource. He uses mamba instead of micromamba, but the general concepts still apply when using micromamba.
 
+## Support
+
+Please open an [issue](https://github.com/mamba-org/micromamba-docker/issues) if the micromamba docker image does not behave as you expect. For issues about the micromamba program, please use [the mamba issue tracker](https://github.com/mamba-org/mamba/issues).
+
+## Contributing
+
+This project is a community effort and contributions are welcome. Best practice is to discuss proposed contributions on the [issue tracker](https://github.com/mamba-org/micromamba-docker/issues) before you start writing code. 
+
 ## Development
 
 ### Testing
