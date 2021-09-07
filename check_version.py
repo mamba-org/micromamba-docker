@@ -5,7 +5,7 @@ import semver
 def to_version(s):
     return semver.VersionInfo.parse(s)
 
-platforms = ["linux-64", "linux-aarch64"]
+platforms = ["linux-64", "linux-aarch64", "linux-ppc64le"]
 anaconda_api_url = "https://api.anaconda.org/release/conda-forge/micromamba/latest"
 dockerhub_api_url = "https://hub.docker.com/v2/repositories/mambaorg/micromamba/tags/?page_size=25&page=1&ordering=last_updated"
 
