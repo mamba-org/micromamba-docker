@@ -22,6 +22,9 @@ for f in $DOCKERFILES; do
   rm "$f.bak"
 done
 
+sed -i.bak  "s%^ARG VERSION=.*$%ARG VERSION=${VERSION}%" "${SCRIPT_DIR}/Dockerfile"
+rm "${SCRIPT_DIR}/Dockerfile.bak"
+
 sed -i.bak "s%mambaorg/micromamba:.*$%mambaorg/micromamba:${VERSION}%" "${SCRIPT_DIR}/README.md"
 rm "${SCRIPT_DIR}/README.md.bak"
 
