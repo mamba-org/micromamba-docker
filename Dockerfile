@@ -1,8 +1,8 @@
-ARG BASE_IMAGE=debian:buster-slim
+ARG BASE_IMAGE=debian:bullseye-slim
 
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
-FROM --platform=$BUILDPLATFORM debian:buster-slim AS stage1
+FROM --platform=$BUILDPLATFORM $BASE_IMAGE AS stage1
 ARG VERSION=0.15.3
 RUN apt-get update && apt-get install -y \
     bzip2 \
@@ -16,7 +16,7 @@ RUN [ $TARGETARCH = 'amd64' ] && export ARCH='64'; \
     curl -L https://micromamba.snakepit.net/api/micromamba/linux-$ARCH/$VERSION | \
     tar -xj -C /tmp bin/micromamba
 
-FROM $BASE_IMAGE
+FROM --platform=$BUILDPLATFORM $BASE_IMAGE
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV ENV_NAME="base"
