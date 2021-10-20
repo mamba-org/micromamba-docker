@@ -16,7 +16,7 @@ RUN [ $TARGETARCH = 'amd64' ] && export ARCH='64'; \
     curl -L https://micromamba.snakepit.net/api/micromamba/linux-$ARCH/$VERSION | \
     tar -xj -C /tmp bin/micromamba
 
-FROM --platform=$BUILDPLATFORM $BASE_IMAGE
+FROM $BASE_IMAGE
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV ENV_NAME="base"
