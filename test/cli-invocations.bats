@@ -1,14 +1,21 @@
 setup_file() {
     load 'test_helper/common-setup'
     _common_setup
-    docker build --quiet \
-                 --tag=micromamba:test \
-		 --file=${PROJECT_ROOT}/Dockerfile \
-		 "$PROJECT_ROOT" > /dev/null
-    docker build --quiet \
-                 --tag=cli-invocations \
-		 --file=${PROJECT_ROOT}/test/cli-invocations.Dockerfile \
-		 "${PROJECT_ROOT}/test" > /dev/null
+    PROJECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+    for IMAGE_INFO in $(cut -f2 "${PROJECT_ROOT}/tags.tsv"); do
+        IFS=';' read -ra IMAGE_ARRAY <<< "$IMAGE_INFO"
+        BASE_IMAGE="${IMAGE_ARRAY[0]}"
+        DEBIAN_NAME="${IMAGE_ARRAY[1]}"
+        docker build --quiet \
+                     --build-arg "BASE_IMAGE=${BASE_IMAGE}" \
+                     "--tag=micromamba:test-${DEBIAN_NAME}" \
+                     "--file=${PROJECT_ROOT}/Dockerfile" \
+                     "$PROJECT_ROOT" > /dev/null
+        docker build --quiet \
+                     --tag=cli-invocations \
+		     --file=${PROJECT_ROOT}/test/cli-invocations.Dockerfile \
+		     "${PROJECT_ROOT}/test" > /dev/null
+    done
 }
 
 setup() {

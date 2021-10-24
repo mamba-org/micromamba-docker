@@ -14,10 +14,16 @@ if which parallel > /dev/null; then
     # build main test image here so that each *.bats file doesn't do this work in
     # parallel. The *.bats files will still run this docker command, but it will
     # just be a cache hit.
-    docker build --quiet \
-                 --tag=micromamba:test \
-                 "--file=${PROJECT_ROOT}/Dockerfile" \
-                 "$PROJECT_ROOT" > /dev/null
+    for IMAGE_INFO in $(cut -f2 "${PROJECT_ROOT}/tags.tsv"); do
+      IFS=';' read -ra IMAGE_ARRAY <<< "$IMAGE_INFO"
+      BASE_IMAGE="${IMAGE_ARRAY[0]}"
+      DEBIAN_NAME="${IMAGE_ARRAY[1]}"
+      docker build --quiet \
+	           --build-arg "BASE_IMAGE=${BASE_IMAGE}" \
+                   "--tag=micromamba:test-${DEBIAN_NAME}" \
+                   "--file=${PROJECT_ROOT}/Dockerfile" \
+                   "$PROJECT_ROOT" > /dev/null
+    done
   fi
 fi
 
