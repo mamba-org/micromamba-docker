@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euf -o pipefail
+set -ef -o pipefail
 
 # if USER is not set and not root
 if [[ ! -v USER && $(id -u) -gt 0 ]]; then
