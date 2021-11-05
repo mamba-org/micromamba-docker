@@ -9,7 +9,6 @@ if [[ ! -v USER && $(id -u) -gt 0 ]]; then
   export HOME="/home/$USER"
 fi
 
-#export PATH="${MAMBA_ROOT_PREFIX}/envs/${ENV_NAME}/bin:$PATH"
 eval "$(/bin/micromamba shell hook -s bash)"
 micromamba activate "$ENV_NAME"
 exec "$@"
