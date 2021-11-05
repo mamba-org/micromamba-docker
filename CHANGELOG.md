@@ -1,3 +1,10 @@
+5 November 2021
+========================
+
+- Entrypoint evaluates the micromamba shell hook directly
+- Entrypoint no longer writes to ~/.bashrc
+
+
 18 September 2021
 ========================
 
