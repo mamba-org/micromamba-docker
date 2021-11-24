@@ -9,6 +9,8 @@ if [[ ! -v USER && $(id -u) -gt 0 ]]; then
   export HOME="/home/$USER"
 fi
 
-eval "$(/bin/micromamba shell hook -s bash)"
-micromamba activate "$ENV_NAME"
+/bin/micromamba shell init -p $MAMBA_ROOT_PREFIX > /dev/null
+/bin/micromamba shell completion > /dev/null
+echo "micromamba activate $ENV_NAME" >> ~/.bashrc
+source ~/.bashrc
 exec "$@"
