@@ -35,6 +35,13 @@ Use the 'base' environment if you will only have a single environment in your co
       micromamba clean --all --yes
   ```
 
+3. Activate the environment in your Dockerfile:
+
+  ```Dockerfile
+  ARG MAMBA_DOCKERFILE_ACTIVATE=1
+  RUN python --help
+  ```
+
 #### Spec passed on command line
 
 1. Pass package names in a RUN command in your Dockerfile:

@@ -48,3 +48,7 @@ ENTRYPOINT ["/bin/_entrypoint.sh"]
 
 # Default command for "docker run"
 CMD ["/bin/bash"]
+
+# Script which launches RUN commands in Dockerfile
+COPY _dockerfile_shell.sh /bin/_dockerfile_shell.sh
+SHELL ["/bin/_dockerfile_shell.sh"]
