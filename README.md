@@ -1,5 +1,6 @@
 # micromamba-docker
-[Micromamba](https://github.com/mamba-org/mamba#micromamba) for fast building of small [conda](https://docs.conda.io/)-based containers. 
+
+[Micromamba](https://github.com/mamba-org/mamba#micromamba) for fast building of small [conda](https://docs.conda.io/)-based containers.
 
 Images available on [Dockerhub](https://hub.docker.com/) at [mambaorg/micromamba](https://hub.docker.com/r/mambaorg/micromamba). Source code on [GitHub](https://github.com/) at [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/).
 
@@ -15,43 +16,43 @@ Use the 'base' environment if you will only have a single environment in your co
 
 1. Define your desired environment in a spec file:
 
-```
-name: base
-channels:
-  - conda-forge
-dependencies:
-  - pyopenssl=20.0.1
-  - python=3.9.1
-  - requests=2.25.1
-```
+  ```yaml
+  name: base
+  channels:
+    - conda-forge
+  dependencies:
+    - pyopenssl=20.0.1
+    - python=3.9.1
+    - requests=2.25.1
+  ```
 
 2. Install from the spec file in your Dockerfile:
 
-```
-FROM mambaorg/micromamba:0.17.0
-COPY --chown=micromamba:micromamba env.yaml /tmp/env.yaml
-RUN micromamba install -y -n base -f /tmp/env.yaml && \
-    micromamba clean --all --yes
-```
+  ```Dockerfile
+  FROM mambaorg/micromamba:0.17.0
+  COPY --chown=micromamba:micromamba env.yaml /tmp/env.yaml
+  RUN micromamba install -y -n base -f /tmp/env.yaml && \
+      micromamba clean --all --yes
+  ```
 
 #### Spec passed on command line
 
 1. Pass package names in a RUN command in your Dockerfile:
 
-```
-FROM mambaorg/micromamba:0.17.0
-RUN micromamba install -y -n base -c conda-forge \
-       pyopenssl=20.0.1  \
-       python=3.9.1 \
-       requests=2.25.1 && \
-    micromamba clean --all --yes
-```
+  ```Dockerfile
+  FROM mambaorg/micromamba:0.17.0
+  RUN micromamba install -y -n base -c conda-forge \
+        pyopenssl=20.0.1  \
+        python=3.9.1 \
+        requests=2.25.1 && \
+      micromamba clean --all --yes
+  ```
 
 ### Multiple environments
 
 This is not a common usage. Most use cases have a single environment per derived image.
 
-```
+```Dockerfile
 FROM mambaorg/micromamba:0.17.0
 COPY --chown=micromamba:micromamba env1.yaml /tmp/env1.yaml
 COPY --chown=micromamba:micromamba env2.yaml /tmp/env2.yaml
@@ -61,7 +62,8 @@ RUN micromamba create -y -f /tmp/env1.yaml && \
 ```
 
 You can then set the active environment by passing the `ENV_NAME` environment variable like:
-```
+
+```bash
 docker run -e ENV_NAME=env2 micromamba
 ```
 
@@ -79,7 +81,7 @@ Please open an [issue](https://github.com/mamba-org/micromamba-docker/issues) if
 
 ## Contributing
 
-This project is a community effort and contributions are welcome. Best practice is to discuss proposed contributions on the [issue tracker](https://github.com/mamba-org/micromamba-docker/issues) before you start writing code. 
+This project is a community effort and contributions are welcome. Best practice is to discuss proposed contributions on the [issue tracker](https://github.com/mamba-org/micromamba-docker/issues) before you start writing code.
 
 ## Development
 
