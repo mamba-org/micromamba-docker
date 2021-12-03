@@ -26,7 +26,6 @@ ENV PATH "$MAMBA_ROOT_PREFIX/bin:$PATH"
 
 COPY --from=stage1 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=stage1 /tmp/bin/micromamba "$MAMBA_EXE"
-COPY entrypoint.sh /bin/entrypoint.sh
 
 RUN useradd -ms /bin/bash micromamba && \
     export ENV_NAME="$ENV_NAME" && \
@@ -42,5 +41,10 @@ RUN "$MAMBA_EXE" shell init -p "$MAMBA_ROOT_PREFIX" -s bash > /dev/null && \
     echo "micromamba activate \$ENV_NAME" >> ~/.bashrc
 
 WORKDIR /tmp
-ENTRYPOINT ["/bin/entrypoint.sh"]
+
+# Script which launches commands passed to "docker run"
+COPY _entrypoint.sh /bin/_entrypoint.sh
+ENTRYPOINT ["/bin/_entrypoint.sh"]
+
+# Default command for "docker run"
 CMD ["/bin/bash"]
