@@ -23,7 +23,7 @@ will install software into this 'base' environment.
     - requests=2.25.1
   ```
 
-1. Copy the yaml file to your docker image and pass it to micromamba
+2. Copy the yaml file to your docker image and pass it to micromamba
 
   ```Dockerfile
   FROM mambaorg/micromamba:0.19.0
@@ -32,12 +32,12 @@ will install software into this 'base' environment.
       micromamba clean --all --yes
   ```
 
-1. Build your docker image
+3. Build your docker image
 
   The 'base' conda environment is automatically activated when the image
   is running.
 
-  ````bash
+  ```bash
   $ docker build --quiet --tag my_app .
   sha256:b04d00cd5e7ab14f97217c24bc89f035db33a8d339bfb9857698d9390bc66cf8
   $ docker run -it --rm my_app python --version
@@ -47,6 +47,7 @@ will install software into this 'base' environment.
 ### Using RUN execute software within conda environments
 
 To `RUN` a command from a conda environment within a Dockerfile, you *must*:
+
 1. Set `ARG MAMBA_DOCKERFILE_ACTIVATE=1` to activate the conda environment
 1. Use the 'shell' form of the `RUN` command
 
@@ -68,11 +69,13 @@ RUN python -c 'import uuid; print(uuid.uuid4())' > /tmp/my_uuid
 #### Use the shell form of RUN with micromamba
 
 The Dockerfile `RUN` command can be invoked in the 'shell' form:
+
 ```Dockerfile
 RUN python -c "import uuid; print(uuid.uuid4())"
 ```
 
 And the 'exec' form:
+
 ```Dockerfile
 RUN ["python", "-c", "import uuid; print(uuid.uuid4())"]
 ```
