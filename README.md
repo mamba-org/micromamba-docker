@@ -13,36 +13,36 @@ will install software into this 'base' environment.
 
 1. Define your desired conda environment in a yaml file:
 
-  ```yaml
-  name: base
-  channels:
-    - conda-forge
-  dependencies:
-    - pyopenssl=20.0.1
-    - python=3.9.1
-    - requests=2.25.1
-  ```
+    ```yaml
+    name: base
+    channels:
+      - conda-forge
+    dependencies:
+      - pyopenssl=20.0.1
+      - python=3.9.1
+      - requests=2.25.1
+    ```
 
 2. Copy the yaml file to your docker image and pass it to micromamba
 
-  ```Dockerfile
-  FROM mambaorg/micromamba:0.19.0
-  COPY --chown=micromamba:micromamba env.yaml /tmp/env.yaml
-  RUN micromamba install -y -f /tmp/env.yaml && \
-      micromamba clean --all --yes
-  ```
+    ```Dockerfile
+    FROM mambaorg/micromamba:0.19.0
+    COPY --chown=micromamba:micromamba env.yaml /tmp/env.yaml
+    RUN micromamba install -y -f /tmp/env.yaml && \
+        micromamba clean --all --yes
+    ```
 
 3. Build your docker image
-
-  The 'base' conda environment is automatically activated when the image
-  is running.
-
-  ```bash
-  $ docker build --quiet --tag my_app .
-  sha256:b04d00cd5e7ab14f97217c24bc89f035db33a8d339bfb9857698d9390bc66cf8
-  $ docker run -it --rm my_app python --version
-  3.9.1
-  ```
+  
+    The 'base' conda environment is automatically activated when the image
+    is running.
+  
+    ```bash
+    $ docker build --quiet --tag my_app .
+    sha256:b04d00cd5e7ab14f97217c24bc89f035db33a8d339bfb9857698d9390bc66cf8
+    $ docker run -it --rm my_app python --version
+    3.9.1
+    ```
 
 ### Using RUN execute software within conda environments
 
@@ -102,7 +102,7 @@ For most use cases you will only want a single conda environment within your
 derived image, but you can create multiple conda environments:
 
 ```Dockerfile
-FROM mambaorg/micromamba:0.17.0
+FROM mambaorg/micromamba:0.19.0
 COPY --chown=micromamba:micromamba env1.yaml /tmp/env1.yaml
 COPY --chown=micromamba:micromamba env2.yaml /tmp/env2.yaml
 RUN micromamba create -y -f /tmp/env1.yaml && \
