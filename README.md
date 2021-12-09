@@ -44,7 +44,7 @@ will install software into this 'base' environment.
     3.9.1
     ```
 
-### Using RUN execute software within conda environments
+### Using RUN to execute software within conda environments
 
 To `RUN` a command from a conda environment within a Dockerfile, you *must*:
 
@@ -77,7 +77,7 @@ RUN python -c "import uuid; print(uuid.uuid4())"
 And the 'exec' form:
 
 ```Dockerfile
-RUN ["python", "-c", "import uuid; print(uuid.uuid4())"]
+RUN ["python", "-c", "import uuid; print(uuid.uuid4())"]  # DO NOT USE THIS FORM!
 ```
 
 You *must* use the 'shell' form of `RUN` or the command will not execute in
