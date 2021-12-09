@@ -44,9 +44,10 @@ will install software into this 'base' environment.
     3.9.1
     ```
 
-### Using RUN to execute software within conda environments
+### Running commands in Dockerfile within the conda environment
 
-To `RUN` a command from a conda environment within a Dockerfile, you *must*:
+To `RUN` a command from a conda environment within a Dockerfile, as
+explained in detail in the next two subsections, you *must*:
 
 1. Set `ARG MAMBA_DOCKERFILE_ACTIVATE=1` to activate the conda environment
 1. Use the 'shell' form of the `RUN` command
@@ -55,26 +56,26 @@ To `RUN` a command from a conda environment within a Dockerfile, you *must*:
 
 No conda environment is automatically activated during the execution
 of `RUN` commands within a Dockerfile. To have an environment active during
-a `RUN`command, you must set `ARG MAMBA_DOCKERFILE_ACTIVATE=1`. For example:
+a `RUN` command, you must set `ARG MAMBA_DOCKERFILE_ACTIVATE=1`. For example:
 
 ```Dockerfile
 FROM mambaorg/micromamba:0.19.1
 COPY --chown=micromamba:micromamba env.yaml /tmp/env.yaml
-RUN micromamba install -y -f /tmp/env.yaml && \
+RUN micromamba install --yes --file /tmp/env.yaml && \
     micromamba clean --all --yes
-ARG MAMBA_DOCKERFILE_ACTIVATE=1
+ARG MAMBA_DOCKERFILE_ACTIVATE=1  # (otherwise python won't be found)
 RUN python -c 'import uuid; print(uuid.uuid4())' > /tmp/my_uuid
 ```
 
 #### Use the shell form of RUN with micromamba
 
-The Dockerfile `RUN` command can be invoked in the 'shell' form:
+The Dockerfile `RUN` command can be invoked either in the 'shell' form:
 
 ```Dockerfile
 RUN python -c "import uuid; print(uuid.uuid4())"
 ```
 
-And the 'exec' form:
+or the 'exec' form:
 
 ```Dockerfile
 RUN ["python", "-c", "import uuid; print(uuid.uuid4())"]  # DO NOT USE THIS FORM!
@@ -89,7 +90,7 @@ the context of a conda environment.
 
 ```Dockerfile
 FROM mambaorg/micromamba:0.19.1
-RUN micromamba install -y -n base -c conda-forge \
+RUN micromamba install --yes --name base --channel conda-forge \
       pyopenssl=20.0.1  \
       python=3.9.1 \
       requests=2.25.1 && \
@@ -105,8 +106,8 @@ derived image, but you can create multiple conda environments:
 FROM mambaorg/micromamba:0.19.1
 COPY --chown=micromamba:micromamba env1.yaml /tmp/env1.yaml
 COPY --chown=micromamba:micromamba env2.yaml /tmp/env2.yaml
-RUN micromamba create -y -f /tmp/env1.yaml && \
-    micromamba create -y -f /tmp/env2.yaml && \
+RUN micromamba create --yes --file /tmp/env1.yaml && \
+    micromamba create --yes --file /tmp/env2.yaml && \
     micromamba clean --all --yes
 ```
 
