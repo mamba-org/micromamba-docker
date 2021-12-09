@@ -26,7 +26,7 @@ will install software into this 'base' environment.
 2. Copy the yaml file to your docker image and pass it to micromamba
 
     ```Dockerfile
-    FROM mambaorg/micromamba:0.19.0
+    FROM mambaorg/micromamba:0.19.1
     COPY --chown=micromamba:micromamba env.yaml /tmp/env.yaml
     RUN micromamba install -y -f /tmp/env.yaml && \
         micromamba clean --all --yes
@@ -58,7 +58,7 @@ of `RUN` commands within a Dockerfile. To have an environment active during
 a `RUN`command, you must set `ARG MAMBA_DOCKERFILE_ACTIVATE=1`. For example:
 
 ```Dockerfile
-FROM mambaorg/micromamba:0.19.0
+FROM mambaorg/micromamba:0.19.1
 COPY --chown=micromamba:micromamba env.yaml /tmp/env.yaml
 RUN micromamba install -y -f /tmp/env.yaml && \
     micromamba clean --all --yes
@@ -88,7 +88,7 @@ the context of a conda environment.
 ### Pass list of packages to install within a Dockerfile RUN command
 
 ```Dockerfile
-FROM mambaorg/micromamba:0.19.0
+FROM mambaorg/micromamba:0.19.1
 RUN micromamba install -y -n base -c conda-forge \
       pyopenssl=20.0.1  \
       python=3.9.1 \
@@ -102,7 +102,7 @@ For most use cases you will only want a single conda environment within your
 derived image, but you can create multiple conda environments:
 
 ```Dockerfile
-FROM mambaorg/micromamba:0.19.0
+FROM mambaorg/micromamba:0.19.1
 COPY --chown=micromamba:micromamba env1.yaml /tmp/env1.yaml
 COPY --chown=micromamba:micromamba env2.yaml /tmp/env2.yaml
 RUN micromamba create -y -f /tmp/env1.yaml && \

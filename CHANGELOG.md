@@ -1,3 +1,11 @@
+8 December 2021
+========================
+
+- Stop adding MAMBA_ROOT_PREFIX/bin in `PATH`.
+- Remove tests that override entrypoint. Users should not expect their conda env to get activated if they interfere with the entrypoint script.
+- Remove test of using `RUN` command with 'exec' form to access conda installed software. This required the `PATH` modification that is being removed. Use 'shell' form of `RUN` command instead.
+- Remove call to `micromamba` that adds shell completion commands from `.bashrc`, as this is now included in the shell hooks command.
+
 4 December 2021
 ========================
 
