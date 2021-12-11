@@ -6,6 +6,13 @@ Images available on [Dockerhub](https://hub.docker.com/) at [mambaorg/micromamba
 
 "This is amazing. I switched CI for my projects to micromamba, and compared to using a miniconda docker image, this reduced build times more than 2x" -- A new micromamba-docker user
 
+## About the image
+
+The micromamba image is currently derived from the `debian:bullseye-slim` image.
+Thus far, the image has been focused on supporting use of the `bash` shell. We
+plan to build from additional base images and support additional shells in the
+future.
+
 ## Quick start
 
 The micromamba image comes with an empty environment named 'base'. Usually you
@@ -33,10 +40,10 @@ will install software into this 'base' environment.
     ```
 
 3. Build your docker image
-  
+
     The 'base' conda environment is automatically activated when the image
     is running.
-  
+
     ```bash
     $ docker build --quiet --tag my_app .
     sha256:b04d00cd5e7ab14f97217c24bc89f035db33a8d339bfb9857698d9390bc66cf8
@@ -139,18 +146,18 @@ This project is a community effort and contributions are welcome. Best practice 
 
 The [Bats](https://github.com/bats-core/bats-core) testing framework is used to test the micromamba docker
 images and derived images. When cloning this repo you'll want to use `git clone --recurse-submodules ...`,
-which will bring in the git submodules for Bats. With the submodules present, `./test.sh` will run the test
+which will bring in the git sub-modules for Bats. With the sub-modules present, `./test.sh` will run the test
 suite. If GNU `parallel` is present, then the test suite will be run in parallel using all logical CPU cores
 available.
 
-### Roadmap
+### Road map
 
-The current roadmap for expanding the number of base images is as follows:
+The current road map for expanding the number of base images is as follows:
 
 1. Add all releases of debian slim that have not yet reached LTS end of life (ie, bullseye, buster, stretch)
 1. Add the non-slim debian image
-1. Add other debian based distros that have community interest (such as ubuntu)
-1. Add non-debian based distros that have community interest
+1. Add other debian based distributions that have community interest (such as Ubuntu)
+1. Add non-debian based distributions that have community interest
 
 The build and test infrastructure will need to be altered to support additional
 base images such that automated test and build occur for all images produced.
@@ -161,4 +168,4 @@ base images such that automated test and build occur for all images produced.
 
 ### Parent container choice
 
-As noted in the [micromamba documentation](https://github.com/mamba-org/mamba/blob/master/docs/source/micromamba.md#Installation), the official micromamba binaries require glibc. Therefore Alpine Linux does not work natively. To keep the image small, a Debian slim image is used as the parent. On going efforts to generate a fully statically linked micromamba binary are documented in [mamba github issue #572](https://github.com/mamba-org/mamba/issues/572), but most conda packages also depend on glibc. Therefore using a statically linked micromamba would require either a method to install glibc (or an equivalent) from a conda package or conda packages that are statically linked against glibc.
+As noted in the [micromamba documentation](https://github.com/mamba-org/mamba/blob/master/docs/source/micromamba.md#Installation), the official micromamba binaries require glibc. Therefore Alpine Linux does not work naively. To keep the image small, a Debian slim image is used as the parent. On going efforts to generate a fully statically linked micromamba binary are documented in [mamba GitHub issue #572](https://github.com/mamba-org/mamba/issues/572), but most conda packages also depend on glibc. Therefore using a statically linked micromamba would require either a method to install glibc (or an equivalent) from a conda package or conda packages that are statically linked against glibc.
