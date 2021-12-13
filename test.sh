@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eu -o pipefail
 
+export DOCKER_BUILDKIT=1
+
 FLAGS=
 if which parallel > /dev/null; then
   if [[ $(uname -s) == "Darwin" ]]; then
