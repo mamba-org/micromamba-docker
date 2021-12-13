@@ -29,8 +29,6 @@ jobs:
         echo "::set-output name=latest_version::${LATEST_VERSION}"
     - name: Run tests
       run: ./test.sh
-      env:
-        DOCKER_BUILDKIT: 1
       if: steps.check_version.outputs.latest_version != 'no_version_found'
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
