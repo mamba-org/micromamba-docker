@@ -48,6 +48,7 @@ jobs:
         build-args: |
           VERSION=${{ steps.check_version.outputs.latest_version }}
         tags: |
+          mambaorg/micromamba:${GITHUB_SHA::7}
           mambaorg/micromamba:${{ steps.check_version.outputs.latest_version }}
           mambaorg/micromamba:latest
       if: steps.check_version.outputs.latest_version != 'no_version_found'
