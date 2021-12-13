@@ -39,12 +39,13 @@ RUN "$MAMBA_EXE" shell init -p "$MAMBA_ROOT_PREFIX" -s bash > /dev/null && \
 WORKDIR /tmp
 
 # Script which launches commands passed to "docker run"
-COPY _entrypoint.sh /bin/_entrypoint.sh
-ENTRYPOINT ["/bin/_entrypoint.sh"]
+COPY _entrypoint.sh /usr/local/bin/_entrypoint.sh
+COPY _activate_current_env.sh /usr/local/bin/_activate_current_env.sh
+ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
 
 # Default command for "docker run"
 CMD ["/bin/bash"]
 
 # Script which launches RUN commands in Dockerfile
-COPY _dockerfile_shell.sh /bin/_dockerfile_shell.sh
-SHELL ["/bin/_dockerfile_shell.sh"]
+COPY _dockerfile_shell.sh /usr/local/bin/_dockerfile_shell.sh
+SHELL ["/usr/local/bin/_dockerfile_shell.sh"]
