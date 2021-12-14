@@ -1,3 +1,11 @@
+14 December 2021
+========================
+
+- Images are now built on every push to `main` branch or when cronjob sees that conda-forge has a newer version of micromamba that does not yet have a corresponding image on dockerhub
+- Images will now also be tagged with a the short version of the git SHA hash from this git repository.
+- The outputs of `check_version.py` have been modified to make the build scripts better
+
+
 13 December 2021
 ========================
 
