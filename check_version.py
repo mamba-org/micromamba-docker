@@ -84,6 +84,8 @@ def get_version_and_build_status() -> Tuple[Optional[VersionInfo], bool]:
             )
         else:
             build_required = True
+    logging.debug("conda_latest=%s", conda_latest)
+    logging.debug("build_required=%s", build_required)
     return conda_latest, build_required
 
 
