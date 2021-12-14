@@ -4,9 +4,10 @@ set -euf -o pipefail
 
 function display_help {
   echo ""
-  echo -e "Usage: $0 [options] version"
+  echo -e "Usage: $0 [options] [version]"
   echo ""
-  echo "   version                 version number of micromamba to include in image (required)"
+  echo "   version                 version number of micromamba to include in image"
+  echo "                           (defaults to newest version on conda-forge)"
   echo "   -h, --help              show this command reference"
   echo "   -c, --commit            make a git commit, tag it, and push to origin "
   echo ""
@@ -37,9 +38,7 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 if [ -z "${VERSION}"  ]; then
-  echo $'\nERROR: No version value passed'
-  display_help
-  exit 3
+  VERSION="$(./check_version.py 2> /dev/null | cut -f1 -d,)"
 fi
 
 BRANCH="release${VERSION}"
