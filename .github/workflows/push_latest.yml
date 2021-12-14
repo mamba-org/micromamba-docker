@@ -31,7 +31,9 @@ jobs:
         CHECK_OUT="$(python check_version.py)"
         LATEST_VERSION="$(echo "$CHECK_OUT" | cut -d, -f1)"
         BUILD_NEEDED="$(echo "$CHECK_OUT" | cut -d, -f2)"
-        if [ "$BUILD_NEEDED" = "True" ] || [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+        if [ "$BUILD_NEEDED" = "True" ] || \
+           [ "$EVENT_NAME" = "workflow_dispatch" ] || \
+           [ "$EVENT_NAME" = "pull_request" ]; then
           # Not using test return code as bash and github actions
           # map booleans to integers differently. Strings are more explict.
           DO_BUILD="True"
