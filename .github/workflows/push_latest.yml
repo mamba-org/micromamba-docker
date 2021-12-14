@@ -46,6 +46,8 @@ jobs:
       run: sudo apt-get install --no-install-recommends -y parallel
       if: steps.check_version.outputs.do_build == 'True'
     - name: Run tests
+      env:
+        MICROMAMBA_VERSION: ${{ steps.check_version.outputs.latest_version }}
       run: ./test.sh
       if: steps.check_version.outputs.do_build == 'True'
     - name: Get short git hash
