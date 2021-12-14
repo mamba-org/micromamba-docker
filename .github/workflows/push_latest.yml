@@ -42,6 +42,9 @@ jobs:
         fi
         echo "::set-output name=latest_version::${LATEST_VERSION}"
         echo "::set-output name=do_build::${DO_BUILD}"
+    - name: Install GNU parallel
+      run: sudo apt-get install --no-install-recommends -y parallel
+      if: steps.check_version.outputs.do_build == 'True'
     - name: Run tests
       run: ./test.sh
       if: steps.check_version.outputs.do_build == 'True'

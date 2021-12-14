@@ -15,5 +15,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
+      - name: Install GNU parallel
+        run: sudo apt-get install --no-install-recommends -y parallel
       - name: Run tests
         run: ./test.sh
