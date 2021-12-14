@@ -1,3 +1,9 @@
+13 December 2021
+========================
+
+- Consolidated activation code into `/usr/local/bin/_activate_current_env.sh`
+- Moved `_entrypoint.sh` and `_docker_shell.sh` into `/usr/local/bin`
+
 8 December 2021
 ========================
 
