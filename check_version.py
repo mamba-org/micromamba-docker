@@ -45,7 +45,7 @@ def dockerhub_versions(url: str) -> ArchVersions:
     dh_result = dh_res.json()
     out: ArchVersions = {arch: [] for arch in ARCHITECTURES}
     for release in dh_result["results"]:
-        if release["name"] != "latest":
+        if release["name"] != "latest" and release["name"][:4] != "git-":
             for image in release["images"]:
                 arch = image["architecture"]
                 if arch in ARCHITECTURES:
