@@ -23,7 +23,7 @@ setup() {
     assert_output 'root'
 }
 
-@test "docker run --rm  --user=0:0micromamba:test whoami" {
+@test "docker run --rm  --user=0:0 micromamba:test whoami" {
     run docker run --rm  --user=0:0 micromamba:test whoami
     assert_output 'root'
 }
