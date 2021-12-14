@@ -28,13 +28,11 @@ COPY --from=stage1 /tmp/bin/micromamba "$MAMBA_EXE"
 
 RUN useradd -ms /bin/bash micromamba && \
     mkdir -p "$MAMBA_ROOT_PREFIX" && \
-    "$MAMBA_EXE" shell init -p "$MAMBA_ROOT_PREFIX" -s bash > /dev/null && \
     chmod -R a+rwx "$MAMBA_ROOT_PREFIX" "/home" && \
-    echo "micromamba activate \$ENV_NAME" >> ~/.bashrc
+    echo "source _activate_current_env.sh" >> ~/.bashrc
 
 USER micromamba
-RUN "$MAMBA_EXE" shell init -p "$MAMBA_ROOT_PREFIX" -s bash > /dev/null && \
-    echo "micromamba activate \$ENV_NAME" >> ~/.bashrc
+RUN echo "source _activate_current_env.sh" >> ~/.bashrc
 
 WORKDIR /tmp
 
