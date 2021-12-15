@@ -53,8 +53,10 @@ will install software into this 'base' environment.
 
 ### Running commands in Dockerfile within the conda environment
 
-To `RUN` a command from a conda environment within a Dockerfile, as
-explained in detail in the next two subsections, you *must*:
+While the conda environment is automatically activated for `docker run ...` commands,
+it is not automatically activated during build. To `RUN` a command from a conda
+environment within a Dockerfile, as explained in detail in the next two subsections,
+you *must*:
 
 1. Set `ARG MAMBA_DOCKERFILE_ACTIVATE=1` to activate the conda environment
 1. Use the 'shell' form of the `RUN` command
@@ -70,7 +72,7 @@ FROM mambaorg/micromamba:0.19.1
 COPY --chown=micromamba:micromamba env.yaml /tmp/env.yaml
 RUN micromamba install --yes --file /tmp/env.yaml && \
     micromamba clean --all --yes
-ARG MAMBA_DOCKERFILE_ACTIVATE=1  # (otherwise python won't be found)
+ARG MAMBA_DOCKERFILE_ACTIVATE=1  # (otherwise python will not be found)
 RUN python -c 'import uuid; print(uuid.uuid4())' > /tmp/my_uuid
 ```
 
@@ -127,6 +129,33 @@ docker run -e ENV_NAME=env2 my_multi_conda_image
 ### Changing the user
 
 Prior to June 30, 2021, the image defaulted to running as root. Now it defaults to running as the non-root user micromamba. Micromamba-docker can be run as any user by passing the `docker run ...` command the `--user=UID:GID` parameters. Running with `--user=root` is supported.
+
+### Disabling automatic activation
+
+It is assumed that users will want their environment automatically activated whenever
+running this container. This behavior can be disabled by setting the environment
+variable `MAMBA_SKIP_ACTIVATE=1`.
+
+For example, to open an interactive bash shell without activating the environment:
+
+```bash
+docker run --rm -it -e MAMBA_SKIP_ACTIVATE=1 mambaorg/micromamba bash
+```
+
+### Details about automatic activation
+
+At container runtime, activation occurs by default at two possible points:
+
+1. The end of the `~/.bashrc` file, which is loaded by interactive non-login Bash shells.
+2. The `ENTRYPOINT` script, which is automatically prepended to `docker run` commands.
+
+The activation in `~/.bashrc` ensures that the environment is activated in interactive
+terminal sessions, even when switching between users.
+
+The `ENTRYPOINT` script ensures that the environment is also activated for one-off
+commands when Docker is used non-interactively.
+
+Setting `MAMBA_SKIP_ACTIVATE=1` disables both of these automatic activation methods.
 
 ## Minimizing final image size
 
