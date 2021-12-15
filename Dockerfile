@@ -26,7 +26,7 @@ ENV MAMBA_EXE="/bin/micromamba"
 COPY --from=stage1 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=stage1 /tmp/bin/micromamba "$MAMBA_EXE"
 
-ARG MAMBA_USER=micromamba
+ARG MAMBA_USER=mambauser
 ENV MAMBA_USER=$MAMBA_USER
 
 RUN echo "source /usr/local/bin/_activate_current_env.sh" >> ~/.bashrc && \

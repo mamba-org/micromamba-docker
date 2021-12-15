@@ -1,4 +1,4 @@
-default_mamba_user="micromamba"
+default_mamba_user="mambauser"
 altered_mamba_user="MaMbAmIcRo"
 
 setup_file() {
