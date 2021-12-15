@@ -26,14 +26,13 @@ ENV MAMBA_EXE="/bin/micromamba"
 COPY --from=stage1 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=stage1 /tmp/bin/micromamba "$MAMBA_EXE"
 
-RUN useradd -ms /bin/bash micromamba && \
+RUN echo "source _activate_current_env.sh" >> ~/.bashrc && \
+    echo "source _activate_current_env.sh" >> /etc/skel/.bashrc && \
+    useradd -ms /bin/bash micromamba && \
     mkdir -p "$MAMBA_ROOT_PREFIX" && \
-    chmod -R a+rwx "$MAMBA_ROOT_PREFIX" "/home" && \
-    echo "source _activate_current_env.sh" >> ~/.bashrc
+    chmod -R a+rwx "$MAMBA_ROOT_PREFIX" "/home"
 
 USER micromamba
-RUN echo "source _activate_current_env.sh" >> ~/.bashrc
-
 WORKDIR /tmp
 
 # Script which launches commands passed to "docker run"
