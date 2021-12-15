@@ -34,7 +34,7 @@ will install software into this 'base' environment.
 
     ```Dockerfile
     FROM mambaorg/micromamba:0.19.1
-    COPY --chown=micromamba:micromamba env.yaml /tmp/env.yaml
+    COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
     RUN micromamba install -y -f /tmp/env.yaml && \
         micromamba clean --all --yes
     ```
@@ -69,7 +69,7 @@ a `RUN` command, you must set `ARG MAMBA_DOCKERFILE_ACTIVATE=1`. For example:
 
 ```Dockerfile
 FROM mambaorg/micromamba:0.19.1
-COPY --chown=micromamba:micromamba env.yaml /tmp/env.yaml
+COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
 RUN micromamba install --yes --file /tmp/env.yaml && \
     micromamba clean --all --yes
 ARG MAMBA_DOCKERFILE_ACTIVATE=1  # (otherwise python will not be found)
@@ -113,8 +113,8 @@ derived image, but you can create multiple conda environments:
 
 ```Dockerfile
 FROM mambaorg/micromamba:0.19.1
-COPY --chown=micromamba:micromamba env1.yaml /tmp/env1.yaml
-COPY --chown=micromamba:micromamba env2.yaml /tmp/env2.yaml
+COPY --chown=$MAMBA_USER:$MAMBA_USER env1.yaml /tmp/env1.yaml
+COPY --chown=$MAMBA_USER:$MAMBA_USER env2.yaml /tmp/env2.yaml
 RUN micromamba create --yes --file /tmp/env1.yaml && \
     micromamba create --yes --file /tmp/env2.yaml && \
     micromamba clean --all --yes
@@ -128,7 +128,9 @@ docker run -e ENV_NAME=env2 my_multi_conda_image
 
 ### Changing the user
 
-Prior to June 30, 2021, the image defaulted to running as root. Now it defaults to running as the non-root user micromamba. Micromamba-docker can be run as any user by passing the `docker run ...` command the `--user=UID:GID` parameters. Running with `--user=root` is supported.
+Prior to June 30, 2021, the image defaulted to running as root. Now it defaults to running as the non-root user `micromamba` (defined during build as the value of `$MAMBA_USER`). Micromamba-docker can be run as any user by passing the `docker run ...` command the `--user=UID:GID` parameters. Running with `--user=root` is supported.
+
+The default username `micromamba` can be adjusted by passing `--build-arg MAMBA_USER=<username>` to the `docker build` command.
 
 ### Disabling automatic activation
 

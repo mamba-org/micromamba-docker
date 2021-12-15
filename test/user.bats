@@ -1,9 +1,12 @@
+default_mamba_user="micromamba"
+altered_mamba_user="MaMbAmIcRo"
+
 setup_file() {
     load 'test_helper/common-setup'
     _common_setup
     docker build --quiet \
                  --tag=different-user \
-                 --build-arg=MAMBA_USER=MaMbAmIcRo \
+                 --build-arg=MAMBA_USER=$altered_mamba_user \
 		 --file=${PROJECT_ROOT}/Dockerfile \
 		 "$PROJECT_ROOT" > /dev/null
 }
@@ -15,12 +18,12 @@ setup() {
 
 @test "docker run --rm  micromamba:test whoami" {
     run docker run --rm  micromamba:test whoami
-    assert_output 'micromamba'
+    assert_output "$default_mamba_user"
 }
 
 @test "docker run --rm  different-user whoami" {
     run docker run --rm  different-user whoami
-    assert_output 'MaMbAmIcRo'
+    assert_output "$altered_mamba_user"
 }
 
 @test "docker run --rm  --user=1001:1001 micromamba:test whoami" {
@@ -40,17 +43,17 @@ setup() {
 
 @test "docker run --rm  micromamba:test /bin/bash -c 'realpath ~'" {
     run docker run --rm  micromamba:test /bin/bash -c 'realpath ~'
-    assert_output '/home/micromamba'
+    assert_output "/home/$default_mamba_user"
 }
 
 @test "docker run --rm  different-user /bin/bash -c 'realpath ~'" {
     run docker run --rm  different-user /bin/bash -c 'realpath ~'
-    assert_output '/home/MaMbAmIcRo'
+    assert_output "/home/$altered_mamba_user"
 }
 
 @test "docker run --rm  --user=1001:1001 micromamba:test /bin/bash -c 'realpath ~'" {
     run docker run --rm  --user=1001:1001 micromamba:test /bin/bash -c 'realpath ~'
-    assert_output '/home/micromamba'
+    assert_output "/home/$default_mamba_user"
 }
 
 @test "docker run --rm  --user=root micromamba:test /bin/bash -c 'realpath ~'" {
