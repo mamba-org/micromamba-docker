@@ -1,13 +1,13 @@
 name: Push micromamba docker image
 
 on:
-  pull_request:
-    branches: [main]
-    types: [closed]
   workflow_dispatch:
   # Run every 6 hours (https://crontab.guru/every-6-hours)
   schedule:
   - cron: '0 */6 * * *'
+  push:
+    branches:
+      - master
 
 jobs:
   build_docker_image_and_push:
