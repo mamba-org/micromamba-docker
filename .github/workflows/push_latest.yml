@@ -7,7 +7,7 @@ on:
   - cron: '0 */6 * * *'
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build_docker_image_and_push:
