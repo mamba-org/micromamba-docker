@@ -1,10 +1,14 @@
+15 December 2021
+========================
+
+- If environmental variable `MAMBA_SKIP_ACTIVATE` is set to `1`, then no conda environment will be automatically activated during a `docker run ...` command.
+
 14 December 2021
 ========================
 
 - Images are now built on every push to `main` branch or when cronjob sees that conda-forge has a newer version of micromamba that does not yet have a corresponding image on dockerhub
 - Images will now also be tagged with a the short version of the git SHA hash from this git repository.
 - The outputs of `check_version.py` have been modified to make the build scripts better
-
 
 13 December 2021
 ========================
@@ -15,7 +19,7 @@
 8 December 2021
 ========================
 
-- Stop adding MAMBA_ROOT_PREFIX/bin in `PATH`.
+- Stop adding `MAMBA_ROOT_PREFIX/bin` in `PATH`.
 - Remove tests that override entrypoint. Users should not expect their conda env to get activated if they interfere with the entrypoint script.
 - Remove test of using `RUN` command with 'exec' form to access conda installed software. This required the `PATH` modification that is being removed. Use 'shell' form of `RUN` command instead.
 - Remove call to `micromamba` that adds shell completion commands from `.bashrc`, as this is now included in the shell hooks command.

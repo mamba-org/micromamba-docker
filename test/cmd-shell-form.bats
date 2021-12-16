@@ -2,8 +2,8 @@ setup_file() {
     load 'test_helper/common-setup'
     _common_setup
 
-    if [ -z "${MICROMAMBA_VERSION}" ]; then
-      export MICROMAMBA_VERSION="$(./check_version.py 2> /dev/null | cut -f1 -d,)"
+    if [ -z "${MICROMAMBA_VERSION+x}" ]; then
+      MICROMAMBA_VERSION="$(./check_version.py 2> /dev/null | cut -f1 -d,)"
     fi
 
     # only used for building the micromamba image, not derived images

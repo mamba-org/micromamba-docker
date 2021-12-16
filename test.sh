@@ -3,8 +3,9 @@ set -eu -o pipefail
 
 export DOCKER_BUILDKIT=1
 
-if [ -z "${MICROMAMBA_VERSION}" ]; then
-  export MICROMAMBA_VERSION="$(./check_version.py 2> /dev/null | cut -f1 -d,)"
+if [ -z "${MICROMAMBA_VERSION+x}" ]; then
+  MICROMAMBA_VERSION="$(./check_version.py 2> /dev/null | cut -f1 -d,)"
+  export MICROMAMBA_VERSION
 fi
 
 # only used for building the micromamba image, not derived images

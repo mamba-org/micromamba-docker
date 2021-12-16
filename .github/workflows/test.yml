@@ -26,5 +26,5 @@ jobs:
           echo "::set-output name=latest_version::${LATEST_VERSION}"
       - name: Run tests
         env:
-          MICROMAMBA_VERSION: ${{ steps.git_version.outputs.latest_version }}
+          MICROMAMBA_VERSION: ${{ steps.get_version.outputs.latest_version }}
         run: ./test.sh
