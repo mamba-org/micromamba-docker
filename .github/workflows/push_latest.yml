@@ -32,7 +32,7 @@ jobs:
         echo "event_name: $GITHUB_EVENT_NAME"
         if [ "$BUILD_NEEDED" = "True" ] || \
            [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ] || \
-           [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+           [ "$GITHUB_EVENT_NAME" = "push" ]; then
           # Not using test return code as bash and github actions
           # map booleans to integers differently. Strings are more explict.
           DO_BUILD="True"
