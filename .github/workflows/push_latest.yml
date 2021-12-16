@@ -24,16 +24,15 @@ jobs:
         python-version: "3.x"
     - name: Check available versions
       id: check_version
-      env:
-        EVENT_NAME: ${{ github.event_name }}
       run: |
         python -m pip install requests "semver>=2.13.0,<3.0"
         CHECK_OUT="$(python check_version.py)"
         LATEST_VERSION="$(echo "$CHECK_OUT" | cut -d, -f1)"
         BUILD_NEEDED="$(echo "$CHECK_OUT" | cut -d, -f2)"
+        echo "event_name: $GITHUB_EVENT_NAME"
         if [ "$BUILD_NEEDED" = "True" ] || \
-           [ "$EVENT_NAME" = "workflow_dispatch" ] || \
-           [ "$EVENT_NAME" = "pull_request" ]; then
+           [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ] || \
+           [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
           # Not using test return code as bash and github actions
           # map booleans to integers differently. Strings are more explict.
           DO_BUILD="True"
