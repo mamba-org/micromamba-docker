@@ -26,8 +26,8 @@ ENV MAMBA_EXE="/bin/micromamba"
 COPY --from=stage1 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=stage1 /tmp/bin/micromamba "$MAMBA_EXE"
 
-RUN echo "source _activate_current_env.sh" >> ~/.bashrc && \
-    echo "source _activate_current_env.sh" >> /etc/skel/.bashrc && \
+RUN echo "source /usr/local/bin/_activate_current_env.sh" >> ~/.bashrc && \
+    echo "source /usr/local/bin/_activate_current_env.sh" >> /etc/skel/.bashrc && \
     useradd -ms /bin/bash micromamba && \
     mkdir -p "$MAMBA_ROOT_PREFIX" && \
     chmod -R a+rwx "$MAMBA_ROOT_PREFIX" "/home"
