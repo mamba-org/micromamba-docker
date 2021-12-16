@@ -1,13 +1,13 @@
 name: Push micromamba docker image
 
 on:
-  pull_request:
-    branches: [main]
-    types: [closed]
   workflow_dispatch:
   # Run every 6 hours (https://crontab.guru/every-6-hours)
   schedule:
   - cron: '0 */6 * * *'
+  push:
+    branches:
+      - master
 
 jobs:
   build_docker_image_and_push:
@@ -32,7 +32,7 @@ jobs:
         echo "event_name: $GITHUB_EVENT_NAME"
         if [ "$BUILD_NEEDED" = "True" ] || \
            [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ] || \
-           [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+           [ "$GITHUB_EVENT_NAME" = "push" ]; then
           # Not using test return code as bash and github actions
           # map booleans to integers differently. Strings are more explict.
           DO_BUILD="True"
