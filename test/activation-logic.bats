@@ -1,19 +1,6 @@
 setup_file() {
     load 'test_helper/common-setup'
     _common_setup
-
-    if [ -z "${MICROMAMBA_VERSION+x}" ]; then
-      MICROMAMBA_VERSION="$(./check_version.py 2> /dev/null | cut -f1 -d,)"
-    fi
-
-    # only used for building the micromamba image, not derived images
-    MICROMAMBA_FLAGS="--build-arg VERSION=${MICROMAMBA_VERSION}"
-
-    docker build $MICROMAMBA_FLAGS \
-                 --quiet \
-                 --tag=micromamba:test \
-		 --file=${PROJECT_ROOT}/Dockerfile \
-		 "$PROJECT_ROOT" > /dev/null
     docker build --quiet \
                  --tag=cli-invocations \
 		 --file=${PROJECT_ROOT}/test/cli-invocations.Dockerfile \
@@ -24,42 +11,6 @@ setup() {
     load 'test_helper/common-setup'
     _common_setup
 }
-
-# Simulate TTY input for the docker run command
-# https://stackoverflow.com/questions/1401002/
-faketty () {
-  # Create a temporary file for storing the status code
-  tmp=$(mktemp)
-
-  # Ensure it worked or fail with status 99
-  [ "$tmp" ] || return 99
-
-  # Produce a script that runs the command provided to faketty as
-  # arguments and stores the status code in the temporary file
-  cmd="$(printf '%q ' "$@")"'; echo $? > '$tmp
-
-  # Run the script through /bin/sh with fake tty
-  if [ "$(uname)" = "Darwin" ]; then
-    # MacOS
-    script -Fq /dev/null /bin/sh -c "$cmd"
-  else
-    script -qfc "/bin/sh -c $(printf "%q " "$cmd")" /dev/null
-  fi
-
-  # Ensure that the status code was written to the temporary file or
-  # fail with status 99
-  [ -s $tmp ] || return 99
-
-  # Collect the status code from the temporary file
-  err=$(cat $tmp)
-
-  # Remove the temporary file
-  rm -f $tmp
-
-  # Return the status code
-  return $err
-}
-
 
 # Activation should succeed in the simplest case.
 @test "docker run --rm cli-invocations python --version" {
