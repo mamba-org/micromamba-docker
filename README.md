@@ -11,7 +11,23 @@ Images available on [Dockerhub](https://hub.docker.com/) at [mambaorg/micromamba
 The micromamba image is currently derived from the `debian:bullseye-slim` image.
 Thus far, the image has been focused on supporting use of the `bash` shell. We
 plan to build from additional base images and support additional shells in the
-future.
+future (see [road map](### Road map).
+
+### Tags
+
+When a commit pushed to the `main` branch of
+[mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/)
+or when a new release of `micromamba` binaries are available on
+[conda-forge](https://anaconda.org/conda-forge/micromamba),
+new docker images are built and pushed to dockerhub. Each image is tagged with
+the version of `micromamba` it contains and these tags will start with a
+number. Images are also tagged with `git-<HASH>` where `<HASH>` is the first
+7 characters of the git commit hash from the
+[mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/)
+git repository.
+
+For reproducible image builds, best practice is for Dockerfile `FROM`
+commands to reference the image's sha256 digest and not use tags.
 
 ## Quick start
 
