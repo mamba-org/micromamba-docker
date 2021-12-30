@@ -93,6 +93,37 @@ RUN ["python", "-c", "import uuid; print(uuid.uuid4())"]  # DO NOT USE THIS FORM
 You *must* use the 'shell' form of `RUN` or the command will not execute in
 the context of a conda environment.
 
+#### Activating a conda environment for ENTRYPOINT commands
+
+This the `mambaorg/micromamba` image contains:
+
+``` Dockerfile
+ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
+```
+
+where `_entrypoint.sh` activates the conda environment for any programs
+run via `CMD` in a Dockerfile or using
+`docker run mambaorg/micromamba my_command` on the command line.
+If you were to make an image derived from `mambaorg/micromamba` with:
+
+``` Dockerfile
+ENTRYPOINT ["my_command"]
+```
+
+then you will have removed the conda activation from the `ENTRYPOINT` and
+`my_command` will be executed outside of any conda environment.
+
+
+If you would like an `ENTRYPOINT` command to be executed within an active conda
+environment, then add `usr/local/bin/_entrypoint.sh"` as the first element
+of the JSON array argument to `ENTRYPOINT`. For example, if you would like
+for your `ENTRYPOINT` command to run `python` from a conda environment,
+then you would do:
+
+``` Dockerfile
+ENTRYPOINT ["/usr/local/bin/_entrypoint.sh", "python"]
+```
+
 ## Advanced Usages
 
 ### Pass list of packages to install within a Dockerfile RUN command
