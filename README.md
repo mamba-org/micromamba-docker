@@ -11,7 +11,7 @@ Images available on [Dockerhub](https://hub.docker.com/) at [mambaorg/micromamba
 The micromamba image is currently derived from the `debian:bullseye-slim` image.
 Thus far, the image has been focused on supporting use of the `bash` shell. We
 plan to build from additional base images and support additional shells in the
-future (see [road map](### Road map).
+future (see [road map](#road-map)).
 
 ### Tags
 
