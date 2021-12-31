@@ -2,7 +2,7 @@ setup_file() {
     load 'test_helper/common-setup'
     _common_setup
     docker build --quiet \
-                 --tag=entrypoint \
+                 --tag=micromamba:test-entrypoint \
 		 --file=${PROJECT_ROOT}/test/entrypoint.Dockerfile \
 		 "${PROJECT_ROOT}/test" > /dev/null
 }
@@ -12,7 +12,7 @@ setup() {
     _common_setup
 }
 
-@test "docker run --rm  entrypoint -c 'import sys; print(sys.version_info[0])'" {
-    run docker run --rm  entrypoint -c 'import sys; print(sys.version_info[0])'
+@test "docker run --rm  micromamba:test-entrypoint -c 'import sys; print(sys.version_info[0])'" {
+    run docker run --rm  micromamba:test-entrypoint -c 'import sys; print(sys.version_info[0])'
     assert_output '3'
 }
