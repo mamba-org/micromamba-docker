@@ -111,7 +111,7 @@ the context of a conda environment.
 
 #### Activating a conda environment for ENTRYPOINT commands
 
-This the `mambaorg/micromamba` image contains:
+The Dockerfile for building the `mambaorg/micromamba` image contains:
 
 ``` Dockerfile
 ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
@@ -131,7 +131,7 @@ then you will have removed the conda activation from the `ENTRYPOINT` and
 
 
 If you would like an `ENTRYPOINT` command to be executed within an active conda
-environment, then add `usr/local/bin/_entrypoint.sh"` as the first element
+environment, then add `"/usr/local/bin/_entrypoint.sh"` as the first element
 of the JSON array argument to `ENTRYPOINT`. For example, if you would like
 for your `ENTRYPOINT` command to run `python` from a conda environment,
 then you would do:
