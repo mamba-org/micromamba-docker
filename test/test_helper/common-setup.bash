@@ -1,15 +1,23 @@
 #!/usr/bin/env bash
 
+_get_micromamba_version() {
+    if [ -z "${MICROMAMBA_VERSION+x}" ]; then
+      VENV_DIR="${PROJECT_ROOT}/.venv"
+      python3 -m venv --clear "${VENV_DIR}"
+      source "${VENV_DIR}/bin/activate"
+      pip install --quiet --disable-pip-version-check -r "${PROJECT_ROOT}/requirements.txt"
+      MICROMAMBA_VERSION="$("${PROJECT_ROOT}/check_version.py" 2> /dev/null | cut -f1 -d,)"
+      export MICROMAMBA_VERSION
+    fi
+}
+
 _common_setup() {
     load 'test_helper/bats-support/load'
     load 'test_helper/bats-assert/load'
 
     PROJECT_ROOT="$( cd "$( dirname "$BATS_TEST_FILENAME" )/.." >/dev/null 2>&1 && pwd )"
 
-    if [ -z "${MICROMAMBA_VERSION+x}" ]; then
-      MICROMAMBA_VERSION="$("${PROJECT_ROOT}/check_version.py" 2> /dev/null | cut -f1 -d,)"
-      export MICROMAMBA_VERSION
-    fi
+    _get_micromamba_version
     # only used for building the micromamba image, not derived images
     MICROMAMBA_FLAGS="--build-arg VERSION=${MICROMAMBA_VERSION}"
 
