@@ -3,23 +3,13 @@ setup_file() {
     _common_setup "cli-invocations"
 }
 
-@test "docker run --rm  cli-invocations python --version" {
-    run docker run --rm  cli-invocations python --version
+@test "docker run --rm  micromamba:test-cli-invocations python --version" {
+    run docker run --rm  micromamba:test-cli-invocations python --version
     assert_output 'Python 3.9.1'
 }
 
-@test "docker run --rm  --user=1001:1001 cli-invocations python --version" {
-    run docker run --rm  --user=1001:1001 cli-invocations python --version
-    assert_output 'Python 3.9.1'
-}
-
-@test "docker run --rm --entrypoint python cli-invocations --version" {
-    run docker run --rm --entrypoint python cli-invocations --version
-    assert_output 'Python 3.9.1'
-}
-
-@test "docker run --rm --user=1001:1001 --entrypoint python cli-invocations --version" {
-    run docker run --rm --user=1001:1001 --entrypoint python cli-invocations --version
+@test "docker run --rm  --user=1001:1001 micromamba:test-cli-invocations python --version" {
+    run docker run --rm  --user=1001:1001 micromamba:test-cli-invocations python --version
     assert_output 'Python 3.9.1'
 }
 
