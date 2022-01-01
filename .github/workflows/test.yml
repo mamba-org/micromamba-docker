@@ -20,7 +20,7 @@ jobs:
       - name: get latest version of micromamba
         id: get_version
         run: |
-          python -m pip install requests "semver>=2.13.0,<3.0"
+          python -m pip install --quiet --disable-pip-version-check -r requirements.txt
           CHECK_OUT="$(python check_version.py)"
           LATEST_VERSION="$(echo "$CHECK_OUT" | cut -d, -f1)"
           echo "::set-output name=latest_version::${LATEST_VERSION}"
