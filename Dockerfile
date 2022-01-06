@@ -36,7 +36,6 @@ RUN echo "source /usr/local/bin/_activate_current_env.sh" >> ~/.bashrc && \
     chmod -R a+rwx "$MAMBA_ROOT_PREFIX" "/home"
 
 USER $MAMBA_USER
-RUN echo "source _activate_current_env.sh" >> ~/.bashrc
 
 WORKDIR /tmp
 
