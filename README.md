@@ -129,7 +129,6 @@ ENTRYPOINT ["my_command"]
 then you will have removed the conda activation from the `ENTRYPOINT` and
 `my_command` will be executed outside of any conda environment.
 
-
 If you would like an `ENTRYPOINT` command to be executed within an active conda
 environment, then add `"/usr/local/bin/_entrypoint.sh"` as the first element
 of the JSON array argument to `ENTRYPOINT`. For example, if you would like
@@ -173,11 +172,26 @@ You can then set the active environment by passing the `ENV_NAME` environment va
 docker run -e ENV_NAME=env2 my_multi_conda_image
 ```
 
-### Changing the user
+### Changing the user id or name
 
 Prior to June 30, 2021, the image defaulted to running as root. Now it defaults to running as the non-root user `mambauser` (defined during build as the value of `$MAMBA_USER`). Micromamba-docker can be run as any user by passing the `docker run ...` command the `--user=UID:GID` parameters. Running with `--user=root` is supported.
 
-The default username `mambauser` can be adjusted by passing `--build-arg MAMBA_USER=<username>` to the `docker build` command.
+There are two supported methods for changing the username:
+
+1. If building this image from scratch, the default username `mambauser` can be adjusted by passing `--build-arg MAMBA_USER=new-username` to the `docker build` command.
+
+2. When building an image `FROM` an image provided here:
+
+    ```Dockerfile
+    FROM mambaorg/micromamba:0.19.1
+    ARG NEW_MAMBA_USER=new-username
+    USER root
+    RUN usermod "--login=${NEW_MAMBA_USER}" "${MAMBA_USER}" \
+        && groupmod "--new-name=${NEW_MAMBA_USER}" "${MAMBA_USER}" \
+        && mv "/home/${MAMBA_USER}" "/home/${NEW_MAMBA_USER}"
+    ENV MAMBA_USER=$NEW_MAMBA_USER
+    USER $MAMBA_USER
+    ```
 
 ### Disabling automatic activation
 
