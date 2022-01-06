@@ -11,7 +11,23 @@ Images available on [Dockerhub](https://hub.docker.com/) at [mambaorg/micromamba
 The micromamba image is currently derived from the `debian:bullseye-slim` image.
 Thus far, the image has been focused on supporting use of the `bash` shell. We
 plan to build from additional base images and support additional shells in the
-future.
+future (see [road map](#road-map)).
+
+### Tags
+
+When a commit pushed to the `main` branch of
+[mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/)
+or when a new release of `micromamba` binaries are available on
+[conda-forge](https://anaconda.org/conda-forge/micromamba),
+new docker images are built and pushed to dockerhub. Each image is tagged with
+the version of `micromamba` it contains and these tags will start with a
+number. Images are also tagged with `git-<HASH>` where `<HASH>` is the first
+7 characters of the git commit hash from the
+[mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/)
+git repository.
+
+For reproducible image builds, best practice is for Dockerfile `FROM`
+commands to reference the image's sha256 digest and not use tags.
 
 ## Quick start
 
@@ -92,6 +108,37 @@ RUN ["python", "-c", "import uuid; print(uuid.uuid4())"]  # DO NOT USE THIS FORM
 
 You *must* use the 'shell' form of `RUN` or the command will not execute in
 the context of a conda environment.
+
+#### Activating a conda environment for ENTRYPOINT commands
+
+The Dockerfile for building the `mambaorg/micromamba` image contains:
+
+``` Dockerfile
+ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
+```
+
+where `_entrypoint.sh` activates the conda environment for any programs
+run via `CMD` in a Dockerfile or using
+`docker run mambaorg/micromamba my_command` on the command line.
+If you were to make an image derived from `mambaorg/micromamba` with:
+
+``` Dockerfile
+ENTRYPOINT ["my_command"]
+```
+
+then you will have removed the conda activation from the `ENTRYPOINT` and
+`my_command` will be executed outside of any conda environment.
+
+
+If you would like an `ENTRYPOINT` command to be executed within an active conda
+environment, then add `"/usr/local/bin/_entrypoint.sh"` as the first element
+of the JSON array argument to `ENTRYPOINT`. For example, if you would like
+for your `ENTRYPOINT` command to run `python` from a conda environment,
+then you would do:
+
+``` Dockerfile
+ENTRYPOINT ["/usr/local/bin/_entrypoint.sh", "python"]
+```
 
 ## Advanced Usages
 
@@ -199,4 +246,4 @@ base images such that automated test and build occur for all images produced.
 
 ### Parent container choice
 
-As noted in the [micromamba documentation](https://github.com/mamba-org/mamba/blob/master/docs/source/micromamba.md#Installation), the official micromamba binaries require glibc. Therefore Alpine Linux does not work naively. To keep the image small, a Debian slim image is used as the parent. On going efforts to generate a fully statically linked micromamba binary are documented in [mamba GitHub issue #572](https://github.com/mamba-org/mamba/issues/572), but most conda packages also depend on glibc. Therefore using a statically linked micromamba would require either a method to install glibc (or an equivalent) from a conda package or conda packages that are statically linked against glibc.
+As noted in the [micromamba documentation](https://github.com/mamba-org/mamba/blob/master/README.md#micromamba), the official micromamba binaries require glibc. Therefore Alpine Linux does not work naively. To keep the image small, a Debian slim image is used as the parent. On going efforts to generate a fully statically linked micromamba binary are documented in [mamba GitHub issue #572](https://github.com/mamba-org/mamba/issues/572), but most conda packages also depend on glibc. Therefore using a statically linked micromamba would require either a method to install glibc (or an equivalent) from a conda package or conda packages that are statically linked against glibc.

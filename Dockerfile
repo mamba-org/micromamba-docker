@@ -10,11 +10,11 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/{apt,dpkg,cache,log}
 ARG TARGETARCH
-RUN [ $TARGETARCH = 'amd64' ] && export ARCH='64'; \
-    [ $TARGETARCH = 'arm64' ] && export ARCH='aarch64'; \
-    [ $TARGETARCH = 'ppc64le' ] && export ARCH='ppc64le'; \
-    curl -L https://micromamba.snakepit.net/api/micromamba/linux-$ARCH/$VERSION | \
-    tar -xj -C /tmp bin/micromamba
+RUN test "$TARGETARCH" = 'amd64' && export ARCH='64'; \
+    test "$TARGETARCH" = 'arm64' && export ARCH='aarch64'; \
+    test "$TARGETARCH" = 'ppc64le' && export ARCH='ppc64le'; \
+    curl -L "https://micromamba.snakepit.net/api/micromamba/linux-${ARCH}/${VERSION}" | \
+    tar -xj -C "/tmp" "bin/micromamba"
 
 FROM $BASE_IMAGE
 

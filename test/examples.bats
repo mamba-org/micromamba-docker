@@ -12,7 +12,7 @@ setup() {
     ORG="${PROJECT_ROOT}/examples/cmdline_spec/Dockerfile"
     sed "s%^FROM mambaorg/micromamba:.*$%FROM micromamba:test%" "$ORG" > "${ORG}.test"
     docker build --quiet \
-                 --tag=micromamba:cmdline_spec \
+                 --tag=micromamba:test-cmdline_spec \
 		 --file=${ORG}.test \
 		 "$PROJECT_ROOT/examples/cmdline_spec" > /dev/null && \
     rm ${ORG}.test
@@ -22,7 +22,7 @@ setup() {
     ORG="${PROJECT_ROOT}/examples/multi_env/Dockerfile"
     sed "s%^FROM mambaorg/micromamba:.*$%FROM micromamba:test%" "$ORG" > "${ORG}.test"
     docker build --quiet \
-                 --tag=micromamba:multi_env \
+                 --tag=micromamba:test-multi_env \
 		 --file=${ORG}.test \
 		 "$PROJECT_ROOT/examples/multi_env" > /dev/null && \
     rm ${ORG}.test
@@ -32,7 +32,7 @@ setup() {
     ORG="${PROJECT_ROOT}/examples/yaml_spec/Dockerfile"
     sed "s%^FROM mambaorg/micromamba:.*$%FROM micromamba:test%" "$ORG" > "${ORG}.test"
     docker build --quiet \
-                 --tag=micromamba:yaml_spec \
+                 --tag=micromamba:test-yaml_spec \
 		 --file=${ORG}.test \
 		 "$PROJECT_ROOT/examples/yaml_spec" > /dev/null && \
     rm ${ORG}.test
