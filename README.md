@@ -186,9 +186,9 @@ There are two supported methods for changing the username:
     FROM mambaorg/micromamba:0.19.1
     ARG NEW_MAMBA_USER=new-username
     USER root
-    RUN usermod "--login=${NEW_MAMBA_USER}" "${MAMBA_USER}" && \
+    RUN usermod "--login=${NEW_MAMBA_USER}" "--home=/home/${MAMBA_USER}" \
+            --move-home "${MAMBA_USER}" && \
         groupmod "--new-name=${NEW_MAMBA_USER}" "${MAMBA_USER}" && \
-        mv "/home/${MAMBA_USER}" "/home/${NEW_MAMBA_USER}" && \
         # Disables the consistency check in _entrypoint.sh:
         rm "/etc/arg_mamba_user" && \
         :
