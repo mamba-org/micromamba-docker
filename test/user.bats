@@ -9,6 +9,11 @@ setup_file() {
                  --build-arg=MAMBA_USER=$altered_mamba_user \
 		 --file=${PROJECT_ROOT}/Dockerfile \
 		 "$PROJECT_ROOT" > /dev/null
+    docker build --quiet \
+                 --tag=modify-username \
+                 --build-arg=NEW_MAMBA_USER=$altered_mamba_user \
+		 --file=${PROJECT_ROOT}/test/modify-username.Dockerfile \
+		 "$PROJECT_ROOT" > /dev/null
 }
 
 setup() {
@@ -59,4 +64,18 @@ setup() {
 @test "docker run --rm  --user=root micromamba:test /bin/bash -c 'realpath ~'" {
     run docker run --rm  --user=root micromamba:test /bin/bash -c 'realpath ~'
     assert_output '/root'
+}
+
+# Test that naively modifying MAMBA_USER leads to an error.
+@test "docker run --rm -e MAMBA_USER=$altered_mamba_user micromamba:test whoami" {
+        run docker run --rm -e MAMBA_USER=$altered_mamba_user micromamba:test whoami
+        assert_failure
+        assert_output --partial "ERROR: This micromamba-docker image was built with 'ARG MAMBA_USER="
+}
+
+# Test the approved method.
+@test "docker run --rm -e MAMBA_USER=$altered_mamba_user modify-username whoami" {
+        run docker run --rm -e MAMBA_USER=$altered_mamba_user modify-username whoami
+        assert_success
+        assert_output $altered_mamba_user
 }

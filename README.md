@@ -178,17 +178,20 @@ Prior to June 30, 2021, the image defaulted to running as root. Now it defaults 
 
 There are two supported methods for changing the username:
 
-1. If building this image from scratch, the default username `mambauser` can be adjusted by passing `--build-arg MAMBA_USER=new-username` to the `docker build` command.
+1. If rebuilding this image from scratch, the default username `mambauser` can be adjusted by passing `--build-arg MAMBA_USER=new-username` to the `docker build` command.
 
-2. When building an image `FROM` an image provided here:
+2. When building an image `FROM` an existing micromamba image,
 
     ```Dockerfile
     FROM mambaorg/micromamba:0.19.1
     ARG NEW_MAMBA_USER=new-username
     USER root
-    RUN usermod "--login=${NEW_MAMBA_USER}" "${MAMBA_USER}" \
-        && groupmod "--new-name=${NEW_MAMBA_USER}" "${MAMBA_USER}" \
-        && mv "/home/${MAMBA_USER}" "/home/${NEW_MAMBA_USER}"
+    RUN usermod "--login=${NEW_MAMBA_USER}" "${MAMBA_USER}" && \
+        groupmod "--new-name=${NEW_MAMBA_USER}" "${MAMBA_USER}" && \
+        mv "/home/${MAMBA_USER}" "/home/${NEW_MAMBA_USER}" && \
+        # Disables the consistency check in _entrypoint.sh:
+        rm "/etc/arg_mamba_user" && \
+        :
     ENV MAMBA_USER=$NEW_MAMBA_USER
     USER $MAMBA_USER
     ```
