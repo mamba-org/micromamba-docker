@@ -1,3 +1,9 @@
+13 January 2022
+========================
+
+- Change the default username from `micromamba` to `mambauser`.
+- Add the environment variable `MAMBA_USER` to store the value of the default username.
+
 15 December 2021
 ========================
 

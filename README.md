@@ -50,7 +50,7 @@ will install software into this 'base' environment.
 
     ```Dockerfile
     FROM mambaorg/micromamba:0.19.1
-    COPY --chown=micromamba:micromamba env.yaml /tmp/env.yaml
+    COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
     RUN micromamba install -y -f /tmp/env.yaml && \
         micromamba clean --all --yes
     ```
@@ -85,7 +85,7 @@ a `RUN` command, you must set `ARG MAMBA_DOCKERFILE_ACTIVATE=1`. For example:
 
 ```Dockerfile
 FROM mambaorg/micromamba:0.19.1
-COPY --chown=micromamba:micromamba env.yaml /tmp/env.yaml
+COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
 RUN micromamba install --yes --file /tmp/env.yaml && \
     micromamba clean --all --yes
 ARG MAMBA_DOCKERFILE_ACTIVATE=1  # (otherwise python will not be found)
@@ -129,7 +129,6 @@ ENTRYPOINT ["my_command"]
 then you will have removed the conda activation from the `ENTRYPOINT` and
 `my_command` will be executed outside of any conda environment.
 
-
 If you would like an `ENTRYPOINT` command to be executed within an active conda
 environment, then add `"/usr/local/bin/_entrypoint.sh"` as the first element
 of the JSON array argument to `ENTRYPOINT`. For example, if you would like
@@ -160,8 +159,8 @@ derived image, but you can create multiple conda environments:
 
 ```Dockerfile
 FROM mambaorg/micromamba:0.19.1
-COPY --chown=micromamba:micromamba env1.yaml /tmp/env1.yaml
-COPY --chown=micromamba:micromamba env2.yaml /tmp/env2.yaml
+COPY --chown=$MAMBA_USER:$MAMBA_USER env1.yaml /tmp/env1.yaml
+COPY --chown=$MAMBA_USER:$MAMBA_USER env2.yaml /tmp/env2.yaml
 RUN micromamba create --yes --file /tmp/env1.yaml && \
     micromamba create --yes --file /tmp/env2.yaml && \
     micromamba clean --all --yes
@@ -173,9 +172,29 @@ You can then set the active environment by passing the `ENV_NAME` environment va
 docker run -e ENV_NAME=env2 my_multi_conda_image
 ```
 
-### Changing the user
+### Changing the user id or name
 
-Prior to June 30, 2021, the image defaulted to running as root. Now it defaults to running as the non-root user micromamba. Micromamba-docker can be run as any user by passing the `docker run ...` command the `--user=UID:GID` parameters. Running with `--user=root` is supported.
+The default username is stored in the environment variable `MAMBA_USER`, and is currently `mambauser`. (Before 2022-01-13 it was `micromamba`, and before 2021-06-30 it was `root`.) Micromamba-docker can be run with any UID/GID by passing the `docker run ...` command the `--user=UID:GID` parameters. Running with `--user=root` is supported.
+
+There are two supported methods for changing the default username to something other than `mambauser`:
+
+1. If rebuilding this image from scratch, the default username `mambauser` can be adjusted by passing `--build-arg MAMBA_USER=new-username` to the `docker build` command.
+
+2. When building an image `FROM` an existing micromamba image,
+
+    ```Dockerfile
+    FROM mambaorg/micromamba:0.19.1
+    ARG NEW_MAMBA_USER=new-username
+    USER root
+    RUN usermod "--login=${NEW_MAMBA_USER}" "--home=/home/${MAMBA_USER}" \
+            --move-home "${MAMBA_USER}" && \
+        groupmod "--new-name=${NEW_MAMBA_USER}" "${MAMBA_USER}" && \
+        # Update the expected value of MAMBA_USER for the _entrypoint.sh consistency check.
+        echo "${NEW_MAMBA_USER}" > "/etc/arg_mamba_user" && \
+        :
+    ENV MAMBA_USER=$NEW_MAMBA_USER
+    USER $MAMBA_USER
+    ```
 
 ### Disabling automatic activation
 
