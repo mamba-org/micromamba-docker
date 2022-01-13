@@ -73,7 +73,7 @@ setup() {
         assert_output --partial "ERROR: This micromamba-docker image was built with 'ARG MAMBA_USER="
 }
 
-# Test the approved method.
+# Test the approved method of modifying the username.
 @test "docker run --rm -e MAMBA_USER=$altered_mamba_user modify-username whoami" {
         run docker run --rm -e MAMBA_USER=$altered_mamba_user modify-username whoami
         assert_success

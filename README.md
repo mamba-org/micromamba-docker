@@ -174,9 +174,9 @@ docker run -e ENV_NAME=env2 my_multi_conda_image
 
 ### Changing the user id or name
 
-Prior to June 30, 2021, the image defaulted to running as root. Now it defaults to running as the non-root user `mambauser` (defined during build as the value of `$MAMBA_USER`). Micromamba-docker can be run as any user by passing the `docker run ...` command the `--user=UID:GID` parameters. Running with `--user=root` is supported.
+The default username is stored in the environment variable `MAMBA_USER`, and is currently `mambauser`. (Before 2022-01-13 it was `micromamba`, and before 2021-06-30 it was `root`.) Micromamba-docker can be run with any UID/GID by passing the `docker run ...` command the `--user=UID:GID` parameters. Running with `--user=root` is supported.
 
-There are two supported methods for changing the username:
+There are two supported methods for changing the default username to something other than `mambauser`:
 
 1. If rebuilding this image from scratch, the default username `mambauser` can be adjusted by passing `--build-arg MAMBA_USER=new-username` to the `docker build` command.
 
@@ -189,8 +189,8 @@ There are two supported methods for changing the username:
     RUN usermod "--login=${NEW_MAMBA_USER}" "--home=/home/${MAMBA_USER}" \
             --move-home "${MAMBA_USER}" && \
         groupmod "--new-name=${NEW_MAMBA_USER}" "${MAMBA_USER}" && \
-        # Disables the consistency check in _entrypoint.sh:
-        rm "/etc/arg_mamba_user" && \
+        # Update the expected value of MAMBA_USER for the _entrypoint.sh consistency check.
+        echo "${NEW_MAMBA_USER}" > "/etc/arg_mamba_user" && \
         :
     ENV MAMBA_USER=$NEW_MAMBA_USER
     USER $MAMBA_USER
