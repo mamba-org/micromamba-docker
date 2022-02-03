@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
+_install_and_activate_environment() {
+    VENV_DIR="${PROJECT_ROOT}/.venv"
+    python3 -m venv --clear "${VENV_DIR}"
+    source "${VENV_DIR}/bin/activate"
+    pip install --quiet --disable-pip-version-check -r "${PROJECT_ROOT}/requirements.txt"
+}
+
 _get_micromamba_version() {
     if [ -z "${MICROMAMBA_VERSION+x}" ]; then
-      VENV_DIR="${PROJECT_ROOT}/.venv"
-      python3 -m venv --clear "${VENV_DIR}"
-      source "${VENV_DIR}/bin/activate"
-      pip install --quiet --disable-pip-version-check -r "${PROJECT_ROOT}/requirements.txt"
       MICROMAMBA_VERSION="$("${PROJECT_ROOT}/check_version.py" 2> /dev/null | cut -f1 -d,)"
       export MICROMAMBA_VERSION
     fi
@@ -17,13 +20,18 @@ _common_setup() {
 
     PROJECT_ROOT="$( cd "$( dirname "$BATS_TEST_FILENAME" )/.." >/dev/null 2>&1 && pwd )"
 
-    _get_micromamba_version
-    # only used for building the micromamba image, not derived images
-    MICROMAMBA_FLAGS="--build-arg VERSION=${MICROMAMBA_VERSION}"
+    # _install_and_activate_environment
 
-    docker build $MICROMAMBA_FLAGS \
-                 --quiet \
-                 --tag=micromamba:test \
+    _get_micromamba_version
+
+    TAG="$(echo "$BASE_IMAGE" | tr ':' '-')"
+
+    export MICROMAMBA_IMAGE="micromamba:test-${TAG}"
+
+    docker build --quiet \
+		 --build-arg "BASE_IMAGE=${BASE_IMAGE}" \
+    		 --build-arg "VERSION=${MICROMAMBA_VERSION}" \
+                 "--tag=${MICROMAMBA_IMAGE}" \
 		 "--file=${PROJECT_ROOT}/Dockerfile" \
 		 "$PROJECT_ROOT" > /dev/null
 

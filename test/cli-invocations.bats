@@ -2,8 +2,9 @@ setup_file() {
     load 'test_helper/common-setup'
     _common_setup
     docker build --quiet \
-                 --tag=micromamba:test-cli-invocations \
-		 --file=${PROJECT_ROOT}/test/cli-invocations.Dockerfile \
+                 --build-arg "BASE_IMAGE=${MICROMAMBA_IMAGE}" \
+                 "--tag=${MICROMAMBA_IMAGE}-cli-invocations" \
+		 "--file=${PROJECT_ROOT}/test/cli-invocations.Dockerfile" \
 		 "${PROJECT_ROOT}/test" > /dev/null
 }
 
@@ -12,22 +13,22 @@ setup() {
     _common_setup
 }
 
-@test "docker run --rm  micromamba:test-cli-invocations python --version" {
-    run docker run --rm  micromamba:test-cli-invocations python --version
+@test "docker run --rm  ${MICROMAMBA_IMAGE}-cli-invocations python --version" {
+    run docker run --rm  "${MICROMAMBA_IMAGE}-cli-invocations" python --version
     assert_output 'Python 3.9.1'
 }
 
-@test "docker run --rm  --user=1001:1001 micromamba:test-cli-invocations python --version" {
-    run docker run --rm  --user=1001:1001 micromamba:test-cli-invocations python --version
+@test "docker run --rm  --user=1001:1001 ${MICROMAMBA_IMAGE}-cli-invocations python --version" {
+    run docker run --rm  --user=1001:1001 "${MICROMAMBA_IMAGE}-cli-invocations" python --version
     assert_output 'Python 3.9.1'
 }
 
-@test "docker run --rm micromamba:test micromamba install -y -n base -c conda-forge ca-certificates" {
-    run docker run --rm micromamba:test micromamba install -y -n base -c conda-forge ca-certificates
+@test "docker run --rm ${MICROMAMBA_IMAGE} micromamba install -y -n base -c conda-forge ca-certificates" {
+    run docker run --rm "${MICROMAMBA_IMAGE}" micromamba install -y -n base -c conda-forge ca-certificates
     assert_output --partial 'Transaction finished'
 }
 
-@test "docker run --rm --user=1001:1001 micromamba:test micromamba install -y -n base -c conda-forge ca-certificates" {
-    run docker run --rm --user=1001:1001 micromamba:test micromamba install -y -n base -c conda-forge ca-certificates
+@test "docker run --rm --user=1001:1001 ${MICROMAMBA_IMAGE} micromamba install -y -n base -c conda-forge ca-certificates" {
+    run docker run --rm --user=1001:1001 "${MICROMAMBA_IMAGE}" micromamba install -y -n base -c conda-forge ca-certificates
     assert_output --partial 'Transaction finished'
 }
