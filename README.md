@@ -19,7 +19,7 @@ When a commit pushed to the `main` branch of
 [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/)
 or when a new release of `micromamba` binaries are available on
 [conda-forge](https://anaconda.org/conda-forge/micromamba),
-new docker images are built and pushed to dockerhub. Each image is tagged with
+new docker images are built and pushed to Dockerhub. Each image is tagged with
 the version of `micromamba` it contains and these tags will start with a
 number. Images are also tagged with `git-<HASH>` where `<HASH>` is the first
 7 characters of the git commit hash from the
@@ -222,8 +222,11 @@ This project is a community effort and contributions are welcome. Best practice 
 
 The [Bats](https://github.com/bats-core/bats-core) testing framework is used to test the micromamba docker
 images and derived images. When cloning this repo you'll want to use `git clone --recurse-submodules ...`,
-which will bring in the git sub-modules for Bats. With the sub-modules present, `./test.sh` will run the test
-suite. If GNU `parallel` is present, then the test suite will be run in parallel using all logical CPU cores
+which will bring in the git sub-modules for Bats. [Nox](https://nox.thea.codes/) is used to
+automate tests and must be installed separately. To execute the test suite on all base
+images, run `nox` in the top-level directory of the repo. To execute the test suite on a single
+base image, run `nox --session "tests(base_image='debian:bullseye-slim')"`. If GNU `parallel`
+is available on the `$PATH`, then the test suite will be run in parallel using all logical CPU cores
 available.
 
 ### Road map
