@@ -27,12 +27,12 @@ jobs:
         echo "::set-output name=do_pr::${DO_PR}"
     - name: run update.sh
       if: steps.check_version.outputs.do_pr == 'True'
-      run: ./update.sh ${{ steps.check_version.latest_version }}
+      run: ./update.sh ${{ steps.check_version.outputs.latest_version }}
     - name: commit updated files
       if: steps.check_version.outputs.do_pr == 'True'
       uses: peter-evans/create-pull-request@v3
       with:
-        branch: "update-${{ steps.check_version.latest_version }}"
-        commit-message: "Update to micromamba version ${{ steps.check_version.latest_version }}"
-        title: "Update to micromamba version ${{ steps.check_version.latest_version }}"
+        branch: "update-${{ steps.check_version.outputs.latest_version }}"
+        commit-message: "Update to micromamba version ${{ steps.check_version.outputs.latest_version }}"
+        title: "Update to micromamba version ${{ steps.check_version.outputs.latest_version }}"
         delete-branch: true
