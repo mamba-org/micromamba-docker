@@ -17,14 +17,5 @@ jobs:
           submodules: recursive
       - name: Install GNU parallel
         run: sudo apt-get install --no-install-recommends -y parallel
-      - name: get latest version of micromamba
-        id: get_version
-        run: |
-          python -m pip install --quiet --disable-pip-version-check -r requirements.txt
-          CHECK_OUT="$(python check_version.py)"
-          LATEST_VERSION="$(echo "$CHECK_OUT" | cut -d, -f1)"
-          echo "::set-output name=latest_version::${LATEST_VERSION}"
       - name: Run tests
-        env:
-          MICROMAMBA_VERSION: ${{ steps.get_version.outputs.latest_version }}
         run: ./test.sh
