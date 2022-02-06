@@ -15,7 +15,7 @@ future (see [road map](#road-map)).
 
 ### Tags
 
-When a commit is pushed to the `mai` branch of
+When a commit is pushed to the `main` branch of
 [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/)
 new docker images are built and pushed to dockerhub. Each image is tagged with
 the version of `micromamba` it contains and these tags will start with a
