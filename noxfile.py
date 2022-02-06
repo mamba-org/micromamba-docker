@@ -11,11 +11,6 @@ cwd = os.getcwd()
         'base_image',
         [
             'debian:bullseye-slim',
-            'debian:buster-slim',
-            'debian:stretch-slim',
-            'debian:bullseye',
-            'debian:buster',
-            'debian:stretch',
         ]
 )
 def tests(session, base_image):

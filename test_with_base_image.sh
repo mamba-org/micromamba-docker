@@ -16,9 +16,6 @@ PROJECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 function load { :; }  # common-setup.bash needs this defined
 source "${PROJECT_ROOT}/test/test_helper/common-setup.bash"
 
-# sets MICROMAMBA_VERSION
-_get_micromamba_version
-
 FLAGS=
 if which parallel > /dev/null; then
   if [[ $(uname -s) == "Darwin" ]]; then

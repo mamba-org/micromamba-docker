@@ -1,10 +1,7 @@
-name: Push micromamba docker image
+name: Build and push micromamba docker image
 
 on:
   workflow_dispatch:
-  # Run every 6 hours (https://crontab.guru/every-6-hours)
-  schedule:
-  - cron: '0 */6 * * *'
   push:
     branches:
       - main
@@ -12,68 +9,32 @@ on:
 jobs:
   build_docker_image_and_push:
     if: github.repository == 'mamba-org/micromamba-docker'
-    runs-on: [ubuntu-latest]
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout source
       uses: actions/checkout@v2
-      with:
-        submodules: recursive
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: "3.x"
-    - name: Check available versions
-      id: check_version
-      run: |
-        python -m pip install --quiet --disable-pip-version-check -r requirements.txt
-        CHECK_OUT="$(python check_version.py)"
-        LATEST_VERSION="$(echo "$CHECK_OUT" | cut -d, -f1)"
-        BUILD_NEEDED="$(echo "$CHECK_OUT" | cut -d, -f2)"
-        echo "event_name: $GITHUB_EVENT_NAME"
-        if [ "$BUILD_NEEDED" = "True" ] || \
-           [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ] || \
-           [ "$GITHUB_EVENT_NAME" = "push" ]; then
-          # Not using test return code as bash and github actions
-          # map booleans to integers differently. Strings are more explict.
-          DO_BUILD="True"
-        else
-          DO_BUILD="False"
-        fi
-        echo "::set-output name=latest_version::${LATEST_VERSION}"
-        echo "::set-output name=do_build::${DO_BUILD}"
-    - name: Install GNU parallel
-      run: sudo apt-get install --no-install-recommends -y parallel
-      if: steps.check_version.outputs.do_build == 'True'
-    - name: Run tests
-      env:
-        MICROMAMBA_VERSION: ${{ steps.check_version.outputs.latest_version }}
-      run: ./test.sh
-      if: steps.check_version.outputs.do_build == 'True'
     - name: Get short git hash
       id: short_hash
       run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+    - name: Get micromamba version
+      id: get_version
+      run: echo "::set-output name=version::$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)"
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
-      if: steps.check_version.outputs.do_build == 'True'
     - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-      if: steps.check_version.outputs.do_build == 'True'
     - name: Build and push Docker images
       id: docker_build
-      uses: docker/build-push-action@v2.2.2
+      uses: docker/build-push-action@v2.9.0
       with:
         platforms: linux/amd64,linux/arm64,linux/ppc64le
         push: true
-        build-args: |
-          VERSION=${{ steps.check_version.outputs.latest_version }}
         tags: |
           mambaorg/micromamba:git-${{ steps.short_hash.outputs.sha_short }}
-          mambaorg/micromamba:${{ steps.check_version.outputs.latest_version }}
+          mambaorg/micromamba:${{ steps.get_version.outputs.version }}
           mambaorg/micromamba:latest
-      if: steps.check_version.outputs.do_build == 'True'
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
-      if: steps.check_version.outputs.do_build == 'True'

@@ -2,7 +2,7 @@ setup_file() {
     load 'test_helper/common-setup'
     _common_setup
     docker build --quiet \
-                 --build-arg "BASE_IMAGE=${MICROMAMBA_IMAGE}" \
+                 "--build-arg=BASE_IMAGE=${MICROMAMBA_IMAGE}" \
                  "--tag=${MICROMAMBA_IMAGE}-cli-invocations" \
 		 "--file=${PROJECT_ROOT}/test/cli-invocations.Dockerfile" \
 		 "${PROJECT_ROOT}/test" > /dev/null
@@ -93,7 +93,7 @@ setup() {
     input="
         ! which python  \n
         MAMBA_SKIP_ACTIVATE=0  \n
-        su micromamba  \n
+        su "$MAMBA_USER"  \n
             python --version  \n
             exit  \n
         exit  \n

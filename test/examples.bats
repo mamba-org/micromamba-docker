@@ -15,7 +15,7 @@ setup() {
                  "--tag=${MICROMAMBA_IMAGE}-cmdline_spec" \
 		 "--file=${ORG}.test" \
 		 "$PROJECT_ROOT/examples/cmdline_spec" > /dev/null && \
-    rm ${ORG}.test
+    rm "${ORG}.test"
 }
 
 @test "build examples/multi_env/Dockerfile" {
@@ -25,7 +25,7 @@ setup() {
                  "--tag=${MICROMAMBA_IMAGE}-multi_env" \
 		 "--file=${ORG}.test" \
 		 "$PROJECT_ROOT/examples/multi_env" > /dev/null && \
-    rm ${ORG}.test
+    rm "${ORG}.test"
 }
 
 @test "build examples/yaml_spec/Dockerfile" {
@@ -35,5 +35,5 @@ setup() {
                  "--tag=${MICROMAMBA_IMAGE}-yaml_spec" \
 		 "--file=${ORG}.test" \
 		 "$PROJECT_ROOT/examples/yaml_spec" > /dev/null && \
-    rm ${ORG}.test
+    rm "${ORG}.test"
 }
