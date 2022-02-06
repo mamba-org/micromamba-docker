@@ -6,7 +6,7 @@ setup_file() {
     _common_setup
     docker build --quiet \
                  "--tag=${MICROMAMBA_IMAGE}-different-user" \
-		 "--build-arg=BASE_IMAGE=${MICROMAMBA_IMAGE}" \
+		 "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
                  "--build-arg=MAMBA_USER=$altered_mamba_user" \
 		 "--file=${PROJECT_ROOT}/Dockerfile" \
 		 "$PROJECT_ROOT" > /dev/null
