@@ -14,7 +14,6 @@ cwd = os.getcwd()
         ]
 )
 def tests(session, base_image):
-    session.install("-r", "requirements.txt")
     session.run(
             os.path.join(cwd, "test_with_base_image.sh"),
             f"{base_image}",
