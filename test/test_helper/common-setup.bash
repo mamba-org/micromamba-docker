@@ -6,8 +6,13 @@ _common_setup() {
 
     PROJECT_ROOT="$( cd "$( dirname "$BATS_TEST_FILENAME" )/.." >/dev/null 2>&1 && pwd )"
 
+    TAG="$(echo "$BASE_IMAGE" | tr ':' '-')"
+
+    export MICROMAMBA_IMAGE="micromamba:test-${TAG}"
+
     docker build --quiet \
-                 --tag=micromamba:test \
+		 "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
+                 "--tag=${MICROMAMBA_IMAGE}" \
 		 "--file=${PROJECT_ROOT}/Dockerfile" \
 		 "$PROJECT_ROOT" > /dev/null
 

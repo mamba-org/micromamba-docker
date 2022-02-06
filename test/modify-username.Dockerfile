@@ -1,4 +1,6 @@
-FROM micromamba:test
+ARG BASE_IMAGE=micromamba:test-debian-bullseye-slim
+
+FROM $BASE_IMAGE
 
 ARG NEW_MAMBA_USER
 USER root

@@ -17,5 +17,7 @@ jobs:
           submodules: recursive
       - name: Install GNU parallel
         run: sudo apt-get install --no-install-recommends -y parallel
+      - name: Setup nox
+        uses: excitedleigh/setup-nox@v2.0.0
       - name: Run tests
-        run: ./test.sh
+        run: nox -s tests
