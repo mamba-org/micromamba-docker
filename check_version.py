@@ -8,12 +8,12 @@ from typing import Dict, List, Optional, Tuple
 import requests
 from semver import VersionInfo
 
-ARCHITECTURES = ["amd64", "arm64", "ppc64le"]
 ANACONDA_PLATFORMS = {
     "linux-64": "amd64",
     "linux-aarch64": "arm64",
     "linux-ppc64le": "ppc64le",
 }
+ARCHITECTURES = list(ANACONDA_PLATFORMS.values())
 ANACONDA_API_URL = "https://api.anaconda.org/package/conda-forge/micromamba/files"
 DOCKERHUB_API_URL = "https://hub.docker.com/v2/repositories/mambaorg/micromamba/tags/?page_size=25&page=1&ordering=last_updated"
 
@@ -45,11 +45,12 @@ def dockerhub_versions(url: str) -> ArchVersions:
     dh_result = dh_res.json()
     out: ArchVersions = {arch: [] for arch in ARCHITECTURES}
     for release in dh_result["results"]:
-        if release["name"] != "latest" and release["name"][:4] != "git-":
+        version_str = release["name"].split("-")[0]
+        if VersionInfo.isvalid(version_str):
             for image in release["images"]:
                 arch = image["architecture"]
                 if arch in ARCHITECTURES:
-                    out[arch].append(to_version(release["name"]))
+                    out[arch].append(to_version(version_str))
     logging.debug("Dockerhub versions=%s", out)
     return out
 
@@ -79,9 +80,7 @@ def get_version_and_build_status() -> Tuple[Optional[VersionInfo], bool]:
         image_versions_by_arch = dockerhub_versions(DOCKERHUB_API_URL)
         image_versions = combined_version_list(image_versions_by_arch)
         if image_versions:
-            build_required = conda_latest not in image_versions and conda_latest > max(
-                image_versions
-            )
+            build_required = conda_latest not in image_versions and conda_latest > max(image_versions)
         else:
             build_required = True
     logging.debug("conda_latest=%s", conda_latest)
