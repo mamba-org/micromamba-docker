@@ -35,7 +35,10 @@ ANACONDA_JSON = [
         "size": 4454401,
         "upload_time": "2020-06-24 07:11:34.659000+00:00",
         "ndownloads": 1132,
-        "download_url": "//api.anaconda.org/download/conda-forge/micromamba/0.3.8/linux-64/micromamba-0.3.8-hc2cb875_0.tar.bz2",
+        "download_url": (
+            "//api.anaconda.org/download/conda-forge/micromamba/0.3.8/linux-64/"
+            "micromamba-0.3.8-hc2cb875_0.tar.bz2"
+        ),
         "version": "0.3.8",
         "md5": "751085539d9ed8598f7db9dbf91a9fcb",
         "type": "conda",
@@ -71,7 +74,10 @@ ANACONDA_JSON = [
         "size": 4452195,
         "upload_time": "2020-06-24 18:58:29.159000+00:00",
         "ndownloads": 25,
-        "download_url": "//api.anaconda.org/download/conda-forge/micromamba/0.3.8/linux-aarch64/micromamba-0.3.8-hc2cb875_0.tar.bz2",
+        "download_url": (
+            "//api.anaconda.org/download/conda-forge/micromamba/0.3.8/linux-aarch64/"
+            "micromamba-0.3.8-hc2cb875_0.tar.bz2"
+        ),
         "version": "0.3.8",
         "md5": "7774e228e218e9a986ed5961bd1b6525",
         "type": "conda",
@@ -107,7 +113,10 @@ ANACONDA_JSON = [
         "size": 4839487,
         "upload_time": "2020-06-24 19:00:12.333000+00:00",
         "ndownloads": 24,
-        "download_url": "//api.anaconda.org/download/conda-forge/micromamba/0.3.8/linux-ppc64le/micromamba-0.3.8-hb9d3100_0.tar.bz2",
+        "download_url": (
+            "//api.anaconda.org/download/conda-forge/micromamba/0.3.8/linux-ppc64le/"
+            "micromamba-0.3.8-hb9d3100_0.tar.bz2"
+        ),
         "version": "0.3.8",
         "md5": "e3cc9c4203247439271b77e858646625",
         "type": "conda",
@@ -116,7 +125,10 @@ ANACONDA_JSON = [
 
 DOCKERHUB_JSON = {
     "count": 51,
-    "next": "https://hub.docker.com/v2/repositories/mambaorg/micromamba/tags/?ordering=last_updated&page=2&page_size=1",
+    "next": (
+        "https://hub.docker.com/v2/repositories/mambaorg/micromamba/tags/"
+        "?ordering=last_updated&page=2&page_size=1"
+    ),
     "previous": None,
     "results": [
         {
@@ -206,9 +218,11 @@ def test_max_version_available_for_all_arch02():
     assert check_version.max_version_available_for_all_arch(arch_ver) is None
 
 
-# This method will be used by the mock to replace requests.get
-def mocked_requests_get(*args, **kwargs):
+def mocked_requests_get(*args, **_):
+    # pylint: disable=too-few-public-methods
     class MockResponse:
+        """for mocking http request responses"""
+
         def __init__(self, json_data, status_code):
             self.json_data = json_data
             self.status_code = status_code
