@@ -2,7 +2,8 @@ ARG BASE_IMAGE=debian:bullseye-slim
 
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
-FROM --platform=$BUILDPLATFORM $BASE_IMAGE AS stage1
+#FROM --platform=$BUILDPLATFORM $BASE_IMAGE AS stage1
+FROM $BASE_IMAGE AS stage1
 ARG VERSION=0.21.0
 RUN apt-get update && apt-get install -y \
     bzip2 \
@@ -27,11 +28,14 @@ COPY --from=stage1 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certific
 COPY --from=stage1 /tmp/bin/micromamba "$MAMBA_EXE"
 
 ARG MAMBA_USER=mambauser
+ARG MAMBA_USER_ID=1000
+ARG MAMBA_USER_GID=1000
 ENV MAMBA_USER=$MAMBA_USER
 
 RUN echo "source /usr/local/bin/_activate_current_env.sh" >> ~/.bashrc && \
     echo "source /usr/local/bin/_activate_current_env.sh" >> /etc/skel/.bashrc && \
-    useradd -ms /bin/bash "$MAMBA_USER" && \
+    useradd -u "${MAMBA_USER_ID}" -ms /bin/bash -U "${MAMBA_USER}" && \
+    groupmod -g "${MAMBA_USER_GID}" "${MAMBA_USER}" && \
     echo "${MAMBA_USER}" > "/etc/arg_mamba_user" && \
     mkdir -p "$MAMBA_ROOT_PREFIX" && \
     chmod -R a+rwx "$MAMBA_ROOT_PREFIX" "/home" "/etc/arg_mamba_user" && \

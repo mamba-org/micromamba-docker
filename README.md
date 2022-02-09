@@ -176,17 +176,19 @@ The default username is stored in the environment variable `MAMBA_USER`, and is 
 
 There are two supported methods for changing the default username to something other than `mambauser`:
 
-1. If rebuilding this image from scratch, the default username `mambauser` can be adjusted by passing `--build-arg MAMBA_USER=new-username` to the `docker build` command.
+1. If rebuilding this image from scratch, the default username `mambauser` can be adjusted by passing `--build-arg MAMBA_USER=new-username` to the `docker build` command. User id and group id can be adjusted similarly by passing `--build-arg MAMBA_USER_ID=new-id --build-arg MAMBA_USER_GID=new-gid`
 
 2. When building an image `FROM` an existing micromamba image,
 
     ```Dockerfile
     FROM mambaorg/micromamba:0.21.0
     ARG NEW_MAMBA_USER=new-username
+    ARG NEW_MAMBA_USER_ID=1000
+    ARG NEW_MAMBA_USER_GID=1000
     USER root
     RUN usermod "--login=${NEW_MAMBA_USER}" "--home=/home/${MAMBA_USER}" \
-            --move-home "${MAMBA_USER}" && \
-        groupmod "--new-name=${NEW_MAMBA_USER}" "${MAMBA_USER}" && \
+            --move-home "-u ${NEW_MAMBA_USER_ID}" "${MAMBA_USER}" && \
+        groupmod "--new-name=${NEW_MAMBA_USER}" "-g ${NEW_MAMBA_USER_GID}" "${MAMBA_USER}" && \
         # Update the expected value of MAMBA_USER for the _entrypoint.sh consistency check.
         echo "${NEW_MAMBA_USER}" > "/etc/arg_mamba_user" && \
         :
