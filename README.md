@@ -47,7 +47,7 @@ will install software into this 'base' environment.
 2. Copy the yaml file to your docker image and pass it to micromamba
 
     ```Dockerfile
-    FROM mambaorg/micromamba:0.21.1
+    FROM mambaorg/micromamba:0.21.2
     COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
     RUN micromamba install -y -f /tmp/env.yaml && \
         micromamba clean --all --yes
@@ -82,7 +82,7 @@ of `RUN` commands within a Dockerfile. To have an environment active during
 a `RUN` command, you must set `ARG MAMBA_DOCKERFILE_ACTIVATE=1`. For example:
 
 ```Dockerfile
-FROM mambaorg/micromamba:0.21.1
+FROM mambaorg/micromamba:0.21.2
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
 RUN micromamba install --yes --file /tmp/env.yaml && \
     micromamba clean --all --yes
@@ -142,7 +142,7 @@ ENTRYPOINT ["/usr/local/bin/_entrypoint.sh", "python"]
 ### Pass list of packages to install within a Dockerfile RUN command
 
 ```Dockerfile
-FROM mambaorg/micromamba:0.21.1
+FROM mambaorg/micromamba:0.21.2
 RUN micromamba install --yes --name base --channel conda-forge \
       pyopenssl=20.0.1  \
       python=3.9.1 \
@@ -156,7 +156,7 @@ For most use cases you will only want a single conda environment within your
 derived image, but you can create multiple conda environments:
 
 ```Dockerfile
-FROM mambaorg/micromamba:0.21.1
+FROM mambaorg/micromamba:0.21.2
 COPY --chown=$MAMBA_USER:$MAMBA_USER env1.yaml /tmp/env1.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER env2.yaml /tmp/env2.yaml
 RUN micromamba create --yes --file /tmp/env1.yaml && \
@@ -181,7 +181,7 @@ There are two supported methods for changing the default username to something o
 2. When building an image `FROM` an existing micromamba image,
 
     ```Dockerfile
-    FROM mambaorg/micromamba:0.21.1
+    FROM mambaorg/micromamba:0.21.2
     ARG NEW_MAMBA_USER=new-username
     USER root
     RUN usermod "--login=${NEW_MAMBA_USER}" "--home=/home/${MAMBA_USER}" \
