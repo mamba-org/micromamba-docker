@@ -17,7 +17,7 @@ future (see [road map](#road-map)).
 
 When a commit is pushed to the `main` branch of
 [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/)
-new docker images are built and pushed to dockerhub. Each image is tagged with
+new docker images are built and pushed to Dockerhub. Each image is tagged with
 the version of `micromamba` it contains and these tags will start with a
 number. Images are also tagged with `git-<HASH>` where `<HASH>` is the first
 7 characters of the git commit hash from the
@@ -149,6 +149,34 @@ RUN micromamba install --yes --name base --channel conda-forge \
       requests=2.25.1 && \
     micromamba clean --all --yes
 ```
+
+### Using a lockfile
+
+Pinning a package to a version string doesn't guarantee the exact same
+package file is retrieved each time.  A lockfile utilizes package hashes
+to ensure package selection is reproducible. A lockfile can be generated
+using [conda-lock](https://github.com/conda-incubator/conda-lock) or
+micromamba:
+
+```bash
+docker run -it --rm -v $(pwd):/mnt mambaorg/micromamba:0.21.2 \ 
+   /bin/bash -c "micromamba install -y -f /mnt/env.yaml &&  \
+                 micromamba env export --explicit  > /mnt/env.lock"
+```
+
+The lockfile can then be used to create a conda environment:
+
+```Dockerfile
+FROM mambaorg/micromamba:0.21.1
+COPY --chown=$MAMBA_USER:$MAMBA_USER env.lock /tmp/env.lock
+RUN micromamba create --yes --file /tmp/env.lock && \
+    micromamba clean --all --yes
+```
+
+When a lockfile is used to create an environment, the `micromamba create ..`
+command does not query the package channels or execute the solver. Therefore
+using a lockfile has the added benefit of reducing the time to create a conda
+environment.
 
 ### Multiple environments
 
