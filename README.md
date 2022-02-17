@@ -17,7 +17,7 @@ future (see [road map](#road-map)).
 
 When a commit is pushed to the `main` branch of
 [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/)
-new docker images are built and pushed to dockerhub. Each image is tagged with
+new docker images are built and pushed to Dockerhub. Each image is tagged with
 the version of `micromamba` it contains and these tags will start with a
 number. Images are also tagged with `git-<HASH>` where `<HASH>` is the first
 7 characters of the git commit hash from the
@@ -47,7 +47,7 @@ will install software into this 'base' environment.
 2. Copy the yaml file to your docker image and pass it to micromamba
 
     ```Dockerfile
-    FROM mambaorg/micromamba:0.21.0
+    FROM mambaorg/micromamba:0.21.2
     COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
     RUN micromamba install -y -f /tmp/env.yaml && \
         micromamba clean --all --yes
@@ -82,7 +82,7 @@ of `RUN` commands within a Dockerfile. To have an environment active during
 a `RUN` command, you must set `ARG MAMBA_DOCKERFILE_ACTIVATE=1`. For example:
 
 ```Dockerfile
-FROM mambaorg/micromamba:0.21.0
+FROM mambaorg/micromamba:0.21.2
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
 RUN micromamba install --yes --file /tmp/env.yaml && \
     micromamba clean --all --yes
@@ -142,7 +142,7 @@ ENTRYPOINT ["/usr/local/bin/_entrypoint.sh", "python"]
 ### Pass list of packages to install within a Dockerfile RUN command
 
 ```Dockerfile
-FROM mambaorg/micromamba:0.21.0
+FROM mambaorg/micromamba:0.21.2
 RUN micromamba install --yes --name base --channel conda-forge \
       pyopenssl=20.0.1  \
       python=3.9.1 \
@@ -150,13 +150,41 @@ RUN micromamba install --yes --name base --channel conda-forge \
     micromamba clean --all --yes
 ```
 
+### Using a lockfile
+
+Pinning a package to a version string doesn't guarantee the exact same
+package file is retrieved each time.  A lockfile utilizes package hashes
+to ensure package selection is reproducible. A lockfile can be generated
+using [conda-lock](https://github.com/conda-incubator/conda-lock) or
+micromamba:
+
+```bash
+docker run -it --rm -v $(pwd):/mnt mambaorg/micromamba:0.21.2 \ 
+   /bin/bash -c "micromamba install -y -f /mnt/env.yaml &&  \
+                 micromamba env export --explicit  > /mnt/env.lock"
+```
+
+The lockfile can then be used to create a conda environment:
+
+```Dockerfile
+FROM mambaorg/micromamba:0.21.1
+COPY --chown=$MAMBA_USER:$MAMBA_USER env.lock /tmp/env.lock
+RUN micromamba create --yes --file /tmp/env.lock && \
+    micromamba clean --all --yes
+```
+
+When a lockfile is used to create an environment, the `micromamba create ..`
+command does not query the package channels or execute the solver. Therefore
+using a lockfile has the added benefit of reducing the time to create a conda
+environment.
+
 ### Multiple environments
 
 For most use cases you will only want a single conda environment within your
 derived image, but you can create multiple conda environments:
 
 ```Dockerfile
-FROM mambaorg/micromamba:0.21.0
+FROM mambaorg/micromamba:0.21.2
 COPY --chown=$MAMBA_USER:$MAMBA_USER env1.yaml /tmp/env1.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER env2.yaml /tmp/env2.yaml
 RUN micromamba create --yes --file /tmp/env1.yaml && \
@@ -181,7 +209,7 @@ There are two supported methods for changing the default username to something o
 2. When building an image `FROM` an existing micromamba image,
 
     ```Dockerfile
-    FROM mambaorg/micromamba:0.21.0
+    FROM mambaorg/micromamba:0.21.2
     ARG NEW_MAMBA_USER=new-username
     ARG NEW_MAMBA_USER_ID=1000
     ARG NEW_MAMBA_USER_GID=1000
