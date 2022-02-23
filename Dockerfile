@@ -33,7 +33,7 @@ RUN echo "source /usr/local/bin/_activate_current_env.sh" >> ~/.bashrc && \
     echo "source /usr/local/bin/_activate_current_env.sh" >> /etc/skel/.bashrc && \
     useradd -ms /bin/bash "$MAMBA_USER" && \
     echo "${MAMBA_USER}" > "/etc/arg_mamba_user" && \
-    mkdir -p "$MAMBA_ROOT_PREFIX" && \
+    mkdir -p "$MAMBA_ROOT_PREFIX/conda-meta" && \
     chmod -R a+rwx "$MAMBA_ROOT_PREFIX" "/home" "/etc/arg_mamba_user" && \
     :
 
