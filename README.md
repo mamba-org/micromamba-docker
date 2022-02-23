@@ -169,7 +169,7 @@ The lockfile can then be used to create a conda environment:
 ```Dockerfile
 FROM mambaorg/micromamba:0.21.1
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.lock /tmp/env.lock
-RUN micromamba create --yes --file /tmp/env.lock && \
+RUN micromamba install --name base --yes --file /tmp/env.lock && \
     micromamba clean --all --yes
 ```
 
