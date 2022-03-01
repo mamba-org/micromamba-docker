@@ -159,7 +159,7 @@ using [conda-lock](https://github.com/conda-incubator/conda-lock) or
 micromamba:
 
 ```bash
-docker run -it --rm -v $(pwd):/mnt mambaorg/micromamba:0.22.0
+docker run -it --rm -v $(pwd):/mnt mambaorg/micromamba:0.22.0 \
    /bin/bash -c "micromamba install -y -f /mnt/env.yaml &&  \
                  micromamba env export --explicit  > /mnt/env.lock"
 ```
