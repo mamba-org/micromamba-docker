@@ -2,8 +2,8 @@ ARG BASE_IMAGE=debian:bullseye-slim
 
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
-FROM $BASE_IMAGE AS stage1
-ARG VERSION=0.21.2
+FROM --platform=$BUILDPLATFORM $BASE_IMAGE AS stage1
+ARG VERSION=0.22.0
 RUN apt-get update && apt-get install -y \
     bzip2 \
     ca-certificates \
@@ -36,7 +36,7 @@ RUN echo "source /usr/local/bin/_activate_current_env.sh" >> ~/.bashrc && \
     groupadd -g "${MAMBA_USER_GID}" "${MAMBA_USER}" && \
     useradd -u "${MAMBA_USER_ID}" -g "${MAMBA_USER_GID}" -ms /bin/bash "${MAMBA_USER}" && \
     echo "${MAMBA_USER}" > "/etc/arg_mamba_user" && \
-    mkdir -p "$MAMBA_ROOT_PREFIX" && \
+    mkdir -p "$MAMBA_ROOT_PREFIX/conda-meta" && \
     chmod -R a+rwx "$MAMBA_ROOT_PREFIX" "/home" "/etc/arg_mamba_user" && \
     :
 
