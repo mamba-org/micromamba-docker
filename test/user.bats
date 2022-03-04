@@ -1,5 +1,7 @@
 default_mamba_user="mambauser"
 altered_mamba_user="MaMbAmIcRo"
+custom_mamba_user_id=1100
+custom_mamba_user_gid=2000
 
 setup_file() {
     load 'test_helper/common-setup'
@@ -11,8 +13,16 @@ setup_file() {
 		 "--file=${PROJECT_ROOT}/Dockerfile" \
 		 "$PROJECT_ROOT" > /dev/null
     docker build --quiet \
+                 "--tag=${MICROMAMBA_IMAGE}-modify-user-id-gid-base" \
+                 "--build-arg=MAMBA_USER_ID=$custom_mamba_user_id" \
+                 "--build-arg=MAMBA_USER_GID=$custom_mamba_user_gid" \
+         "--file=${PROJECT_ROOT}/Dockerfile" \
+         "$PROJECT_ROOT" > /dev/null
+    docker build --quiet \
                  "--tag=${MICROMAMBA_IMAGE}-modify-username" \
                  "--build-arg=NEW_MAMBA_USER=$altered_mamba_user" \
+                 "--build-arg=NEW_MAMBA_USER_ID=$custom_mamba_user_id" \
+                 "--build-arg=NEW_MAMBA_USER_GID=$custom_mamba_user_gid" \
 		 "--file=${PROJECT_ROOT}/test/modify-username.Dockerfile" \
 		 "$PROJECT_ROOT" > /dev/null
 }
@@ -74,4 +84,18 @@ setup() {
         run docker run --rm -e "MAMBA_USER=$altered_mamba_user" "${MICROMAMBA_IMAGE}-modify-username" whoami
         assert_success
         assert_output "$altered_mamba_user"
+}
+
+# Test that custom mamba user id and group id are set correctly for base image builds.
+@test "docker run --rm ${MICROMAMBA_IMAGE}-modify-user-id-gid-base id" {
+        run docker run --rm "${MICROMAMBA_IMAGE}-modify-user-id-gid-base" id
+        assert_success
+        assert_output "uid=1100(mambauser) gid=2000(mambauser) groups=2000(mambauser)"
+}
+
+# Test that custom mamba user id and group id are set correctly for derived image builds.
+@test "docker run --rm ${MICROMAMBA_IMAGE}-modify-username id" {
+        run docker run --rm "${MICROMAMBA_IMAGE}-modify-username" id
+        assert_success
+        assert_output "uid=1100(MaMbAmIcRo) gid=2000(MaMbAmIcRo) groups=2000(MaMbAmIcRo)"
 }
