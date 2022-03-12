@@ -2,7 +2,7 @@
 
 [Micromamba](https://github.com/mamba-org/mamba#micromamba) for fast building of small [conda](https://docs.conda.io/)-based containers.
 
-Images available on [Dockerhub](https://hub.docker.com/) at [mambaorg/micromamba](https://hub.docker.com/r/mambaorg/micromamba). Source code on [GitHub](https://github.com/) at [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/).
+Images available on Dockerhub at [mambaorg/micromamba](https://hub.docker.com/r/mambaorg/micromamba). Source code on GitHub at [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/).
 
 "This is amazing. I switched CI for my projects to micromamba, and compared to using a miniconda docker image, this reduced build times more than 2x" -- A new micromamba-docker user
 
