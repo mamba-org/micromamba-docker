@@ -86,6 +86,13 @@ setup() {
         assert_output "$altered_mamba_user"
 }
 
+# Test that home is moved when modifying the username.
+@test "docker run --rm -e MAMBA_USER=$altered_mamba_user ${MICROMAMBA_IMAGE}-modify-username bash -c \"realpath ~${altered_mamba_user}\"" {
+        run docker run --rm -e MAMBA_USER=$altered_mamba_user ${MICROMAMBA_IMAGE}-modify-username bash -c "realpath ~${altered_mamba_user}"
+        assert_success
+        assert_output "/home/$altered_mamba_user"
+}
+
 # Test that custom mamba user id and group id are set correctly for base image builds.
 @test "docker run --rm ${MICROMAMBA_IMAGE}-modify-user-id-gid-base id" {
         run docker run --rm "${MICROMAMBA_IMAGE}-modify-user-id-gid-base" id
