@@ -36,5 +36,7 @@ jobs:
           mambaorg/micromamba:git-${{ steps.short_hash.outputs.sha_short }}
           mambaorg/micromamba:${{ steps.get_version.outputs.version }}
           mambaorg/micromamba:latest
+        cache-from: type=registry,ref=mambaorg/micromamba:latest
+        cache-to: type=inline
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
