@@ -1,0 +1,38 @@
+name: Generate a PR if a newer version of micromamba is available
+
+on:
+  workflow_dispatch:
+  # Run every 6 hours (https://crontab.guru/every-6-hours)
+  schedule:
+  - cron: '0 */6 * * *'
+
+jobs:
+  generate_pr_if_new_micromamba:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+    - name: Set up Python
+      uses: actions/setup-python@7f80679172b057fc5e90d70d197929d454754a5a
+      with:
+        python-version: "3.10"
+    - name: Check available versions
+      id: check_version
+      run: |
+        python -m pip install --quiet --disable-pip-version-check -r requirements.txt
+        CHECK_OUT="$(python check_version.py)"
+        LATEST_VERSION="$(echo "$CHECK_OUT" | cut -d, -f1)"
+        DO_PR="$(echo "$CHECK_OUT" | cut -d, -f2)"
+        echo "::set-output name=latest_version::${LATEST_VERSION}"
+        echo "::set-output name=do_pr::${DO_PR}"
+    - name: run update.sh
+      if: steps.check_version.outputs.do_pr == 'True'
+      run: ./update.sh ${{ steps.check_version.outputs.latest_version }}
+    - name: commit updated files
+      if: steps.check_version.outputs.do_pr == 'True'
+      uses: peter-evans/create-pull-request@f22a7da129c901513876a2380e2dae9f8e145330
+      with:
+        branch: "update-${{ steps.check_version.outputs.latest_version }}"
+        commit-message: "Update to micromamba version ${{ steps.check_version.outputs.latest_version }}"
+        title: "Update to micromamba version ${{ steps.check_version.outputs.latest_version }}"
+        delete-branch: true

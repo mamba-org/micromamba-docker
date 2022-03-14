@@ -2,71 +2,34 @@
 
 set -euf -o pipefail
 
+function clean_up {
+  find "$1" -name "*.bak" -type f -delete
+}
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+trap 'clean_up "${SCRIPT_DIR}"' EXIT
+
 function display_help {
   echo ""
-  echo -e "Usage: $0 [options] [version]"
+  echo -e "Usage: $(basename "${0}") version"
   echo ""
-  echo "   version                 version number of micromamba to include in image"
-  echo "                           (defaults to newest version on conda-forge)"
-  echo "   -h, --help              show this command reference"
-  echo "   -c, --commit            make a git commit, tag it, and push to origin "
+  echo "   version:  version number of micromamba to put into files"
   echo ""
 }
 
-function unknown_param {
-  echo ""
-  echo "ERROR: Unknown parameter passed: $1"
+if [[ $# -ne 1 ]]; then
   display_help
-  exit 2
-}
-
-if [[ $# -eq 0 ]]; then
-  display_help
-  exit 1
+  exit 128
 fi
 
-VERSION=""
-COMMIT=""
-while [[ "$#" -gt 0 ]]; do
-  case "$1" in
-    -c|--commit) COMMIT="TRUE" ;;
-    -h|--help) display_help; exit 0 ;;
-    -*) unknown_param "$1" ;;
-    *) [ -z "${VERSION}" ] && VERSION="$1" || unknown_param "$1" ;;
-  esac
-  shift
-done
+VERSION="${1}"
 
-if [ -z "${VERSION}"  ]; then
-  VERSION="$(./check_version.py 2> /dev/null | cut -f1 -d,)"
-fi
-
-BRANCH="release${VERSION}"
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-
-DOCKERFILES=$(find . -not -path "./test/bats/*" -name '*Dockerfile')
-
-if [ "$COMMIT" = "TRUE" ]; then
-  git checkout main
-  git pull
-  git checkout -b "$BRANCH"
-fi
+DOCKERFILES=$(find "${SCRIPT_DIR}" -not -path "./test/bats/*" -name '*Dockerfile')
 
 for f in $DOCKERFILES; do
-  sed -i.bak  "s%^FROM mambaorg/micromamba:.*$%FROM mambaorg/micromamba:${VERSION}%" "$f"
-  rm "$f.bak"
+  sed -i.bak  "s%^FROM mambaorg/micromamba:[^ \t ]*%FROM mambaorg/micromamba:${VERSION}%" "$f"
 done
 
-sed -i.bak  "s%^ARG VERSION=.*$%ARG VERSION=${VERSION}%" "${SCRIPT_DIR}/Dockerfile"
-rm "${SCRIPT_DIR}/Dockerfile.bak"
+sed -i.bak  "s%^ARG VERSION=[^ \t]*%ARG VERSION=${VERSION}%" "${SCRIPT_DIR}/Dockerfile"
 
-sed -i.bak "s%mambaorg/micromamba:.*$%mambaorg/micromamba:${VERSION}%" "${SCRIPT_DIR}/README.md"
-rm "${SCRIPT_DIR}/README.md.bak"
-
-if [ "$COMMIT" = "TRUE" ]; then
-  git add README.md $DOCKERFILES
-  git commit -m "micromamba v${VERSION}"
-  git push --set-upstream origin "$BRANCH"
-  git tag -a "v${VERSION}" -m "micromamba v${VERSION}"
-  git push --set-upstream origin "$BRANCH" --tags
-fi
+sed -i.bak "s%mambaorg/micromamba:[^ \t]*%mambaorg/micromamba:${VERSION}%" "${SCRIPT_DIR}/README.md"
