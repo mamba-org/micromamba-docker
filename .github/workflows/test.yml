@@ -18,6 +18,6 @@ jobs:
       - name: Install GNU parallel
         run: sudo apt-get install --no-install-recommends -y parallel
       - name: Setup nox
-        uses: excitedleigh/setup-nox@38d00c4c28f7a3e7382fd882fbf184c929722c97
+        uses: excitedleigh/setup-nox@4c62aee44396909396d10137c747b2633deeee76
       - name: Run tests
         run: nox -s tests
