@@ -30,11 +30,14 @@ commands to reference the image's sha256 digest and not use tags.
 ## Quick start
 
 The micromamba image comes with an empty environment named 'base'. Usually you
-will install software into this 'base' environment.
+will install software into this 'base' environment. 
 
 1. Define your desired conda environment in a yaml file:
 
     ```yaml
+    # Using an environment name other than "base" is not recommended!
+    # Read https://github.com/mamba-org/micromamba-docker#multiple-environments
+    # if you must use a different environment name.
     name: base
     channels:
       - conda-forge
