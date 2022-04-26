@@ -3,7 +3,7 @@ ARG BASE_IMAGE=debian:bullseye-slim
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
 FROM --platform=$BUILDPLATFORM $BASE_IMAGE AS stage1
-ARG VERSION=0.22.0
+ARG VERSION=0.23.0
 RUN apt-get update && apt-get install -y \
     bzip2 \
     ca-certificates \
