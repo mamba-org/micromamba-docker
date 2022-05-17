@@ -52,7 +52,7 @@ will install software into this 'base' environment.
     ```Dockerfile
     FROM mambaorg/micromamba:0.23.2
     COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
-    RUN micromamba install -y -f /tmp/env.yaml && \
+    RUN micromamba install -y -n base -f /tmp/env.yaml && \
         micromamba clean --all --yes
     ```
 
