@@ -15,17 +15,17 @@ future (see [road map](#road-map)).
 
 ### Tags
 
-When a commit is pushed to the `main` branch of
-[mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/)
-new docker images are built and pushed to Dockerhub. Each image is tagged with
-the version of `micromamba` it contains and these tags will start with a
-number. Images are also tagged with `git-<HASH>` where `<HASH>` is the first
-7 characters of the git commit hash from the
-[mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/)
-git repository.
+The set of tags includes permutations of:
+ - base image name (Debian code name, such as `bullseye`, plus `-slim` if derived from a Debian `slim` image)
+ - full or partial version numbers corresponding the `micromamba` version within the image
+ - git commit hashes (`git-<HASH>`, where `<HASH>` is the first 7 characters of the git commit hash in [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/))
 
-For reproducible image builds, best practice is for Dockerfile `FROM`
-commands to reference the image's sha256 digest and not use tags.
+The tag `latest` is based on the `slim` image of the most recent Debian release, currently `bullseye-slim`.
+
+Tags that do not contain `git` are rolling tags, meaning these tags get reassigned to new images each time these images are built. 
+
+To reproducibly build images derived from these `micromamba` images, the best practice is for the Dockerfile `FROM`
+command to reference the image's sha256 digest and not use tags.
 
 ## Quick start
 
@@ -281,12 +281,11 @@ available.
 
 ### Road map
 
-The current road map for expanding the number of base images is as follows:
+The current road map for expanding the number of base images and supported shells is as follows:
 
-1. Add all releases of debian slim that have not yet reached LTS end of life (ie, bullseye, buster, stretch)
-1. Add the non-slim debian image
-1. Add other debian based distributions that have community interest (such as Ubuntu)
-1. Add non-debian based distributions that have community interest
+1. Add other Debian based distributions that have community interest (such as Ubuntu)
+1. Add non-Debian based distributions that have community interest
+1. Add support for non-`bash` shells based on community interest
 
 The build and test infrastructure will need to be altered to support additional
 base images such that automated test and build occur for all images produced.
