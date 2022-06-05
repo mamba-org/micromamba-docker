@@ -93,7 +93,7 @@ jobs:
     - name: Run tests
       run: nox -s tests
     - name: Push Docker images
-      id: docker_build
+      id: docker_push
       uses: docker/build-push-action@fe02965b4878556fce19e4f0aa608d7d09ed629b
       with:
         platforms: linux/amd64,linux/arm64,linux/ppc64le
