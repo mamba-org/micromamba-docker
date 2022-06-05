@@ -1,3 +1,10 @@
+5 June 2022
+========================
+
+- Build images from all Debian releases that have not yet reached end of life
+- Build images from both slim and non-slim Debian images
+- Revamp tagging to support multiple base images
+
 13 January 2022
 ========================
 

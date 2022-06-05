@@ -4,12 +4,22 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - 'main'
+    tags:
+      - 'v*'
+
+env:
+  LATEST_DEBIAN: 'bullseye'
+  DEFAULT_SIZE: 'slim'
 
 jobs:
   build_docker_image_and_push:
     if: github.repository == 'mamba-org/micromamba-docker'
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image: ['bullseye', 'buster']
+        size: ['slim', '']
     steps:
     - name: Checkout source
       uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
@@ -19,7 +29,43 @@ jobs:
     - name: Get micromamba version
       id: get_version
       run: echo "::set-output name=version::$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)"
-    - name: Set up Docker Buildx
+    - name: Set image variables
+      id: set_image_variables
+      env:
+        IMAGE: ${{ matrix.image }}
+        SIZE: ${{ matrix.size }}
+      run: |
+        echo "::set-output name=image::debian:${IMAGE}${SIZE:+-$SIZE}"
+        echo "::set-output name=tag::${IMAGE}${SIZE:+-$SIZE}"
+        echo "::set-output name=is_default::$([ "$IMAGE" = "$LATEST_DEBIAN" ] && [ "$SIZE" = "$DEFAULT_SIZE" ] && echo true || echo false)"
+    - name: Get docker metadata
+      id: get_metadata
+      uses: docker/metadata-action@8d56fe93cf3fd680736a906389438c1ed74d75f7
+      with:
+        images: mambaorg/micromamba
+        flavor: latest=false
+        # latest
+        # base_image
+        # major.minor.patch
+        # major.minor
+        # major
+        # major.minor.patch-base_image
+        # major.minor-base_image
+        # major-base_image
+        # git-commit-base_image
+        # git-commit 
+        tags: |
+            type=raw,value=latest,priority=1000,enable=${{ steps.set_image_variables.outputs.is_default }}
+            type=raw,value=${{ steps.set_image_variables.outputs.tag }},priority=900
+            type=semver,pattern={{version}},enable=${{ steps.set_image_variables.outputs.is_default }},value=${{ steps.get_version.outputs.version }},priority=800
+            type=semver,pattern={{major}}.{{minor}},enable=${{ steps.set_image_variables.outputs.is_default }},value=${{ steps.get_version.outputs.version }},priority=700
+            type=semver,pattern={{major}},enable=${{ steps.set_image_variables.outputs.is_default }},value=${{ steps.get_version.outputs.version }},priority=600
+            type=semver,pattern={{version}}-${{ steps.set_image_variables.outputs.tag }},value=${{ steps.get_version.outputs.version }},priority=500
+            type=semver,pattern={{major}}.{{minor}}-${{ steps.set_image_variables.outputs.tag}},value=${{ steps.get_version.outputs.version }},priority=400
+            type=semver,pattern={{major}}-${{ steps.set_image_variables.outputs.tag}},value=${{ steps.get_version.outputs.version }},priority=300
+            type=sha,prefix=git-,suffix=-${{ steps.set_image_variables.outputs.tag }},priority=200
+            type=sha,prefix=git-,enable=${{ steps.set_image_variables.outputs.is_default }},priority=100
+    - name: Setup docker buildx
       uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
     - name: Login to DockerHub
       uses: docker/login-action@17f28ab24d0d2832d5ff23a1409bbfc373ebcb96
@@ -32,10 +78,10 @@ jobs:
       with:
         platforms: linux/amd64,linux/arm64,linux/ppc64le
         push: true
-        tags: |
-          mambaorg/micromamba:git-${{ steps.short_hash.outputs.sha_short }}
-          mambaorg/micromamba:${{ steps.get_version.outputs.version }}
-          mambaorg/micromamba:latest
+        build-args: |
+          BASE_IMAGE=${{ steps.set_image_variables.outputs.image }}
+        tags: ${{ steps.get_metadata.outputs.tags }}
+        labels: ${{ steps.get_metadata.outputs.labels}}
         cache-from: type=registry,ref=mambaorg/micromamba:latest
         cache-to: type=inline
     - name: Image digest
