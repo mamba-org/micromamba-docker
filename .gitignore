@@ -1,5 +1,6 @@
 *.bak
 *.pyc
 *.swp
+Dockerfile.test
 .venv/
 __pycache__/

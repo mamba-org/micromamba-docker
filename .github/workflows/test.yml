@@ -20,4 +20,4 @@ jobs:
       - name: Setup nox
         uses: excitedleigh/setup-nox@4c62aee44396909396d10137c747b2633deeee76
       - name: Run tests
-        run: nox -s tests
+        run:  nox -s "tests(base_image='debian:bullseye-slim')"

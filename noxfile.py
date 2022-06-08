@@ -6,12 +6,25 @@ import os
 
 import nox
 
-
 PY_VERSION = "3.10"
 
-BASE_IMAGES = [
-    "debian:bullseye-slim",
-]
+
+def get_base_images(file_name):
+    """would be cleaner to use yaml.load here, but want to avoid the dependency"""
+    out = []
+    with open(file_name, 'r', encoding='utf-8') as f:
+        for line in f:
+            if line.strip() == "image:":
+                break
+        for line in f:
+            if line.strip().startswith('- '):
+                out.append(line.strip()[2:])
+            else:
+                break
+    return out
+
+
+BASE_IMAGES = get_base_images('.github/workflows/push_latest.yml')
 
 PYLINT_DEPS = [
     "pylint==2.12.2",

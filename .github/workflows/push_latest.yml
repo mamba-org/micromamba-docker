@@ -95,7 +95,9 @@ jobs:
         cache-from: type=registry,ref=mambaorg/micromamba:latest
         cache-to: type=inline
     - name: Run tests
-      run: nox -s tests
+      env:
+        IMAGE: ${{ matrix.image }}
+      run: nox -s "tests(base_image='${IMAGE}')"
     - name: Push Docker images
       id: docker_push
       uses: docker/build-push-action@fe02965b4878556fce19e4f0aa608d7d09ed629b
