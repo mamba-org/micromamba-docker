@@ -9,7 +9,7 @@ Images available on Dockerhub at [mambaorg/micromamba](https://hub.docker.com/r/
 ## Tags
 
 The set of tags includes permutations of:
- - base image name (Debian code name, such as `bullseye`, plus `-slim` if derived from a Debian `slim` image)
+ - base image name (Debian or Ubuntu code name, such as `bullseye`, plus `-slim` if derived from a Debian `slim` image)
  - full or partial version numbers corresponding the `micromamba` version within the image
  - git commit hashes (`git-<HASH>`, where `<HASH>` is the first 7 characters of the git commit hash in [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/))
 
@@ -281,7 +281,6 @@ available.
 
 The current road map for expanding the number of base images and supported shells is as follows:
 
-1. Add other Debian based distributions that have community interest (such as Ubuntu)
 1. Add non-Debian based distributions that have community interest
 1. Add support for non-`bash` shells based on community interest
 
@@ -294,4 +293,4 @@ base images such that automated test and build occur for all images produced.
 
 ### Parent container choice
 
-As noted in the [micromamba documentation](https://github.com/mamba-org/mamba/blob/master/README.md#micromamba), the official micromamba binaries require glibc. Therefore Alpine Linux does not work naively. To keep the image small, a Debian slim image is used as the parent. On going efforts to generate a fully statically linked micromamba binary are documented in [mamba GitHub issue #572](https://github.com/mamba-org/mamba/issues/572), but most conda packages also depend on glibc. Therefore using a statically linked micromamba would require either a method to install glibc (or an equivalent) from a conda package or conda packages that are statically linked against glibc.
+As noted in the [micromamba documentation](https://github.com/mamba-org/mamba/blob/master/README.md#micromamba), the official micromamba binaries require glibc. Therefore Alpine Linux does not work naively. To keep the image small, a Debian slim image is used as the default parent image. On going efforts to generate a fully statically linked micromamba binary are documented in [mamba GitHub issue #572](https://github.com/mamba-org/mamba/issues/572), but most conda packages also depend on glibc. Therefore using a statically linked micromamba would require either a method to install glibc (or an equivalent) from a conda package or conda packages that are statically linked against glibc.
