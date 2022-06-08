@@ -5,7 +5,6 @@ import glob
 import os
 
 import nox
-import yaml
 
 PY_VERSION = "3.10"
 
