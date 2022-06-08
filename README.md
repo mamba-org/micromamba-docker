@@ -6,14 +6,7 @@ Images available on Dockerhub at [mambaorg/micromamba](https://hub.docker.com/r/
 
 "This is amazing. I switched CI for my projects to micromamba, and compared to using a miniconda docker image, this reduced build times more than 2x" -- A new micromamba-docker user
 
-## About the image
-
-The micromamba image is currently derived from the `debian:bullseye-slim` image.
-Thus far, the image has been focused on supporting use of the `bash` shell. We
-plan to build from additional base images and support additional shells in the
-future (see [road map](#road-map)).
-
-### Tags
+## Tags
 
 The set of tags includes permutations of:
  - base image name (Debian code name, such as `bullseye`, plus `-slim` if derived from a Debian `slim` image)
@@ -26,6 +19,11 @@ Tags that do not contain `git` are rolling tags, meaning these tags get reassign
 
 To reproducibly build images derived from these `micromamba` images, the best practice is for the Dockerfile `FROM`
 command to reference the image's sha256 digest and not use tags.
+
+## Supported shells
+
+We have been focused on supporting use of the `bash` shell. Support for
+additional shells is on our [road map](#road-map).
 
 ## Quick start
 
