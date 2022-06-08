@@ -89,7 +89,7 @@ jobs:
         platforms: linux/amd64,linux/arm64,linux/ppc64le
         push: false
         build-args: |
-          BASE_IMAGE=${{ steps.set_image_variables.outputs.image }}
+          BASE_IMAGE=${{ matrix.image }}
         tags: ${{ steps.get_metadata.outputs.tags }}
         labels: ${{ steps.get_metadata.outputs.labels}}
         cache-from: type=registry,ref=mambaorg/micromamba:latest
@@ -103,7 +103,7 @@ jobs:
         platforms: linux/amd64,linux/arm64,linux/ppc64le
         push: true
         build-args: |
-          BASE_IMAGE=${{ steps.set_image_variables.outputs.image }}
+          BASE_IMAGE=${{ matrix.image }}
         tags: ${{ steps.get_metadata.outputs.tags }}
         labels: ${{ steps.get_metadata.outputs.labels}}
     - name: Image digest
