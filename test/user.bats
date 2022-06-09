@@ -8,23 +8,26 @@ setup_file() {
     _common_setup
     docker build --quiet \
                  "--tag=${MICROMAMBA_IMAGE}-different-user" \
-		 "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
+                 "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
                  "--build-arg=MAMBA_USER=$altered_mamba_user" \
-		 "--file=${PROJECT_ROOT}/Dockerfile" \
-		 "$PROJECT_ROOT" > /dev/null
+                 "--file=${PROJECT_ROOT}/Dockerfile" \
+                 "$PROJECT_ROOT" > /dev/null
     docker build --quiet \
                  "--tag=${MICROMAMBA_IMAGE}-modify-user-id-gid-base" \
+                 "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
                  "--build-arg=MAMBA_USER_ID=$custom_mamba_user_id" \
                  "--build-arg=MAMBA_USER_GID=$custom_mamba_user_gid" \
          "--file=${PROJECT_ROOT}/Dockerfile" \
          "$PROJECT_ROOT" > /dev/null
     docker build --quiet \
                  "--tag=${MICROMAMBA_IMAGE}-modify-username" \
+                 "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
+                 "--build-arg=MAMBA_USER_ID=$custom_mamba_user_id" \
                  "--build-arg=NEW_MAMBA_USER=$altered_mamba_user" \
                  "--build-arg=NEW_MAMBA_USER_ID=$custom_mamba_user_id" \
                  "--build-arg=NEW_MAMBA_USER_GID=$custom_mamba_user_gid" \
-		 "--file=${PROJECT_ROOT}/test/modify-username.Dockerfile" \
-		 "$PROJECT_ROOT" > /dev/null
+                 "--file=${PROJECT_ROOT}/test/modify-username.Dockerfile" \
+                 "$PROJECT_ROOT" > /dev/null
 }
 
 setup() {
