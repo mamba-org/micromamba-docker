@@ -10,7 +10,7 @@ Images available on Dockerhub at [mambaorg/micromamba](https://hub.docker.com/r/
 
 The set of tags includes permutations of:
  - base image name (Debian or Ubuntu code name, such as `bullseye`, plus `-slim` if derived from a Debian `slim` image)
- - full or partial version numbers corresponding the `micromamba` version within the image
+ - full or partial version numbers corresponding to the `micromamba` version within the image
  - git commit hashes (`git-<HASH>`, where `<HASH>` is the first 7 characters of the git commit hash in [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/))
 
 The tag `latest` is based on the `slim` image of the most recent Debian release, currently `bullseye-slim`.
