@@ -17,11 +17,11 @@ setup_file() {
                  "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
                  "--build-arg=MAMBA_USER_ID=$custom_mamba_user_id" \
                  "--build-arg=MAMBA_USER_GID=$custom_mamba_user_gid" \
-         "--file=${PROJECT_ROOT}/Dockerfile" \
-         "$PROJECT_ROOT" > /dev/null
+                 "--file=${PROJECT_ROOT}/Dockerfile" \
+                 "$PROJECT_ROOT" > /dev/null
     docker build --quiet \
                  "--tag=${MICROMAMBA_IMAGE}-modify-username" \
-                 "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
+                 "--build-arg=BASE_IMAGE=${MICROMAMBA_IMAGE}" \
                  "--build-arg=MAMBA_USER_ID=$custom_mamba_user_id" \
                  "--build-arg=NEW_MAMBA_USER=$altered_mamba_user" \
                  "--build-arg=NEW_MAMBA_USER_ID=$custom_mamba_user_id" \
