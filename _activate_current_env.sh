@@ -6,10 +6,10 @@ if [[ "${MAMBA_SKIP_ACTIVATE}" == "1" ]]; then
   return
 fi
 
-# Initialize the current shell
+# Initialize Micromamba for the current shell
 eval "$("${MAMBA_EXE}" shell hook --shell=bash)"
 
-# Try to initialize Conda in case it is installed.
+# Attempt to initialize Conda (might not be installed)
 __conda_setup="$('conda' 'shell.bash' 'hook' 2> /dev/null)" || true
 if [ ! -z "${__conda_setup}" ]; then
     eval "$__conda_setup"
@@ -20,7 +20,7 @@ else
 fi
 unset __conda_setup
 
-# Initialize Mamba in case it is on the path.
+# Attempt to initialize Mamba (might not be installed)
 if [ -f "${CONDA_PREFIX}/etc/profile.d/mamba.sh" ]; then
     . "${CONDA_PREFIX}/etc/profile.d/mamba.sh"
 fi
