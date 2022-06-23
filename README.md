@@ -160,17 +160,26 @@ using [conda-lock](https://github.com/conda-incubator/conda-lock) or
 micromamba:
 
 ```bash
-docker run -it --rm -v $(pwd):/mnt mambaorg/micromamba:0.24.0 \
-   /bin/bash -c "micromamba install -y -f /mnt/env.yaml &&  \
-                 micromamba env export --explicit  > /mnt/env.lock"
+docker run -it --rm -v $(pwd):/tmp mambaorg/micromamba:0.24.0 \
+   /bin/bash -c "micromamba create --yes --name new_env --file env.yaml && \
+                 micromamba env export --name new_env --explicit > env.lock"
 ```
 
-The lockfile can then be used to create a conda environment:
+The lockfile can then be used to install into the pre-existing `base` conda environment:
 
 ```Dockerfile
 FROM mambaorg/micromamba:0.24.0
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.lock /tmp/env.lock
 RUN micromamba install --name base --yes --file /tmp/env.lock && \
+    micromamba clean --all --yes
+```
+
+Or the lockfile can be used to create and populate a new conda environment:
+
+```Dockerfile
+FROM mambaorg/micromamba:0.24.0
+COPY --chown=$MAMBA_USER:$MAMBA_USER env.lock /tmp/env.lock
+RUN micromamba create --name my_env_name --yes --file /tmp/env.lock && \
     micromamba clean --all --yes
 ```
 
