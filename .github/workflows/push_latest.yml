@@ -67,8 +67,10 @@ jobs:
             cuda_type="cuda"
           fi
           echo "::set-output name=tag::${code_name[$ubuntu_version_number]}-${cuda_type}-${cuda_version}"
+          echo "::set-output name=platforms::linux/amd64,linux/arm64"
         else
           echo "::set-output name=tag::$(echo "$IMAGE" | cut -d: -f2)"
+          echo "::set-output name=platforms::linux/amd64,linux/arm64,linux/ppc64le"
         fi
         echo "::set-output name=is_default::$([ "$IMAGE" = "$DEFAULT_BASE_IMAGE" ] && echo true || echo false)"
     - name: Get docker metadata
@@ -109,7 +111,7 @@ jobs:
       id: docker_build
       uses: docker/build-push-action@fe02965b4878556fce19e4f0aa608d7d09ed629b
       with:
-        platforms: linux/amd64,linux/arm64,linux/ppc64le
+        platforms: ${{ steps.set_image_variables.outputs.platforms }}
         push: false
         build-args: |
           BASE_IMAGE=${{ matrix.image }}
@@ -125,7 +127,7 @@ jobs:
       id: docker_push
       uses: docker/build-push-action@fe02965b4878556fce19e4f0aa608d7d09ed629b
       with:
-        platforms: linux/amd64,linux/arm64,linux/ppc64le
+        platforms: ${{ steps.set_image_variables.outputs.platforms }}
         push: true
         build-args: |
           BASE_IMAGE=${{ matrix.image }}
