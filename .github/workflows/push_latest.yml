@@ -26,12 +26,12 @@ jobs:
          - ubuntu:impish
          - ubuntu:focal
          - ubuntu:bionic
-         - nvidia/cuda:11.7.0-runtime-ubuntu22.04
-         - nvidia/cuda:11.7.0-runtime-ubuntu20.04
-         - nvidia/cuda:11.7.0-runtime-ubuntu18.04
-         - nvidia/cuda:11.7.0-runtime-ubuntu22.04
-         - nvidia/cuda:11.7.0-runtime-ubuntu20.04
-         - nvidia/cuda:11.7.0-runtime-ubuntu18.04
+         - nvidia/cuda:11.7.0-base-ubuntu22.04
+         - nvidia/cuda:11.7.0-base-ubuntu20.04
+         - nvidia/cuda:11.7.0-base-ubuntu18.04
+         - nvidia/cuda:11.7.0-base-ubuntu22.04
+         - nvidia/cuda:11.7.0-base-ubuntu20.04
+         - nvidia/cuda:11.7.0-base-ubuntu18.04
     steps:
     - name: Install GNU parallel
       run: sudo apt-get install --no-install-recommends -y parallel
@@ -60,13 +60,7 @@ jobs:
           ubuntu_version_number="${IMAGE##*-ubuntu}"
           tag="${IMAGE##*:}"
           cuda_version="${tag%%-*}"
-          second_field="$(echo "$IMAGE" | cut -d- -f2)"
-          if [ "${second_field:0:5}" = "cudnn" ]; then
-            cuda_type="$second_field"
-          else
-            cuda_type="cuda"
-          fi
-          echo "::set-output name=tag::${code_name[$ubuntu_version_number]}-${cuda_type}-${cuda_version}"
+          echo "::set-output name=tag::${code_name[$ubuntu_version_number]}-cuda-${cuda_version}"
           echo "::set-output name=platforms::linux/amd64,linux/arm64"
         else
           echo "::set-output name=tag::$(echo "$IMAGE" | cut -d: -f2)"
