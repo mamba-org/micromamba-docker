@@ -6,7 +6,7 @@ _common_setup() {
 
     PROJECT_ROOT="$( cd "$( dirname "$BATS_TEST_FILENAME" )/.." >/dev/null 2>&1 && pwd )"
 
-    TAG="$(echo "$BASE_IMAGE" | tr ':' '-')"
+    TAG="$(echo "$BASE_IMAGE" | tr ':/' '-')"
 
     export MICROMAMBA_IMAGE="micromamba:test-${TAG}"
 
