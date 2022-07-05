@@ -57,7 +57,7 @@ jobs:
           code_name[22.04]=jammy
           code_name[20.04]=focal
           code_name[18.04]=bionic
-          ubuntu_version_number="${IMAGE##*-}"
+          ubuntu_version_number="${IMAGE##*-ubuntu}"
           tag="${IMAGE##*:}"
           cuda_version="${tag%%-*}"
           second_field="$(echo "$IMAGE" | cut -d- -f2)"
