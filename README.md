@@ -9,9 +9,11 @@ Images available on Dockerhub at [mambaorg/micromamba](https://hub.docker.com/r/
 ## Tags
 
 The set of tags includes permutations of:
- - base image name (Debian or Ubuntu code name, such as `bullseye`, plus `-slim` if derived from a Debian `slim` image)
  - full or partial version numbers corresponding to the `micromamba` version within the image
  - git commit hashes (`git-<HASH>`, where `<HASH>` is the first 7 characters of the git commit hash in [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/))
+ - base image name (Debian or Ubuntu code name, such as `bullseye`, plus `-slim` if derived from a Debian `slim` image)
+   - For CUDA base images, this porition of the tag is set to`<ubuntu_code_name>-cuda-<cuda_version>`
+   - For cuDNN base images, this porition of the tag is set to`<ubuntu_code_name>-cudnn<cudnn_major_version>-<cuda_version>`
 
 The tag `latest` is based on the `slim` image of the most recent Debian release, currently `bullseye-slim`.
 
