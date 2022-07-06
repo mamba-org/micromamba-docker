@@ -29,10 +29,9 @@ jobs:
          - nvidia/cuda:11.7.0-base-ubuntu22.04
          - nvidia/cuda:11.7.0-base-ubuntu20.04
          - nvidia/cuda:11.6.2-base-ubuntu20.04
-         - nvidia/cuda:11.6.2-base-ubuntu18.04      
-         - nvidia/cuda:11.3.1-base-ubuntu20.04       
-         - nvidia/cuda:11.3.1-base-ubuntu18.04       
-
+         - nvidia/cuda:11.6.2-base-ubuntu18.04
+         - nvidia/cuda:11.3.1-base-ubuntu20.04
+         - nvidia/cuda:11.3.1-base-ubuntu18.04
     steps:
     - name: Install GNU parallel
       run: sudo apt-get install --no-install-recommends -y parallel
