@@ -1,3 +1,14 @@
+7 July 2022
+========================
+
+- Moved code from `Dockerfile` to separate bash scripts `_dockerfile_initialize_user_accounts.sh` and `_dockerfile_setup_root_prefix.sh`
+
+
+6 July 2022
+========================
+
+- Add images based on nvidia/cuda:\*-base-ubuntu\*
+
 5 June 2022
 ========================
 
