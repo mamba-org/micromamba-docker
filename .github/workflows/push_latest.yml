@@ -23,7 +23,6 @@ jobs:
          - debian:buster-slim
          - debian:buster
          - ubuntu:jammy
-         - ubuntu:impish
          - ubuntu:focal
          - ubuntu:bionic
          - nvidia/cuda:11.7.0-base-ubuntu22.04
