@@ -14,15 +14,15 @@ __conda_setup="$('conda' 'shell.bash' 'hook' 2> /dev/null)" || true
 if [ ! -z "${__conda_setup}" ]; then
     eval "$__conda_setup"
 else
-    if [ -f "${CONDA_PREFIX}/etc/profile.d/conda.sh" ]; then
-        . "${CONDA_PREFIX}/etc/profile.d/conda.sh"
+    if [ -f "${MAMBA_ROOT_PREFIX}/etc/profile.d/conda.sh" ]; then
+        . "${MAMBA_ROOT_PREFIX}/etc/profile.d/conda.sh"
     fi
 fi
 unset __conda_setup
 
 # Attempt to initialize Mamba (might not be installed)
-if [ -f "${CONDA_PREFIX}/etc/profile.d/mamba.sh" ]; then
-    . "${CONDA_PREFIX}/etc/profile.d/mamba.sh"
+if [ -f "${MAMBA_ROOT_PREFIX}/etc/profile.d/mamba.sh" ]; then
+    . "${MAMBA_ROOT_PREFIX}/etc/profile.d/mamba.sh"
 fi
 
 # For robustness, try all possible activate commands.
