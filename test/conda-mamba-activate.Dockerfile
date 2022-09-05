@@ -6,5 +6,3 @@ RUN micromamba install --yes --name base --channel conda-forge \
       conda \
       mamba && \
     micromamba clean --all --yes
-
-ENV PATH=/opt/conda/bin:$PATH
