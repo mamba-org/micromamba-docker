@@ -1,0 +1,6 @@
+.git
+__pycache__
+.nox
+.pytest_cache
+.mypy_cache
+test/bats
