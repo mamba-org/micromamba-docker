@@ -14,6 +14,7 @@ setup() {
 }
 
 @test "docker run --rm \"${MICROMAMBA_IMAGE}-conda-mamba-activate\" /bin/bash -c 'conda activate base && mamba activate base'" {
-    run docker run --rm "${MICROMAMBA_IMAGE}-conda-mamba-activate" \
-        /bin/bash -c 'conda activate base && mamba activate base'
+    input="conda activate base && mamba activate base"
+    echo -e $input | faketty \
+        docker run --rm -it "${MICROMAMBA_IMAGE}-conda-mamba-activate"
 }
