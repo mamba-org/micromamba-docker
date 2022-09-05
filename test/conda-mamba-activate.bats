@@ -13,7 +13,7 @@ setup() {
     _common_setup
 }
 
-@test "RUN python -c \"import os; os.system('touch foobar')\"" {
-    run docker run --rm "${MICROMAMBA_IMAGE}-conda-mamba-activate" ls -1 foobar
-    assert_output 'foobar'
+@test "docker run --rm \"${MICROMAMBA_IMAGE}-conda-mamba-activate\" /bin/bash -c 'conda activate base && mamba activate base'" {
+    run docker run --rm "${MICROMAMBA_IMAGE}-conda-mamba-activate" \
+        /bin/bash -c 'conda activate base && mamba activate base'
 }
