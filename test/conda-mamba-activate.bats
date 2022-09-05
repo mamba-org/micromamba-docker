@@ -18,3 +18,8 @@ setup() {
     echo -e $input | faketty \
         docker run --rm -it "${MICROMAMBA_IMAGE}-conda-mamba-activate"
 }
+
+@test "docker run --rm -it \"${MICROMAMBA_IMAGE}-conda-mamba-activate\" /bin/bash -i -c 'conda activate base && mamba activate base'" {
+    run docker run --rm -it "${MICROMAMBA_IMAGE}-conda-mamba-activate" /bin/bash -i -c 'conda activate base && mamba activate base'
+    assert_output ""
+}
