@@ -3,7 +3,7 @@ ARG BASE_IMAGE=debian:bullseye-slim
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
 FROM --platform=$BUILDPLATFORM $BASE_IMAGE AS stage1
-ARG VERSION=0.24.0
+ARG VERSION=0.25.1
 RUN apt-get update && apt-get install -y \
     bzip2 \
     ca-certificates \
@@ -31,14 +31,11 @@ ARG MAMBA_USER_ID=1000
 ARG MAMBA_USER_GID=1000
 ENV MAMBA_USER=$MAMBA_USER
 
-RUN echo "source /usr/local/bin/_activate_current_env.sh" >> ~/.bashrc && \
-    echo "source /usr/local/bin/_activate_current_env.sh" >> /etc/skel/.bashrc && \
-    groupadd -g "${MAMBA_USER_GID}" "${MAMBA_USER}" && \
-    useradd -u "${MAMBA_USER_ID}" -g "${MAMBA_USER_GID}" -ms /bin/bash "${MAMBA_USER}" && \
-    echo "${MAMBA_USER}" > "/etc/arg_mamba_user" && \
-    mkdir -p "$MAMBA_ROOT_PREFIX/conda-meta" && \
-    chmod -R a+rwx "$MAMBA_ROOT_PREFIX" "/home" "/etc/arg_mamba_user" && \
-    :
+COPY _dockerfile_initialize_user_accounts.sh /usr/local/bin/_dockerfile_initialize_user_accounts.sh
+COPY _dockerfile_setup_root_prefix.sh /usr/local/bin/_dockerfile_setup_root_prefix.sh
+
+RUN /usr/local/bin/_dockerfile_initialize_user_accounts.sh && \
+    /usr/local/bin/_dockerfile_setup_root_prefix.sh
 
 USER $MAMBA_USER
 

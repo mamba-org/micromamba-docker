@@ -37,3 +37,13 @@ setup() {
 		 "$PROJECT_ROOT/examples/yaml_spec" > /dev/null && \
     rm "${ORG}.test"
 }
+
+@test "build examples/add_micromamba/Dockerfile" {
+    ORG="${PROJECT_ROOT}/examples/add_micromamba/Dockerfile"
+    sed "s%^FROM mambaorg/micromamba:[^ ]*%FROM ${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
+    docker build --quiet \
+                 "--tag=${MICROMAMBA_IMAGE}-add_micromamba" \
+		 "--file=${ORG}.test" \
+		 "$PROJECT_ROOT/examples/add_micromamba" > /dev/null && \
+    rm "${ORG}.test"
+}

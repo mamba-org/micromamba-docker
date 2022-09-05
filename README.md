@@ -9,9 +9,10 @@ Images available on Dockerhub at [mambaorg/micromamba](https://hub.docker.com/r/
 ## Tags
 
 The set of tags includes permutations of:
- - base image name (Debian or Ubuntu code name, such as `bullseye`, plus `-slim` if derived from a Debian `slim` image)
  - full or partial version numbers corresponding to the `micromamba` version within the image
  - git commit hashes (`git-<HASH>`, where `<HASH>` is the first 7 characters of the git commit hash in [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/))
+ - base image name (Debian or Ubuntu code name, such as `bullseye`, plus `-slim` if derived from a Debian `slim` image)
+   - For CUDA base images, this porition of the tag is set to`<ubuntu_code_name>-cuda-<cuda_version>`
 
 The tag `latest` is based on the `slim` image of the most recent Debian release, currently `bullseye-slim`.
 
@@ -48,7 +49,7 @@ will install software into this 'base' environment.
 2. Copy the yaml file to your docker image and pass it to micromamba
 
     ```Dockerfile
-    FROM mambaorg/micromamba:0.24.0
+    FROM mambaorg/micromamba:0.25.1
     COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
     RUN micromamba install -y -n base -f /tmp/env.yaml && \
         micromamba clean --all --yes
@@ -83,7 +84,7 @@ of `RUN` commands within a Dockerfile. To have an environment active during
 a `RUN` command, you must set `ARG MAMBA_DOCKERFILE_ACTIVATE=1`. For example:
 
 ```Dockerfile
-FROM mambaorg/micromamba:0.24.0
+FROM mambaorg/micromamba:0.25.1
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
 RUN micromamba install --yes --file /tmp/env.yaml && \
     micromamba clean --all --yes
@@ -143,7 +144,7 @@ ENTRYPOINT ["/usr/local/bin/_entrypoint.sh", "python"]
 ### Pass list of packages to install within a Dockerfile RUN command
 
 ```Dockerfile
-FROM mambaorg/micromamba:0.24.0
+FROM mambaorg/micromamba:0.25.1
 RUN micromamba install --yes --name base --channel conda-forge \
       pyopenssl=20.0.1  \
       python=3.9.1 \
@@ -160,17 +161,26 @@ using [conda-lock](https://github.com/conda-incubator/conda-lock) or
 micromamba:
 
 ```bash
-docker run -it --rm -v $(pwd):/mnt mambaorg/micromamba:0.24.0 \
-   /bin/bash -c "micromamba install -y -f /mnt/env.yaml &&  \
-                 micromamba env export --explicit  > /mnt/env.lock"
+docker run -it --rm -v $(pwd):/tmp mambaorg/micromamba:0.25.1 \
+   /bin/bash -c "micromamba create --yes --name new_env --file env.yaml && \
+                 micromamba env export --name new_env --explicit > env.lock"
 ```
 
-The lockfile can then be used to create a conda environment:
+The lockfile can then be used to install into the pre-existing `base` conda environment:
 
 ```Dockerfile
-FROM mambaorg/micromamba:0.24.0
+FROM mambaorg/micromamba:0.25.1
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.lock /tmp/env.lock
 RUN micromamba install --name base --yes --file /tmp/env.lock && \
+    micromamba clean --all --yes
+```
+
+Or the lockfile can be used to create and populate a new conda environment:
+
+```Dockerfile
+FROM mambaorg/micromamba:0.25.1
+COPY --chown=$MAMBA_USER:$MAMBA_USER env.lock /tmp/env.lock
+RUN micromamba create --name my_env_name --yes --file /tmp/env.lock && \
     micromamba clean --all --yes
 ```
 
@@ -185,7 +195,7 @@ For most use cases you will only want a single conda environment within your
 derived image, but you can create multiple conda environments:
 
 ```Dockerfile
-FROM mambaorg/micromamba:0.24.0
+FROM mambaorg/micromamba:0.25.1
 COPY --chown=$MAMBA_USER:$MAMBA_USER env1.yaml /tmp/env1.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER env2.yaml /tmp/env2.yaml
 RUN micromamba create --yes --file /tmp/env1.yaml && \
@@ -210,7 +220,7 @@ There are two supported methods for changing the default username to something o
 2. When building an image `FROM` an existing micromamba image,
 
     ```Dockerfile
-    FROM mambaorg/micromamba:0.24.0
+    FROM mambaorg/micromamba:0.25.1
     ARG NEW_MAMBA_USER=new-username
     ARG NEW_MAMBA_USER_ID=1000
     ARG NEW_MAMBA_USER_GID=1000
@@ -251,6 +261,53 @@ The `ENTRYPOINT` script ensures that the environment is also activated for one-o
 commands when Docker is used non-interactively.
 
 Setting `MAMBA_SKIP_ACTIVATE=1` disables both of these automatic activation methods.
+
+### Adding micromamba to an existing Docker image
+
+Adding micromamba functionality to an existing Docker image can be accomplished like this:
+
+```Dockerfile
+# bring in the micromamba image so we can copy files from it
+FROM mambaorg/micromamba:0.25.1 as micromamba
+
+# This is the image we are going add micromaba to: 
+FROM tomcat:9-jdk17-temurin-focal
+
+ARG MAMBA_USER=mamba
+ARG MAMBA_USER_ID=1000
+ARG MAMBA_USER_GID=1000
+ENV MAMBA_USER=$MAMBA_USER
+ENV MAMBA_ROOT_PREFIX="/opt/conda"
+ENV MAMBA_EXE="/bin/micromamba"
+
+COPY --from=micromamba "$MAMBA_EXE" "$MAMBA_EXE"
+COPY --from=micromamba /usr/local/bin/_activate_current_env.sh /usr/local/bin/_activate_current_env.sh
+COPY --from=micromamba /usr/local/bin/_dockerfile_shell.sh /usr/local/bin/_dockerfile_shell.sh
+COPY --from=micromamba /usr/local/bin/_entrypoint.sh /usr/local/bin/_entrypoint.sh
+COPY --from=micromamba /usr/local/bin/_activate_current_env.sh /usr/local/bin/_activate_current_env.sh
+COPY --from=micromamba /usr/local/bin/_dockerfile_initialize_user_accounts.sh /usr/local/bin/_dockerfile_initialize_user_accounts.sh
+COPY --from=micromamba /usr/local/bin/_dockerfile_setup_root_prefix.sh /usr/local/bin/_dockerfile_setup_root_prefix.sh
+
+RUN /usr/local/bin/_dockerfile_initialize_user_accounts.sh && \
+    /usr/local/bin/_dockerfile_setup_root_prefix.sh
+
+USER $MAMBA_USER
+
+SHELL ["/usr/local/bin/_dockerfile_shell.sh"]
+
+ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
+# Optional: if you want to customize the ENTRYPOINT and have a conda
+# environment activated, then do this:
+# ENTRYPOINT ["/usr/local/bin/_entrypoint.sh", "my_entrypoint_program"]
+
+# You can modify the CMD statement as needed....
+CMD ["/bin/bash"]
+
+# Optional: you can now populate a conda environment:
+RUN micromamba install --yes --name base --channel conda-forge \
+      jq && \
+    micromamba clean --all --yes
+```
 
 ## Minimizing final image size
 
