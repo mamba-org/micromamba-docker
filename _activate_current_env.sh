@@ -2,6 +2,8 @@
 
 #     source _activate_current_env.sh
 
+# shellcheck shell=bash
+
 # Initialize Micromamba for the current shell
 eval "$("${MAMBA_EXE}" shell hook --shell=bash)"
 
@@ -23,7 +25,6 @@ if [ -f "${MAMBA_ROOT_PREFIX}/etc/profile.d/mamba.sh" ]; then
     . "${MAMBA_ROOT_PREFIX}/etc/profile.d/mamba.sh"
 fi
 
-# shellcheck shell=bash
 if [[ "${MAMBA_SKIP_ACTIVATE}" == "1" ]]; then
   return
 fi
