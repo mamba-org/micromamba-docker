@@ -3,6 +3,7 @@
 
 - Automatically perform shell initialization for `conda` and `mamba` if they are installed
 - Drop the base image `debian:buster` and `debian:buster-slim` as they are no longer under offical debian support
+- Install shell hooks for `micromamba`, `conda`, and `mamba` even if `MAMBA_SKIP_ACTIVATE=1`
 
 7 July 2022
 ========================
