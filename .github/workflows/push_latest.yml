@@ -20,8 +20,6 @@ jobs:
         image:
          - debian:bullseye-slim
          - debian:bullseye
-         - debian:buster-slim
-         - debian:buster
          - ubuntu:jammy
          - ubuntu:focal
          - ubuntu:bionic
