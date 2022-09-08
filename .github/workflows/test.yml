@@ -7,17 +7,79 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    name: Run test suite
+  default_base_image_tests:
+    name: default base_image tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
         uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
         with:
           submodules: recursive
-      - name: Install GNU parallel and shellcheck
-        run: sudo apt-get install --no-install-recommends -y parallel shellcheck
+      - name: Install GNU parallel
+        run: sudo apt-get install --no-install-recommends -y parallel
       - name: Setup nox
         uses: excitedleigh/setup-nox@4c62aee44396909396d10137c747b2633deeee76
       - name: Run tests
-        run:  nox -s "tests(base_image='debian:bullseye-slim')"
+        run: nox -s "default_base_image_tests"
+  shellcheck:
+    name: shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+      - name: Install curl and xz-utils
+        run: sudo apt-get install --no-install-recommends -y curl xz-utils
+      - name: Install shellcheck
+        run: curl --location --silent https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz | tar xJ --strip-components=1 -C . shellcheck-stable/shellcheck
+      - name: Run tests
+        run: ./shellcheck -x *.sh test/*.bats
+  pylint:
+    name: pylint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+      - name: Setup nox
+        uses: excitedleigh/setup-nox@4c62aee44396909396d10137c747b2633deeee76
+      - name: Run tests
+        run: nox -s "pylint"
+  flake8:
+    name: flake8
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+      - name: Setup nox
+        uses: excitedleigh/setup-nox@4c62aee44396909396d10137c747b2633deeee76
+      - name: Run tests
+        run: nox -s "flake8"
+  mypy:
+    name: mypy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+      - name: Setup nox
+        uses: excitedleigh/setup-nox@4c62aee44396909396d10137c747b2633deeee76
+      - name: Run tests
+        run: nox -s "mypy"
+  black:
+    name: black
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+      - name: Setup nox
+        uses: excitedleigh/setup-nox@4c62aee44396909396d10137c747b2633deeee76
+      - name: Run tests
+        run: nox -s "black"
+  pytest:
+    name: pytest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+      - name: Setup nox
+        uses: excitedleigh/setup-nox@4c62aee44396909396d10137c747b2633deeee76
+      - name: Run tests
+        run: nox -s "pytest"
