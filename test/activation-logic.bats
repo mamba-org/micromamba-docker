@@ -29,12 +29,12 @@ setup() {
 # Activation should succeed in an interactive terminal.
 @test "'docker run --rm -it ${MICROMAMBA_IMAGE}-cli-invocations' with 'python --version; exit'" {
     input="python --version; exit"
-    echo -e $input | faketty \
+    echo -e "$input" | faketty \
         docker run --rm -it "${MICROMAMBA_IMAGE}-cli-invocations"
     
     # Make sure that a similar command actually fails
     input="xyz --version; exit"
-    ! echo -e $input | faketty \
+    ! echo -e "$input" | faketty \
         docker run --rm -it "${MICROMAMBA_IMAGE}-cli-invocations"
 }
 
@@ -42,24 +42,24 @@ setup() {
 # disabled, thanks to activation in .bashrc.
 @test "'docker run --rm -it --entrypoint=/bin/bash ${MICROMAMBA_IMAGE}-cli-invocations' with 'python --version; exit'" {
     input="python --version; exit"
-    echo -e $input | faketty \
+    echo -e "$input" | faketty \
         docker run --rm -it --entrypoint=/bin/bash "${MICROMAMBA_IMAGE}-cli-invocations"
     
     # Make sure that a similar command actually fails
     input="xyz --version; exit"
-    ! echo -e $input | faketty \
+    ! echo -e "$input" | faketty \
         docker run --rm -it --entrypoint=/bin/bash "${MICROMAMBA_IMAGE}-cli-invocations"
 }
 
 # ... Now that we isolated activation to .bashrc, disable it via MAMBA_SKIP_ACTIVATE=1.
 @test "'docker run --rm -it --entrypoint=/bin/bash -e MAMBA_SKIP_ACTIVATE=1 ${MICROMAMBA_IMAGE}-cli-invocations' with 'python --version; exit'" {
     input="python --version; exit"
-    ! echo -e $input | faketty \
+    ! echo -e "$input" | faketty \
         docker run --rm -it --entrypoint=/bin/bash -e MAMBA_SKIP_ACTIVATE=1 "${MICROMAMBA_IMAGE}-cli-invocations"
     
     # Make sure that a similar command actually succeeds
     input="micromamba --version; exit"
-    echo -e $input | faketty \
+    echo -e "$input" | faketty \
         docker run --rm -it --entrypoint=/bin/bash -e MAMBA_SKIP_ACTIVATE=1 "${MICROMAMBA_IMAGE}-cli-invocations"
 }
 
@@ -90,14 +90,15 @@ setup() {
 #   Steps: disable automatic activation, start as root, reenable activation, switch to
 #          user, verify that the environment is activated.
 @test "Verify activation when switching users." {
-    input="
+    # shellcheck disable=SC2016
+    input='
         ! which python  \n
         MAMBA_SKIP_ACTIVATE=0  \n
         su "$MAMBA_USER"  \n
             python --version  \n
             exit  \n
         exit  \n
-    "
-    echo -e $input | faketty \
+    ' 
+    echo -e "$input" | faketty \
         docker run --rm -it --user=root -e MAMBA_SKIP_ACTIVATE=1 "${MICROMAMBA_IMAGE}-cli-invocations"
 }
