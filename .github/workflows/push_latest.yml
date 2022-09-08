@@ -124,11 +124,17 @@ jobs:
           BASE_IMAGE=${{ matrix.image }}
         tags: ${{ steps.get_metadata.outputs.tags }}
         labels: ${{ steps.get_metadata.outputs.labels}}
+    - name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }}
+  update_dockerhub_discription:
+    if: github.repository == 'mamba-org/micromamba-docker'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
     - name: Copy GitHub README.md to Dockerhub
       uses: peter-evans/dockerhub-description@4fdf85281512c62ac4fec8302eb0305cd9efe8c3
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         repository: mambaorg/micromamba
-    - name: Image digest
-      run: echo ${{ steps.docker_build.outputs.digest }}
