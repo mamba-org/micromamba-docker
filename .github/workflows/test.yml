@@ -32,7 +32,7 @@ jobs:
       - name: Install shellcheck
         run: curl --location --silent https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz | tar xJ --strip-components=1 -C . shellcheck-stable/shellcheck
       - name: Run tests
-        run: ./shellcheck *.sh test/*.bats
+        run: ./shellcheck -x *.sh test/*.bats
   pylint:
     name: pylint
     runs-on: ubuntu-latest
