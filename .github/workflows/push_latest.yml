@@ -113,7 +113,7 @@ jobs:
     - name: Run tests
       env:
         IMAGE: ${{ matrix.image }}
-      run: nox -s "tests(base_image='${IMAGE}')"
+      run: nox -s "image_tests(base_image='${IMAGE}')"
     - name: Push Docker images
       id: docker_push
       uses: docker/build-push-action@fe02965b4878556fce19e4f0aa608d7d09ed629b
