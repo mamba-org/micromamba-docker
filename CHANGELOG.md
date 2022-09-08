@@ -1,3 +1,9 @@
+8 Sept 2022
+========================
+
+- Automatically perform shell initialization for `conda` and `mamba` if they are installed
+- Drop the base image `debian:buster` and `debian:buster-slim` as they are no longer under offical debian support
+
 7 July 2022
 ========================
 
