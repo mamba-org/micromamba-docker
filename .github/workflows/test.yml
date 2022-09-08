@@ -28,7 +28,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
       - name: Install shellcheck
-        run: curl https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz | tar xf --strip-components=1 -C /usr/local/bin shellcheck-stable/shellcheck
+        run: curl --location --silent https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz | tar x --strip-components=1 -C /tmp/local/bin shellcheck-stable/shellcheck
       - name: Run tests
         run: /usr/local/bin/shellcheck *.sh test/*.bats
   pylint:
