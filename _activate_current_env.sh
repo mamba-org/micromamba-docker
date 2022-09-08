@@ -2,11 +2,6 @@
 
 #     source _activate_current_env.sh
 
-# shellcheck shell=bash
-if [[ "${MAMBA_SKIP_ACTIVATE}" == "1" ]]; then
-  return
-fi
-
 # Initialize Micromamba for the current shell
 eval "$("${MAMBA_EXE}" shell hook --shell=bash)"
 
@@ -26,6 +21,11 @@ unset __conda_setup
 if [ -f "${MAMBA_ROOT_PREFIX}/etc/profile.d/mamba.sh" ]; then
     # shellcheck disable=SC1091
     . "${MAMBA_ROOT_PREFIX}/etc/profile.d/mamba.sh"
+fi
+
+# shellcheck shell=bash
+if [[ "${MAMBA_SKIP_ACTIVATE}" == "1" ]]; then
+  return
 fi
 
 # For robustness, try all possible activate commands.

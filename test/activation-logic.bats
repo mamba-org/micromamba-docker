@@ -56,9 +56,14 @@ setup() {
     input="python --version; exit"
     ! echo -e "$input" | faketty \
         docker run --rm -it --entrypoint=/bin/bash -e MAMBA_SKIP_ACTIVATE=1 "${MICROMAMBA_IMAGE}-cli-invocations"
-    
+
     # Make sure that a similar command actually succeeds
     input="micromamba --version; exit"
+    echo -e "$input" | faketty \
+        docker run --rm -it --entrypoint=/bin/bash -e MAMBA_SKIP_ACTIVATE=1 "${MICROMAMBA_IMAGE}-cli-invocations"
+
+    # check that micromamba shell initializtion occurs when env activation is skipped
+    input="micromamba activate base; exit"
     echo -e "$input" | faketty \
         docker run --rm -it --entrypoint=/bin/bash -e MAMBA_SKIP_ACTIVATE=1 "${MICROMAMBA_IMAGE}-cli-invocations"
 }
