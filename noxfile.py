@@ -51,6 +51,7 @@ MYPY_DEPS = [
 ]
 
 py_files = set(glob.glob("*.py") + glob.glob("test/*.py")) - {"__init__.py"}
+shell_scripts = set(glob.glob("*.sh") + glob.glob("test/*.bats"))
 cwd = os.getcwd()
 
 
@@ -59,6 +60,17 @@ cwd = os.getcwd()
 def tests(session, base_image):
     """Tests generation and use of docker images"""
     session.run(os.path.join(cwd, "test_with_base_image.sh"), f"{base_image}", external=True)
+
+
+@nox.session(python=PY_VERSION)
+def shellcheck(session):
+    """lint all shell scripts with shellcheck"""
+    inputs = ["-x"] + list(shell_scripts)
+    try:
+        session.run("shellcheck", *inputs, external=True)
+    except FileNotFoundError:
+        session.run("docker", "run", "--rm", "-v", f"{cwd}:/mnt",
+                    "koalaman/shellcheck:stable", *inputs, external=True)
 
 
 # All sessions defined below here are for testing/linting python code

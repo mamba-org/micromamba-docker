@@ -32,8 +32,8 @@ jobs:
          - nvidia/cuda:11.3.1-base-ubuntu20.04
          - nvidia/cuda:11.3.1-base-ubuntu18.04
     steps:
-    - name: Install GNU parallel
-      run: sudo apt-get install --no-install-recommends -y parallel
+    - name: Install GNU parallel and shellcheck
+      run: sudo apt-get install --no-install-recommends -y parallel shellcheck
     - name: Setup nox
       uses: excitedleigh/setup-nox@4c62aee44396909396d10137c747b2633deeee76
     - name: Checkout source

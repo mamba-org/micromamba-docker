@@ -26,4 +26,5 @@ if which parallel > /dev/null; then
   FLAGS="${FLAGS} --jobs ${NUM_CPUS}"
 fi
 
-./test/bats/bin/bats $FLAGS $@ test/
+# shellcheck disable=SC2086
+./test/bats/bin/bats $FLAGS "$@" test/

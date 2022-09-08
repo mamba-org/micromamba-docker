@@ -15,8 +15,8 @@ jobs:
         uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
         with:
           submodules: recursive
-      - name: Install GNU parallel
-        run: sudo apt-get install --no-install-recommends -y parallel
+      - name: Install GNU parallel and shellcheck
+        run: sudo apt-get install --no-install-recommends -y parallel shellcheck
       - name: Setup nox
         uses: excitedleigh/setup-nox@4c62aee44396909396d10137c747b2633deeee76
       - name: Run tests
