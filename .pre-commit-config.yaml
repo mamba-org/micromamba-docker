@@ -1,0 +1,47 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.3.0
+  hooks:
+  - id: check-added-large-files
+  - id: check-ast
+  - id: check-byte-order-marker
+  - id: check-case-conflict
+  - id: check-merge-conflict
+  - id: check-symlinks
+  - id: check-json
+  - id: check-toml
+  - id: check-yaml
+  - id: debug-statements
+  - id: destroyed-symlinks
+  - id: detect-aws-credentials
+    args: ['--allow-missing-credentials']
+  - id: detect-private-key
+  - id: end-of-file-fixer
+  - id: no-commit-to-branch
+    args: ['--branch', 'main']
+  - id: requirements-txt-fixer
+  - id: trailing-whitespace
+  - id: mixed-line-ending
+  - id: check-shebang-scripts-are-executable
+- repo: https://github.com/zricethezav/gitleaks
+  rev: v8.9.0
+  hooks:
+    - id: gitleaks
+- repo: https://github.com/koalaman/shellcheck-precommit
+  rev: v0.8.0
+  hooks:
+  - id: shellcheck
+    args: ['-x']
+- repo: https://github.com/pre-commit/pygrep-hooks
+  rev: v1.9.0
+  hooks:
+  - id: python-check-blanket-noqa
+  - id: python-check-blanket-type-ignore
+- repo: https://github.com/markdownlint/markdownlint
+  rev: v0.11.0
+  hooks:
+  - id: markdownlint
+- repo: https://github.com/hadolint/hadolint
+  rev: v2.10.0
+  hooks:
+  - id: hadolint-docker

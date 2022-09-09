@@ -4,11 +4,12 @@ ARG BASE_IMAGE=debian:bullseye-slim
 # curl and openssl installed
 FROM --platform=$BUILDPLATFORM $BASE_IMAGE AS stage1
 ARG VERSION=0.25.1
-RUN apt-get update && apt-get install -y \
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN apt-get update && apt-get install -y --no-install-recommends \
     bzip2 \
     ca-certificates \
     curl \
-    && rm -rf /var/lib/{apt,dpkg,cache,log}
+    && rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
 ARG TARGETARCH
 RUN test "$TARGETARCH" = 'amd64' && export ARCH='64'; \
     test "$TARGETARCH" = 'arm64' && export ARCH='aarch64'; \

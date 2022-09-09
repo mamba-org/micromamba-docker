@@ -31,7 +31,7 @@ setup() {
     input="python --version; exit"
     echo -e "$input" | faketty \
         docker run --rm -it "${MICROMAMBA_IMAGE}-cli-invocations"
-    
+
     # Make sure that a similar command actually fails
     input="xyz --version; exit"
     ! echo -e "$input" | faketty \
@@ -44,7 +44,7 @@ setup() {
     input="python --version; exit"
     echo -e "$input" | faketty \
         docker run --rm -it --entrypoint=/bin/bash "${MICROMAMBA_IMAGE}-cli-invocations"
-    
+
     # Make sure that a similar command actually fails
     input="xyz --version; exit"
     ! echo -e "$input" | faketty \
@@ -103,7 +103,7 @@ setup() {
             python --version  \n
             exit  \n
         exit  \n
-    ' 
+    '
     echo -e "$input" | faketty \
         docker run --rm -it --user=root -e MAMBA_SKIP_ACTIVATE=1 "${MICROMAMBA_IMAGE}-cli-invocations"
 }
