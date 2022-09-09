@@ -28,10 +28,13 @@ additional shells is on our [road map](#road-map).
 
 ## Quick start
 
-The micromamba image comes with an empty environment named 'base'. Usually you
-will install software into this 'base' environment.
+The micromamba image comes with an empty environment named `base`. Usually you
+will install software into this `base` environment. The `mambaorg/micromamba`
+image includes any programs from its parent image, the `micromamba` binary, and
+SSL certificates. `micromamba` does not have a `python` dependency, and
+therefore the `mambaorg/micromamba` image does not include `python`.
 
-1. Define your desired conda environment in a yaml file:
+1. Define your desired conda environment in a yaml file (`env.yaml`)
 
     ```yaml
     # Using an environment name other than "base" is not recommended!
