@@ -1,25 +1,40 @@
 # micromamba-docker
 
-[Micromamba](https://github.com/mamba-org/mamba#micromamba) for fast building of small [conda](https://docs.conda.io/)-based containers.
+[Micromamba](https://github.com/mamba-org/mamba#micromamba) for fast building
+of small [conda](https://docs.conda.io/)-based containers.
 
-Images available on Dockerhub at [mambaorg/micromamba](https://hub.docker.com/r/mambaorg/micromamba). Source code on GitHub at [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/).
+Images available on Dockerhub at
+[mambaorg/micromamba](https://hub.docker.com/r/mambaorg/micromamba).
+Source code on GitHub at
+[mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/).
 
-"This is amazing. I switched CI for my projects to micromamba, and compared to using a miniconda docker image, this reduced build times more than 2x" -- A new micromamba-docker user
+"This is amazing. I switched CI for my projects to micromamba, and compared to
+using a miniconda docker image, this reduced build times more than 2x"
+-- A new micromamba-docker user
 
 ## Tags
 
 The set of tags includes permutations of:
- - full or partial version numbers corresponding to the `micromamba` version within the image
- - git commit hashes (`git-<HASH>`, where `<HASH>` is the first 7 characters of the git commit hash in [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/))
- - base image name (Debian or Ubuntu code name, such as `bullseye`, plus `-slim` if derived from a Debian `slim` image)
-   - For CUDA base images, this porition of the tag is set to`<ubuntu_code_name>-cuda-<cuda_version>`
 
-The tag `latest` is based on the `slim` image of the most recent Debian release, currently `bullseye-slim`.
+- full or partial version numbers corresponding to the `micromamba` version
+  within the image
+- git commit hashes (`git-<HASH>`, where `<HASH>` is the first 7 characters
+  of the git commit hash in
+  [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/))
+- base image name (Debian or Ubuntu code name, such as `bullseye`, plus
+  `-slim` if derived from a Debian `slim` image)
+- For CUDA base images, this porition of the tag is set to
+  `<ubuntu_code_name>-cuda-<cuda_version>`
 
-Tags that do not contain `git` are rolling tags, meaning these tags get reassigned to new images each time these images are built.
+The tag `latest` is based on the `slim` image of the most recent Debian
+release, currently `bullseye-slim`.
 
-To reproducibly build images derived from these `micromamba` images, the best practice is for the Dockerfile `FROM`
-command to reference the image's sha256 digest and not use tags.
+Tags that do not contain `git` are rolling tags, meaning these tags get
+reassigned to new images each time these images are built.
+
+To reproducibly build images derived from these `micromamba` images, the best
+practice is for the Dockerfile `FROM` command to reference the image's sha256
+digest and not use tags.
 
 ## Supported shells
 
@@ -49,7 +64,7 @@ therefore the `mambaorg/micromamba` image does not include `python`.
       - requests=2.25.1
     ```
 
-2. Copy the yaml file to your docker image and pass it to micromamba
+1. Copy the yaml file to your docker image and pass it to micromamba
 
     ```Dockerfile
     FROM mambaorg/micromamba:0.25.1
@@ -58,7 +73,7 @@ therefore the `mambaorg/micromamba` image does not include `python`.
         micromamba clean --all --yes
     ```
 
-3. Build your docker image
+1. Build your docker image
 
     The 'base' conda environment is automatically activated when the image
     is running.
@@ -72,10 +87,10 @@ therefore the `mambaorg/micromamba` image does not include `python`.
 
 ### Running commands in Dockerfile within the conda environment
 
-While the conda environment is automatically activated for `docker run ...` commands,
-it is not automatically activated during build. To `RUN` a command from a conda
-environment within a Dockerfile, as explained in detail in the next two subsections,
-you *must*:
+While the conda environment is automatically activated for `docker run ...`
+commands, it is not automatically activated during build. To `RUN` a command
+from a conda environment within a Dockerfile, as explained in detail in the
+next two subsections, you *must*:
 
 1. Set `ARG MAMBA_DOCKERFILE_ACTIVATE=1` to activate the conda environment
 1. Use the 'shell' form of the `RUN` command
@@ -169,7 +184,8 @@ docker run -it --rm -v $(pwd):/tmp mambaorg/micromamba:0.25.1 \
                  micromamba env export --name new_env --explicit > env.lock"
 ```
 
-The lockfile can then be used to install into the pre-existing `base` conda environment:
+The lockfile can then be used to install into the pre-existing `base` conda
+environment:
 
 ```Dockerfile
 FROM mambaorg/micromamba:0.25.1
@@ -206,7 +222,8 @@ RUN micromamba create --yes --file /tmp/env1.yaml && \
     micromamba clean --all --yes
 ```
 
-You can then set the active environment by passing the `ENV_NAME` environment variable like:
+You can then set the active environment by passing the `ENV_NAME`
+environment variable like:
 
 ```bash
 docker run -e ENV_NAME=env2 my_multi_conda_image
@@ -214,13 +231,21 @@ docker run -e ENV_NAME=env2 my_multi_conda_image
 
 ### Changing the user id or name
 
-The default username is stored in the environment variable `MAMBA_USER`, and is currently `mambauser`. (Before 2022-01-13 it was `micromamba`, and before 2021-06-30 it was `root`.) Micromamba-docker can be run with any UID/GID by passing the `docker run ...` command the `--user=UID:GID` parameters. Running with `--user=root` is supported.
+The default username is stored in the environment variable `MAMBA_USER`, and
+is currently `mambauser`. (Before 2022-01-13 it was `micromamba`, and before
+2021-06-30 it was `root`.) Micromamba-docker can be run with any UID/GID by
+passing the `docker run ...` command the `--user=UID:GID` parameters.
+Running with `--user=root` is supported.
 
-There are two supported methods for changing the default username to something other than `mambauser`:
+There are two supported methods for changing the default username to something
+other than `mambauser`:
 
-1. If rebuilding this image from scratch, the default username `mambauser` can be adjusted by passing `--build-arg MAMBA_USER=new-username` to the `docker build` command. User id and group id can be adjusted similarly by passing `--build-arg MAMBA_USER_ID=new-id --build-arg MAMBA_USER_GID=new-gid`
+1. If rebuilding this image from scratch, the default username `mambauser`
+   can be adjusted by passing `--build-arg MAMBA_USER=new-username` to the
+   `docker build` command. User id and group id can be adjusted similarly by
+   passing `--build-arg MAMBA_USER_ID=new-id --build-arg MAMBA_USER_GID=new-gid`
 
-2. When building an image `FROM` an existing micromamba image,
+1. When building an image `FROM` an existing micromamba image,
 
     ```Dockerfile
     FROM mambaorg/micromamba:0.25.1
@@ -230,8 +255,10 @@ There are two supported methods for changing the default username to something o
     USER root
     RUN usermod "--login=${NEW_MAMBA_USER}" "--home=/home/${NEW_MAMBA_USER}" \
             --move-home "-u ${NEW_MAMBA_USER_ID}" "${MAMBA_USER}" && \
-        groupmod "--new-name=${NEW_MAMBA_USER}" "-g ${NEW_MAMBA_USER_GID}" "${MAMBA_USER}" && \
-        # Update the expected value of MAMBA_USER for the _entrypoint.sh consistency check.
+        groupmod "--new-name=${NEW_MAMBA_USER}" \
+                 "-g ${NEW_MAMBA_USER_GID}" "${MAMBA_USER}" && \
+        # Update the expected value of MAMBA_USER for the
+        # _entrypoint.sh consistency check.
         echo "${NEW_MAMBA_USER}" > "/etc/arg_mamba_user" && \
         :
     ENV MAMBA_USER=$NEW_MAMBA_USER
@@ -240,11 +267,12 @@ There are two supported methods for changing the default username to something o
 
 ### Disabling automatic activation
 
-It is assumed that users will want their environment automatically activated whenever
-running this container. This behavior can be disabled by setting the environment
-variable `MAMBA_SKIP_ACTIVATE=1`.
+It is assumed that users will want their environment automatically activated
+whenever running this container. This behavior can be disabled by setting
+the environment variable `MAMBA_SKIP_ACTIVATE=1`.
 
-For example, to open an interactive bash shell without activating the environment:
+For example, to open an interactive bash shell without activating the
+environment:
 
 ```bash
 docker run --rm -it -e MAMBA_SKIP_ACTIVATE=1 mambaorg/micromamba bash
@@ -254,20 +282,24 @@ docker run --rm -it -e MAMBA_SKIP_ACTIVATE=1 mambaorg/micromamba bash
 
 At container runtime, activation occurs by default at two possible points:
 
-1. The end of the `~/.bashrc` file, which is loaded by interactive non-login Bash shells.
-2. The `ENTRYPOINT` script, which is automatically prepended to `docker run` commands.
+1. The end of the `~/.bashrc` file, which is loaded by interactive non-login
+   Bash shells.
+1. The `ENTRYPOINT` script, which is automatically prepended to `docker run`
+   commands.
 
-The activation in `~/.bashrc` ensures that the environment is activated in interactive
-terminal sessions, even when switching between users.
+The activation in `~/.bashrc` ensures that the environment is activated in
+interactive terminal sessions, even when switching between users.
 
-The `ENTRYPOINT` script ensures that the environment is also activated for one-off
-commands when Docker is used non-interactively.
+The `ENTRYPOINT` script ensures that the environment is also activated for
+one-off commands when Docker is used non-interactively.
 
-Setting `MAMBA_SKIP_ACTIVATE=1` disables both of these automatic activation methods.
+Setting `MAMBA_SKIP_ACTIVATE=1` disables both of these automatic activation
+methods.
 
 ### Adding micromamba to an existing Docker image
 
-Adding micromamba functionality to an existing Docker image can be accomplished like this:
+Adding micromamba functionality to an existing Docker image can be accomplished
+like this:
 
 ```Dockerfile
 # bring in the micromamba image so we can copy files from it
@@ -314,32 +346,45 @@ RUN micromamba install --yes --name base --channel conda-forge \
 
 ## Minimizing final image size
 
-Uwe Korn has a nice [blog post on making small containers containing conda environments](https://uwekorn.com/2021/03/01/deploying-conda-environments-in-docker-how-to-do-it-right.html) that is a good resource. He uses mamba instead of micromamba, but the general concepts still apply when using micromamba.
+Uwe Korn has a nice
+[blog post on making small containers containing conda environments](https://uwekorn.com/2021/03/01/deploying-conda-environments-in-docker-how-to-do-it-right.html)
+that is a good resource. He uses mamba instead of micromamba, but the
+general concepts still apply when using micromamba.
 
 ## Support
 
-Please open an [issue](https://github.com/mamba-org/micromamba-docker/issues) if the micromamba docker image does not behave as you expect. For issues about the micromamba program, please use [the mamba issue tracker](https://github.com/mamba-org/mamba/issues).
+Please open an [issue](https://github.com/mamba-org/micromamba-docker/issues)
+if the micromamba docker image does not behave as you expect. For issues about
+the micromamba program, please use
+[the mamba issue tracker](https://github.com/mamba-org/mamba/issues).
 
 ## Contributing
 
-This project is a community effort and contributions are welcome. Best practice is to discuss proposed contributions on the [issue tracker](https://github.com/mamba-org/micromamba-docker/issues) before you start writing code.
+This project is a community effort and contributions are welcome. Best practice
+is to discuss proposed contributions on the
+[issue tracker](https://github.com/mamba-org/micromamba-docker/issues) before
+you start writing code.
 
 ## Development
 
 ### Testing
 
-The [Bats](https://github.com/bats-core/bats-core) testing framework is used to test the micromamba docker
-images and derived images. When cloning this repo you'll want to use `git clone --recurse-submodules ...`,
-which will bring in the git sub-modules for Bats. [Nox](https://nox.thea.codes/) is used to
-automate tests and must be installed separately. To execute the test suite on all base
-images, run `nox` in the top-level directory of the repo. To execute the test suite on a single
-base image, run `nox --session "tests(base_image='debian:bullseye-slim')"`. If GNU `parallel`
-is available on the `$PATH`, then the test suite will be run in parallel using all logical CPU cores
-available.
+The [Bats](https://github.com/bats-core/bats-core) testing framework is used
+to test the micromamba docker images and derived images. When cloning this
+repo you'll want to use `git clone --recurse-submodules ...`,
+which will bring in the git sub-modules for Bats.
+[Nox](https://nox.thea.codes/) is used to automate tests and must be
+installed separately. To execute the test suite on all base
+images, run `nox` in the top-level directory of the repo. To execute the test
+suite on a single base image, run
+`nox --session "tests(base_image='debian:bullseye-slim')"`.
+If GNU `parallel` is available on the `$PATH`, then the test suite will be run
+in parallel using all logical CPU cores available.
 
 ### Road map
 
-The current road map for expanding the number of base images and supported shells is as follows:
+The current road map for expanding the number of base images and supported
+shells is as follows:
 
 1. Add non-Debian based distributions that have community interest
 1. Add support for non-`bash` shells based on community interest
@@ -349,8 +394,20 @@ base images such that automated test and build occur for all images produced.
 
 ### Policies
 
-1. Entrypoint script should not write to files in the home directory. On some container execution systems, the host home directory is automatically mounted and we don't want to mess up or pollute the home directory on the host system.
+1. Entrypoint script should not write to files in the home directory. On some
+   container execution systems, the host home directory is automatically
+   mounted and we don't want to mess up or pollute the home directory on the
+   host system.
 
 ### Parent container choice
 
-As noted in the [micromamba documentation](https://github.com/mamba-org/mamba/blob/master/README.md#micromamba), the official micromamba binaries require glibc. Therefore Alpine Linux does not work naively. To keep the image small, a Debian slim image is used as the default parent image. On going efforts to generate a fully statically linked micromamba binary are documented in [mamba GitHub issue #572](https://github.com/mamba-org/mamba/issues/572), but most conda packages also depend on glibc. Therefore using a statically linked micromamba would require either a method to install glibc (or an equivalent) from a conda package or conda packages that are statically linked against glibc.
+As noted in the
+[micromamba documentation](https://github.com/mamba-org/mamba/blob/master/README.md#micromamba),
+the official micromamba binaries require glibc. Therefore Alpine Linux does not
+work naively. To keep the image small, a Debian slim image is used as the
+default parent image. On going efforts to generate a fully statically linked
+micromamba binary are documented in
+[mamba GitHub issue #572](https://github.com/mamba-org/mamba/issues/572), but
+most conda packages also depend on glibc. Therefore using a statically linked
+micromamba would require either a method to install glibc (or an equivalent)
+from a conda package or conda packages that are statically linked against glibc.
