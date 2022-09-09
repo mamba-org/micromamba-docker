@@ -23,8 +23,8 @@ The set of tags includes permutations of:
   [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/))
 - base image name (Debian or Ubuntu code name, such as `bullseye`, plus
   `-slim` if derived from a Debian `slim` image)
-- For CUDA base images, this porition of the tag is set to
-  `<ubuntu_code_name>-cuda-<cuda_version>`
+  - For CUDA base images, this porition of the tag is set to
+    `<ubuntu_code_name>-cuda-<cuda_version>`
 
 The tag `latest` is based on the `slim` image of the most recent Debian
 release, currently `bullseye-slim`.
