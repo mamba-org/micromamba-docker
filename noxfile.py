@@ -74,7 +74,7 @@ MYPY_DEPS = [
 ]
 
 py_files = set(glob.glob("*.py") + glob.glob("test/*.py")) - {"__init__.py"}
-shell_scripts = set(glob.glob("*.sh") + glob.glob("test/*.bats"))
+shell_scripts = set(glob.glob("*.sh") + glob.glob("test/*.bats") + glob.glob("test/test_helper/*.bash"))
 
 
 @nox.session(python=PY_VERSION)

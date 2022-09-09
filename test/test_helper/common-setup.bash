@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 _common_setup() {
     load 'test_helper/bats-support/load'
     load 'test_helper/bats-assert/load'
@@ -19,6 +17,7 @@ _common_setup() {
     # Simulate TTY input for the docker run command
     # https://stackoverflow.com/questions/1401002/
     faketty () {
+      local tmp cmd err
       # Create a temporary file for storing the status code
       tmp=$(mktemp)
 
@@ -39,15 +38,15 @@ _common_setup() {
 
       # Ensure that the status code was written to the temporary file or
       # fail with status 99
-      [ -s $tmp ] || return 99
+      [ -s "$tmp" ] || return 99
 
       # Collect the status code from the temporary file
-      err=$(cat $tmp)
+      err=$(cat "$tmp")
 
       # Remove the temporary file
-      rm -f $tmp
+      rm -f "$tmp"
 
       # Return the status code
-      return $err
+      return "$err"
     }
 }
