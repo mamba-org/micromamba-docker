@@ -16,7 +16,7 @@ The set of tags includes permutations of:
 
 The tag `latest` is based on the `slim` image of the most recent Debian release, currently `bullseye-slim`.
 
-Tags that do not contain `git` are rolling tags, meaning these tags get reassigned to new images each time these images are built. 
+Tags that do not contain `git` are rolling tags, meaning these tags get reassigned to new images each time these images are built.
 
 To reproducibly build images derived from these `micromamba` images, the best practice is for the Dockerfile `FROM`
 command to reference the image's sha256 digest and not use tags.
@@ -273,7 +273,7 @@ Adding micromamba functionality to an existing Docker image can be accomplished 
 # bring in the micromamba image so we can copy files from it
 FROM mambaorg/micromamba:0.25.1 as micromamba
 
-# This is the image we are going add micromaba to: 
+# This is the image we are going add micromaba to:
 FROM tomcat:9-jdk17-temurin-focal
 
 ARG MAMBA_USER=mamba

@@ -79,7 +79,7 @@ jobs:
         # major.minor-base_image
         # major-base_image
         # git-commit-base_image
-        # git-commit 
+        # git-commit
         tags: |
             type=raw,value=latest,priority=1000,enable=${{ steps.set_image_variables.outputs.is_default }}
             type=raw,value=${{ steps.set_image_variables.outputs.tag }},priority=900
