@@ -381,6 +381,9 @@ suite on a single base image, run
 If GNU `parallel` is available on the `$PATH`, then the test suite will be run
 in parallel using all logical CPU cores available.
 
+[Pre-commit](https://pre-commit.com/) should be enabled after cloning the
+repo by executing `pre-commit install` in the root of the repo.
+
 ### Road map
 
 The current road map for expanding the number of base images and supported
