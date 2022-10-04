@@ -1,5 +1,8 @@
 # Change Log
 
+This change log covers changes to the docker image and does not include
+[changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
+
 ## 8 Sept 2022
 
 - Automatically perform shell initialization for `conda` and `mamba` if they
