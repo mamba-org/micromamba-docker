@@ -139,3 +139,45 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         repository: mambaorg/micromamba
+  tag_and_release:
+    if: github.repository == 'mamba-org/micromamba-docker'
+    needs: build_docker_image_and_push
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+    - name: Get micromamba version number
+      id: get_version
+      run:
+       - echo "::set-output name=version::$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)"
+       - echo "::set-output name=leading_v_version::v$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)"
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+    - name: Get last tag
+      id: last_tag
+      uses: mathieudutour/github-tag-action@e923a6115f1a2ccc3404e26ec2535092a9fd5536
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        dry_run: true
+    - name: Create git tag
+      if: steps.last_tag.outputs.previous_tag != steps.get_version.outputs.leading_v_version
+      id: create_tag
+      uses: mathieudutour/github-tag-action@e923a6115f1a2ccc3404e26ec2535092a9fd5536
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        custom_tag: ${{ steps.get_version.outputs.version }}
+        create_annotated_tag: true
+    - name: Create a GitHub release
+      if: steps.last_tag.outputs.previous_tag != steps.get_version.outputs.leading_v_version
+      uses: ncipollo/release-action@b072aaafe138c5ecf1c39f714a76bce6f0d0bc9c
+      with:
+        tag: ${{ steps.create_tag.outputs.new_tag }}
+        name: micromamba ${{ steps.create_tag.outputs.new_tag }}
+        body: |
+          micromamba ${{ steps.create_tag.outputs.new_tag }} - ${{ steps.data.outputs.date }}
+
+          See [release notes for mamba/libmamba/micromamba](github.com/mamba-org/mamba) for non-docker changes.
+
+          Changes to docker image:
+          - micromamba updated to ${{ steps.create_tag.outputs.new_tag }}
