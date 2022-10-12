@@ -148,9 +148,9 @@ jobs:
       uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
     - name: Get micromamba version number
       id: get_version
-      run:
-       - echo "::set-output name=version::$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)"
-       - echo "::set-output name=leading_v_version::v$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)"
+      run: |
+        echo "::set-output name=version::$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)"
+        echo "::set-output name=leading_v_version::v$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)"
     - name: Get current date
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
