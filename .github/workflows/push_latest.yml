@@ -177,7 +177,7 @@ jobs:
         body: |
           micromamba ${{ steps.create_tag.outputs.new_tag }} - ${{ steps.data.outputs.date }}
 
-          See [release notes for mamba/libmamba/micromamba](github.com/mamba-org/mamba) for non-docker changes.
+          See [release notes for mamba/libmamba/micromamba](https://github.com/mamba-org/mamba/releases) for non-docker changes.
 
           Changes to docker image:
           - micromamba updated to ${{ steps.create_tag.outputs.new_tag }}
