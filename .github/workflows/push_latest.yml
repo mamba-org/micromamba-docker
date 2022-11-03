@@ -175,9 +175,10 @@ jobs:
         tag: ${{ steps.create_tag.outputs.new_tag }}
         name: micromamba ${{ steps.create_tag.outputs.new_tag }}
         body: |
-          micromamba ${{ steps.create_tag.outputs.new_tag }} - ${{ steps.data.outputs.date }}
-          
+          micromamba ${{ steps.create_tag.outputs.new_tag }} - ${{ steps.date.outputs.date }}
+
           See [release notes for mamba/libmamba/micromamba](https://github.com/mamba-org/mamba/releases) for non-docker changes.
-          
+
           Changes to docker image:
           - micromamba updated to ${{ steps.create_tag.outputs.new_tag }}
+          - If this line exists, then these releases notes still need to be manually updated.
