@@ -368,7 +368,7 @@ docker exec <container> bash -i -c "<command>"
 ```
 
 Finally, you can mess with the `PATH` at build-time to approximate an activated
-environment, but this may not work for all cases:
+environment during `docker exec`, but this may not work for all cases:
 
 ```Dockerfile
 ENV PATH "$MAMBA_ROOT_PREFIX/bin:$PATH"
