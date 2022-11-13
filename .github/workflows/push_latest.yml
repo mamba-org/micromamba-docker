@@ -65,8 +65,7 @@ jobs:
           echo "tag=$(echo "$IMAGE" | cut -d: -f2)" >> $GITHUB_STATE
           echo 'platforms=linux/amd64,linux/arm64,linux/ppc64le' >> $GITHUB_STATE
         fi
-        echo "is_default=$([ "$IMAGE" = "$DEFAULT_BASE_IMAGE" ]
-                           && echo true || echo false)" >> $GITHUB_STATE
+        echo "is_default=$([ "$IMAGE" = "$DEFAULT_BASE_IMAGE" ] && echo true || echo false)" >> $GITHUB_STATE
     - name: Get docker metadata
       id: get_metadata
       uses: docker/metadata-action@57396166ad8aefe6098280995947635806a0e6ea
