@@ -13,7 +13,7 @@ jobs:
     - name: Checkout source
       uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
     - name: Set up Python
-      uses: actions/setup-python@7f80679172b057fc5e90d70d197929d454754a5a
+      uses: actions/setup-python@47c4a7af1d72897a511c975c95a5335bb6329dec
       with:
         python-version: "3.10"
     - name: Check available versions
@@ -30,7 +30,7 @@ jobs:
       run: ./update.sh ${{ steps.check_version.outputs.latest_version }}
     - name: commit updated files
       if: steps.check_version.outputs.do_pr == 'True'
-      uses: peter-evans/create-pull-request@f22a7da129c901513876a2380e2dae9f8e145330
+      uses: peter-evans/create-pull-request@ee93d78b55ada32aa74b5e9957aac9c2523dd22c
       with:
         branch: "update-${{ steps.check_version.outputs.latest_version }}"
         commit-message: "Update to micromamba version ${{ steps.check_version.outputs.latest_version }}"
