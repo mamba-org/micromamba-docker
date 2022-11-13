@@ -23,8 +23,8 @@ jobs:
         CHECK_OUT="$(python check_version.py)"
         LATEST_VERSION="$(echo "$CHECK_OUT" | cut -d, -f1)"
         DO_PR="$(echo "$CHECK_OUT" | cut -d, -f2)"
-        echo "latest_version=${LATEST_VERSION}" >> $GITHUB_STATE
-        echo "do_pr=${DO_PR}" >> $GITHUB_STATE
+        echo "latest_version=${LATEST_VERSION}" >> $GITHUB_OUTPUT
+        echo "do_pr=${DO_PR}" >> $GITHUB_OUTPUT
     - name: run update.sh
       if: steps.check_version.outputs.do_pr == 'True'
       run: ./update.sh ${{ steps.check_version.outputs.latest_version }}
