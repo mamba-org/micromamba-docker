@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+        uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
         with:
           submodules: recursive
       - name: Install GNU parallel
@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+        uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
       - name: Install curl and xz-utils
         run: sudo apt-get install --no-install-recommends -y curl xz-utils
       - name: Install shellcheck
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+        uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
       - name: Setup nox
         uses: daisylb/setup-nox@c375841575e07f30359a5843bf0bffa7aa596782
       - name: Run tests
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+        uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
       - name: Setup nox
         uses: daisylb/setup-nox@c375841575e07f30359a5843bf0bffa7aa596782
       - name: Run tests
@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+        uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
       - name: Setup nox
         uses: daisylb/setup-nox@c375841575e07f30359a5843bf0bffa7aa596782
       - name: Run tests
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+        uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
       - name: Setup nox
         uses: daisylb/setup-nox@c375841575e07f30359a5843bf0bffa7aa596782
       - name: Run tests
@@ -78,7 +78,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+        uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
       - name: Setup nox
         uses: daisylb/setup-nox@c375841575e07f30359a5843bf0bffa7aa596782
       - name: Run tests
