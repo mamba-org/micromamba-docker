@@ -42,10 +42,10 @@ jobs:
         submodules: recursive
     - name: Get short git hash
       id: short_hash
-      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
     - name: Get micromamba version
       id: get_version
-      run: echo "::set-output name=version::$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)"
+      run: echo "version=$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)" >> $GITHUB_OUTPUT
     - name: Set image variables
       id: set_image_variables
       env:
@@ -59,13 +59,13 @@ jobs:
           ubuntu_version_number="${IMAGE##*-ubuntu}"
           tag="${IMAGE##*:}"
           cuda_version="${tag%%-*}"
-          echo "::set-output name=tag::${code_name[$ubuntu_version_number]}-cuda-${cuda_version}"
-          echo "::set-output name=platforms::linux/amd64,linux/arm64"
+          echo "tag=${code_name[$ubuntu_version_number]}-cuda-${cuda_version}" >> $GITHUB_OUTPUT
+          echo "platforms=linux/amd64,linux/arm64" >> $GITHUB_OUTPUT
         else
-          echo "::set-output name=tag::$(echo "$IMAGE" | cut -d: -f2)"
-          echo "::set-output name=platforms::linux/amd64,linux/arm64,linux/ppc64le"
+          echo "tag=$(echo "$IMAGE" | cut -d: -f2)" >> $GITHUB_OUTPUT
+          echo "platforms=linux/amd64,linux/arm64,linux/ppc64le" >> $GITHUB_OUTPUT
         fi
-        echo "::set-output name=is_default::$([ "$IMAGE" = "$DEFAULT_BASE_IMAGE" ] && echo true || echo false)"
+        echo "is_default=$([ "$IMAGE" = "$DEFAULT_BASE_IMAGE" ] && echo true || echo false)" >> $GITHUB_OUTPUT
     - name: Get docker metadata
       id: get_metadata
       uses: docker/metadata-action@8d56fe93cf3fd680736a906389438c1ed74d75f7
@@ -151,11 +151,11 @@ jobs:
     - name: Get micromamba version number
       id: get_version
       run: |
-        echo "::set-output name=version::$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)"
-        echo "::set-output name=leading_v_version::v$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)"
+        echo "version=$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)" >> $GITHUB_OUTPUT
+        echo "leading_v_version=v$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)" >> $GITHUB_OUTPUT
     - name: Get current date
       id: date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
     - name: Get last tag
       id: last_tag
       uses: mathieudutour/github-tag-action@v6.0
