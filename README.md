@@ -12,6 +12,17 @@ Source code on GitHub at
 using a miniconda docker image, this reduced build times more than 2x"
 -- A new micromamba-docker user
 
+## Table of Contents
+
+- [Tags](#tags)
+- [Supported shells](#supported-shells)
+- [Quick start](#quick-start)
+- [Advanced Usages](#advanced-usages)
+- [Minimizing final image size](#minimizing-final-image-size)
+- [Support](#support)
+- [Contributing](#contributing)
+- [Development](#development)
+
 ## Tags
 
 The set of tags includes permutations of:
@@ -346,13 +357,14 @@ RUN micromamba install --yes --name base --channel conda-forge \
 
 ### On `docker exec`
 
-Your experience using `docker exec` may not match your expectations for automatic
-environment activation (#128, #233). `docker exec` executes the given command directly,
-without an entrypoint or login/interactive shell. There is no known way to automatically
-(and correctly) trigger conda environment activation for a command run through `docker exec`.
+Your experience using `docker exec` may not match your expectations for
+automatic environment activation (#128, #233). `docker exec` executes the given
+command directly, without an entrypoint or login/interactive shell. There is no
+known way to automatically (and correctly) trigger conda environment activation
+for a command run through `docker exec`.
 
-The *recommended* method to explicitly activate your environment when using `docker exec`
-is:
+The *recommended* method to explicitly activate your environment when using
+`docker exec` is:
 
 ```bash
 docker exec <container> micromamba run -n <environment_name> <command>
@@ -360,19 +372,20 @@ docker exec <container> micromamba run -n <environment_name> <command>
 
 If you want to use the base environment, you can omit `-n <environment_name>`.
 
-An alternative method to trigger activation is to explicitly run your command within an
-interactive `bash` shell with `-i`:
+An alternative method to trigger activation is to explicitly run your command
+within an interactive `bash` shell with `-i`:
 
 ```bash
 docker exec <container> bash -i -c "<command>"
 ```
 
 Finally, you can modify the `PATH` at build-time to approximate an activated
-environment during `docker exec`: 
+environment during `docker exec`:
 
 ```Dockerfile
 ENV PATH "$MAMBA_ROOT_PREFIX/bin:$PATH"  # WARNING - not a prefered method
 ```
+
 However, this will not work in all cases, such as multiple conda environments within
 a single image.
 
