@@ -35,9 +35,9 @@ jobs:
     - name: Install GNU parallel and shellcheck
       run: sudo apt-get install --no-install-recommends -y parallel shellcheck
     - name: Setup nox
-      uses: excitedleigh/setup-nox@4c62aee44396909396d10137c747b2633deeee76
+      uses: daisylb/setup-nox@c375841575e07f30359a5843bf0bffa7aa596782
     - name: Checkout source
-      uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+      uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
       with:
         submodules: recursive
     - name: Get short git hash
@@ -68,7 +68,7 @@ jobs:
         echo "is_default=$([ "$IMAGE" = "$DEFAULT_BASE_IMAGE" ] && echo true || echo false)" >> $GITHUB_OUTPUT
     - name: Get docker metadata
       id: get_metadata
-      uses: docker/metadata-action@8d56fe93cf3fd680736a906389438c1ed74d75f7
+      uses: docker/metadata-action@57396166ad8aefe6098280995947635806a0e6ea
       with:
         images: mambaorg/micromamba
         flavor: latest=false
@@ -94,15 +94,15 @@ jobs:
             type=sha,prefix=git-,suffix=-${{ steps.set_image_variables.outputs.tag }},priority=200
             type=sha,prefix=git-,enable=${{ steps.set_image_variables.outputs.is_default }},priority=100
     - name: Setup docker buildx
-      uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
+      uses: docker/setup-buildx-action@39a1a82492fd1ad19af19d61b5f748e4cb6cd1af
     - name: Login to DockerHub
-      uses: docker/login-action@17f28ab24d0d2832d5ff23a1409bbfc373ebcb96
+      uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Build Docker images
       id: docker_build
-      uses: docker/build-push-action@fe02965b4878556fce19e4f0aa608d7d09ed629b
+      uses: docker/build-push-action@175d02bffea74695e96b351069ac938b338802f9
       with:
         platforms: ${{ steps.set_image_variables.outputs.platforms }}
         push: false
@@ -118,7 +118,7 @@ jobs:
       run: nox -s "image_tests(base_image='${IMAGE}')"
     - name: Push Docker images
       id: docker_push
-      uses: docker/build-push-action@fe02965b4878556fce19e4f0aa608d7d09ed629b
+      uses: docker/build-push-action@175d02bffea74695e96b351069ac938b338802f9
       with:
         platforms: ${{ steps.set_image_variables.outputs.platforms }}
         push: true
@@ -134,9 +134,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout source
-      uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+      uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
     - name: Copy GitHub README.md to Dockerhub
-      uses: peter-evans/dockerhub-description@4fdf85281512c62ac4fec8302eb0305cd9efe8c3
+      uses: peter-evans/dockerhub-description@93b93397c27ed52b4055b8c6b2f8d92456ab3c56
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -147,7 +147,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout source
-      uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+      uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
     - name: Get micromamba version number
       id: get_version
       run: |
@@ -158,21 +158,21 @@ jobs:
       run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
     - name: Get last tag
       id: last_tag
-      uses: mathieudutour/github-tag-action@v6.0
+      uses: mathieudutour/github-tag-action@d745f2e74aaf1ee82e747b181f7a0967978abee0
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         dry_run: true
     - name: Create git tag
       if: steps.last_tag.outputs.previous_tag != steps.get_version.outputs.leading_v_version
       id: create_tag
-      uses: mathieudutour/github-tag-action@v6.0
+      uses: mathieudutour/github-tag-action@d745f2e74aaf1ee82e747b181f7a0967978abee0
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         custom_tag: ${{ steps.get_version.outputs.version }}
         create_annotated_tag: true
     - name: Create a GitHub release
       if: steps.last_tag.outputs.previous_tag != steps.get_version.outputs.leading_v_version
-      uses: ncipollo/release-action@b072aaafe138c5ecf1c39f714a76bce6f0d0bc9c
+      uses: ncipollo/release-action@443f2c0c7964f224ff9da4cff09b25420f306c37
       with:
         tag: ${{ steps.create_tag.outputs.new_tag }}
         name: micromamba ${{ steps.create_tag.outputs.new_tag }}
