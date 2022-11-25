@@ -150,7 +150,6 @@ jobs:
           printf '* '
           jq  -r '.target."docker-metadata-action".tags[]' "$1" \
           | sed 's%\(.*:\(.*\)\)%`[\2](https://hub.docker.com/r/\1)`%' \
-          | sort \
           | tr '\n' ','
           printf '\n\n'
         }
