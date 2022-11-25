@@ -148,9 +148,9 @@ jobs:
       run: |
         function process_tags {
           jq  -r '.target."docker-metadata-action".tags[]' "$1" \
-          | sed 's%\(.*:\(.*\)\)%[\2](https://hub.docker.com/r/\1)%' \
+          | sed 's%\(.*:\(.*\)\)%`[\2](https://hub.docker.com/r/\1)`%' \
           | sort \
-          | tr '\n' ' '
+          | tr '\n' ','
           printf '\n\n'
         }
         function get_tags_markdown {
