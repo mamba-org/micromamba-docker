@@ -126,6 +126,10 @@ jobs:
           BASE_IMAGE=${{ matrix.image }}
         tags: ${{ steps.get_metadata.outputs.tags }}
         labels: ${{ steps.get_metadata.outputs.labels}}
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{ steps.set_image_variables.outputs.tag }}
+        path: ${{ steps.get_metadata.outputs.bake-file }}
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
   update_dockerhub_discription:
@@ -135,12 +139,46 @@ jobs:
     steps:
     - name: Checkout source
       uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
+    - name: Get artifacts
+      uses: actions/download-artifact@v3
+      with:
+        path: artifacts
+    - name: Format tags
+      id: format_tags
+      run: |
+        function process_tags {
+          jq  -r '.target."docker-metadata-action".tags[]' "$1" \
+          | sed 's%\(.*:\(.*\)\)%[\2](https://hub.docker.com/r/\1)%' \
+          | sort \
+          | tr '\n' ' '
+          printf '\n\n'
+        }
+        function get_tags_markdown {
+          local latest
+          # want 'latest' image to be listed first
+          latest="$(grep -Rl ':latest"' */*/*.json)"
+          process_tags "${latest}"
+          find . -name docker-metadata-action-bake.json \
+          | grep -v "${latest}" \
+          | while read file; do process_tags "$file"; done
+        }
+        echo "TAGS_MARKDOWN<<EOF" >> $GITHUB_ENV
+        echo "### Recent Tags" >> $GITHUB_ENV
+        echo "" >> $GITHUB_ENV
+        get_tags_markdown >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+    - name: generate README_with_tags.md
+      run: |
+        awk -v r="${{ env.TAGS_MARKDOWN }}" \
+            '{gsub(/<!-- DOCKER_TAGS_INSERTION_POINT -->/,r)}1' \
+            README.md > README_with_tags.md
     - name: Copy GitHub README.md to Dockerhub
       uses: peter-evans/dockerhub-description@93b93397c27ed52b4055b8c6b2f8d92456ab3c56
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         repository: mambaorg/micromamba
+        readme-filepath: ./README_with_tags.md
   tag_and_release:
     if: github.repository == 'mamba-org/micromamba-docker'
     needs: build_docker_image_and_push
