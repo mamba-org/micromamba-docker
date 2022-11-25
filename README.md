@@ -47,6 +47,8 @@ To reproducibly build images derived from these `micromamba` images, the best
 practice is for the Dockerfile `FROM` command to reference the image's sha256
 digest and not use tags.
 
+<!-- DOCKER_TAGS_INSERTION_POINT -->
+
 ## Supported shells
 
 We have been focused on supporting use of the `bash` shell. Support for
