@@ -81,7 +81,7 @@ shell_scripts = set(glob.glob("*.sh") + glob.glob("test/*.bats") + glob.glob("te
 @nox.parametrize("base_image", BASE_IMAGES)
 def image_tests(session, base_image):
     """Tests generation and use of docker images"""
-    session.run(REPO_DIR / "test_with_base_image.sh", f"{base_image}", external=True)
+    session.run(str(REPO_DIR / "test_with_base_image.sh"), f"{base_image}", external=True)
 
 
 @nox.session(python=PY_VERSION)
