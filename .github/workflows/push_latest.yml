@@ -149,7 +149,7 @@ jobs:
         function process_tags {
           printf '* '
           jq  -r '.target."docker-metadata-action".tags[]' "$1" \
-          | sed 's%\(.*:\(.*\)\)%\`[\2](https://hub.docker.com/r/\1)\`%' \
+          | sed 's%\(.*:\(.*\)\)%`[\2](https://hub.docker.com/r/\1)`%' \
           | tr '\n' ','
           printf '\n\n'
         }
@@ -169,7 +169,7 @@ jobs:
         echo "EOF" >> $GITHUB_ENV
     - name: generate README_with_tags.md
       run: |
-        awk -v r="${{ env.TAGS_MARKDOWN }}" \
+        awk -v r='${{ env.TAGS_MARKDOWN }}' \
             '{gsub(/<!-- DOCKER_TAGS_INSERTION_POINT -->/,r)}1' \
             README.md > README_with_tags.md
     - name: Copy GitHub README.md to Dockerhub
