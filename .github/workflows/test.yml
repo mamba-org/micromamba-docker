@@ -9,7 +9,7 @@ on:
 jobs:
   default_base_image_tests:
     name: default base_image tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
@@ -23,7 +23,7 @@ jobs:
         run: nox -s "default_base_image_tests"
   shellcheck:
     name: shellcheck
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
@@ -35,7 +35,7 @@ jobs:
         run: ./shellcheck -x *.sh test/*.bats
   pylint:
     name: pylint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
@@ -45,7 +45,7 @@ jobs:
         run: nox -s "pylint"
   flake8:
     name: flake8
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
@@ -55,7 +55,7 @@ jobs:
         run: nox -s "flake8"
   mypy:
     name: mypy
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
@@ -65,7 +65,7 @@ jobs:
         run: nox -s "mypy"
   black:
     name: black
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
@@ -75,7 +75,7 @@ jobs:
         run: nox -s "black"
   pytest:
     name: pytest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
