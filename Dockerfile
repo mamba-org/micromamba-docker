@@ -4,8 +4,13 @@ ARG BASE_IMAGE=debian:bullseye-slim
 # curl and openssl installed
 FROM --platform=$BUILDPLATFORM $BASE_IMAGE AS stage1
 ARG VERSION=1.1.0
-RUN if grep -q ID=alpine /etc/os-release; then \
-       apk add bash curl bzip2; \
+
+# hadolint ignore=DL3018
+RUN if grep -q '^ID=alpine$' /etc/os-release; then \
+       apk add --no-cache \
+         bash \
+         bzip2 \
+         curl; \
     else \
       apt-get update && apt-get install -y --no-install-recommends \
         bzip2 \
@@ -30,6 +35,9 @@ ENV MAMBA_EXE="/bin/micromamba"
 
 COPY --from=stage1 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=stage1 /tmp/bin/micromamba "$MAMBA_EXE"
+
+# hadolint ignore=DL3018
+RUN { grep -q '^ID=alpine$' /etc/os-release && apk add --no-cache bash; } || true
 
 ARG MAMBA_USER=mambauser
 ARG MAMBA_USER_ID=1000
