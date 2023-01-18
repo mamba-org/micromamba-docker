@@ -1,3 +1,5 @@
+# shellcheck disable=SC2317 # bats test make some code appear unreachable
+
 setup_file() {
     load 'test_helper/common-setup'
     _common_setup
