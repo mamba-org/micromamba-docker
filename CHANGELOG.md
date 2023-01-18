@@ -8,7 +8,6 @@ This change log covers changes to the docker image and does not include
 - added base image `ubuntu:kinetic`
 - added base image `nvidia/cuda:12.0.0-base-ubuntu22.04`
 - added base image `nvidia/cuda:12.0.0-base-ubuntu20.04`
-- added base image `nvidia/cuda:12.0.0-base-ubuntu18.04`
 
 ## 8 September 2022
 
