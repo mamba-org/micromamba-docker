@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.3.0
+  rev: v4.4.0
   hooks:
   - id: check-added-large-files
   - id: check-ast
@@ -24,24 +24,24 @@ repos:
   - id: mixed-line-ending
   - id: check-shebang-scripts-are-executable
 - repo: https://github.com/zricethezav/gitleaks
-  rev: v8.9.0
+  rev: v8.15.2
   hooks:
     - id: gitleaks
 - repo: https://github.com/koalaman/shellcheck-precommit
-  rev: v0.8.0
+  rev: v0.9.0
   hooks:
   - id: shellcheck
     args: ['-x']
 - repo: https://github.com/pre-commit/pygrep-hooks
-  rev: v1.9.0
+  rev: v1.10.0
   hooks:
   - id: python-check-blanket-noqa
   - id: python-check-blanket-type-ignore
 - repo: https://github.com/markdownlint/markdownlint
-  rev: v0.11.0
+  rev: v0.12.0
   hooks:
   - id: markdownlint
 - repo: https://github.com/hadolint/hadolint
-  rev: v2.10.0
+  rev: v2.12.0
   hooks:
   - id: hadolint-docker
