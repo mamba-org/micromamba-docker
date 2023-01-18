@@ -1,3 +1,5 @@
+# shellcheck disable=SC2317 # bats test make some code appear unreachable
+
 default_mamba_user="mambauser"
 altered_mamba_user="MaMbAmIcRo"
 custom_mamba_user_id=1100
