@@ -32,10 +32,13 @@ The set of tags includes permutations of:
 - git commit hashes (`git-<HASH>`, where `<HASH>` is the first 7 characters
   of the git commit hash in
   [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/))
-- base image name (Debian or Ubuntu code name, such as `bullseye`, plus
-  `-slim` if derived from a Debian `slim` image)
-  - For CUDA base images, this porition of the tag is set to
+- base image name
+  - for Alpine base images, this portion of the tag is set to `alpine`
+  - for CUDA base images, this porition of the tag is set to
     `<ubuntu_code_name>-cuda-<cuda_version>`
+  - for Debian base images, this portion of the tag is set to the code name
+    (such as `bullseye`) plus `-slim` if derived from a slim image
+  - for Ubuntu base images, this portion of the tag is set to the code name
 
 The tag `latest` is based on the `slim` image of the most recent Debian
 release, currently `bullseye-slim`.
@@ -448,16 +451,3 @@ base images such that automated test and build occur for all images produced.
    container execution systems, the host home directory is automatically
    mounted and we don't want to mess up or pollute the home directory on the
    host system.
-
-### Parent container choice
-
-As noted in the
-[micromamba documentation](https://github.com/mamba-org/mamba/blob/master/README.md#micromamba),
-the official micromamba binaries require glibc. Therefore Alpine Linux does not
-work naively. To keep the image small, a Debian slim image is used as the
-default parent image. On going efforts to generate a fully statically linked
-micromamba binary are documented in
-[mamba GitHub issue #572](https://github.com/mamba-org/mamba/issues/572), but
-most conda packages also depend on glibc. Therefore using a statically linked
-micromamba would require either a method to install glibc (or an equivalent)
-from a conda package or conda packages that are statically linked against glibc.
