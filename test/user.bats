@@ -47,7 +47,8 @@ setup() {
 
 @test "docker run --rm --user=1001:1001 ${MICROMAMBA_IMAGE} whoami" {
     run docker run --rm --user=1001:1001 "${MICROMAMBA_IMAGE}" whoami
-    assert_output 'whoami: cannot find name for user ID 1001'
+    [ "$output" = 'whoami: cannot find name for user ID 1001' ] \
+    || [ "$output" = 'whoami: unknown uid 1001' ]
 }
 
 @test "docker run --rm --user=root ${MICROMAMBA_IMAGE} whoami" {

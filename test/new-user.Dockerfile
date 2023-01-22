@@ -8,7 +8,7 @@ RUN micromamba install -y -n base -c conda-forge \
 USER root
 
 RUN if grep -q '^ID=alpine$' /etc/os-release; then \
-      adduser testuser --shell /bin/bash --disabled-password; \
+      adduser testuser -s /bin/bash -D; \
     else \
       useradd -ms /bin/bash testuser; \
     fi
