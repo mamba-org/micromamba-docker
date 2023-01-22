@@ -3,7 +3,13 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
-## 8 Sept 2022
+## 17 January 2023
+
+- added base image `ubuntu:kinetic`
+- added base image `nvidia/cuda:12.0.0-base-ubuntu22.04`
+- added base image `nvidia/cuda:12.0.0-base-ubuntu20.04`
+
+## 8 September 2022
 
 - Automatically perform shell initialization for `conda` and `mamba` if they
   are installed
