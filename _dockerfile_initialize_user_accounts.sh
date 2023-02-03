@@ -2,7 +2,7 @@
 
 set -euf -o pipefail
 
-echo "source /usr/local/bin/_activate_current_env.sh" >> ~/.bashrc
+echo "source /usr/local/bin/_activate_current_env.sh" >> /root/.bashrc
 
 mkdir -p /etc/skel
 echo "source /usr/local/bin/_activate_current_env.sh" >> /etc/skel/.bashrc
