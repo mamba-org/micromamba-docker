@@ -4,10 +4,10 @@ set -euf -o pipefail
 
 echo "source /usr/local/bin/_activate_current_env.sh" >> ~/.bashrc
 
-if grep -q '^ID=alpine$' /etc/os-release; then
-  echo "source /usr/local/bin/_activate_current_env.sh" >> /etc/profile.d/micromamba_activate.sh
-  chmod a+x /etc/profile.d/micromamba_activate.sh
+mkdir -p /etc/skel
+echo "source /usr/local/bin/_activate_current_env.sh" >> /etc/skel/.bashrc
 
+if grep -q '^ID=alpine$' /etc/os-release; then
   if [ ! "$(id -g "${MAMBA_USER}" 2> /dev/null)" == "${MAMBA_USER_GID}" ]; then
     addgroup -g "${MAMBA_USER_GID}" "${MAMBA_USER}"
   fi
@@ -17,8 +17,6 @@ if grep -q '^ID=alpine$' /etc/os-release; then
 	    -s /bin/bash -u "${MAMBA_USER_ID}" -D
   fi
 else  # debian
-  echo "source /usr/local/bin/_activate_current_env.sh" >> /etc/skel/.bashrc
-
   if [ ! "$(id -g "${MAMBA_USER}" 2> /dev/null)" == "${MAMBA_USER_GID}" ]; then
     groupadd -g "${MAMBA_USER_GID}" "${MAMBA_USER}"
   fi
