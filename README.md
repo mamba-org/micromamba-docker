@@ -34,7 +34,7 @@ The set of tags includes permutations of:
   [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/))
 - base image name
    - for Alpine base images, this portion of the tag is set to `alpine`
-   - for CUDA base images, this porition of the tag is set to
+   - for CUDA base images, this portion of the tag is set to
      `<ubuntu_code_name>-cuda-<cuda_version>`
    - for Debian base images, this portion of the tag is set to the code name
      (such as `bullseye`) plus `-slim` if derived from a slim image
@@ -416,6 +416,26 @@ is to discuss proposed contributions on the
 you start writing code.
 
 ## Development
+
+Code contributions should start on a feature branch derived from the `dev`
+branch. Pull requests will then be merged into the `dev` branch. When a new
+major or minor version of `micromamba` is released, then the `dev` branch
+will be updated to build the new version and `dev` will be be merged into
+the `main` branch. This ensures that the image behavior remains constant
+for each minor version of `micromamba`.
+
+The following types of changes are allowed to bypass the `dev` branch
+and have their pull requests go straight to the `main` branch:
+
+- bumping versions of existing base images
+- removing a base image that is no longer supported
+- documentation enhancements
+- testing changes
+- security updates
+
+While documentation enhancements can bypass the `dev` branch,
+documentation for new features should be committed to `dev` along with the
+code for the feature.
 
 ### Testing
 
