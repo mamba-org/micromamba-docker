@@ -3,7 +3,11 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
-## 3 Feb 2023
+## 9 Febuary 2023
+
+- update add_micromamba example to include `USER root` before copying files in
+
+## 3 Febuary 2023
 
 - added support for alpine base image
 - bump CUDA 12 to 12.0.1

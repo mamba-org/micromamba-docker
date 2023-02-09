@@ -324,6 +324,11 @@ FROM mambaorg/micromamba:1.3.0 as micromamba
 # This is the image we are going add micromaba to:
 FROM tomcat:9-jdk17-temurin-focal
 
+USER root
+
+# if your image defaults to a non-root user, then you may want to make the
+# next 3 ARG commands match the values in your image. You can get the values
+# by running: docker run --rm -it my/image id -a
 ARG MAMBA_USER=mamba
 ARG MAMBA_USER_ID=1000
 ARG MAMBA_USER_GID=1000
