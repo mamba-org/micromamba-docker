@@ -14,8 +14,8 @@ This can happen if you forgot to include a channel that is the source for a
 required package.
 
 This error sometimes occurs when moving from one CPU architecture to another,
-such as when moving from x86 Mac to a ARM-based Mac (M1, M2 chips). Some
-conda repositories do a good job of supporting multiple architectures
+such as when moving from x86 to a ARM-based CPUs (such as Apple M1 and M2 CPUs).
+Some conda repositories do a good job of supporting multiple architectures
 (such as Conda Forge), but others only support x86 CPUs (Bioconda). You can
 work around this by forcing `docker build ...` to emulate another CPU
 architecture by appending `--platform=linux/amd64` to the `FROM` line of your
