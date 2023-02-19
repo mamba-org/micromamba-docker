@@ -408,6 +408,8 @@ general concepts still apply when using micromamba.
 
 ## Support
 
+Our [Frequently Asked Questions](FAQ.md) is a good place to start.
+
 Please open an [issue](https://github.com/mamba-org/micromamba-docker/issues)
 if the micromamba docker image does not behave as you expect. For issues about
 the micromamba program, please use
