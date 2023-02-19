@@ -24,7 +24,7 @@ repos:
   - id: mixed-line-ending
   - id: check-shebang-scripts-are-executable
 - repo: https://github.com/zricethezav/gitleaks
-  rev: v8.15.2
+  rev: v8.15.3
   hooks:
     - id: gitleaks
 - repo: https://github.com/koalaman/shellcheck-precommit
@@ -41,7 +41,8 @@ repos:
   rev: v0.12.0
   hooks:
   - id: markdownlint
+    args: ['-s', '.markdownlint_config.rb']
 - repo: https://github.com/hadolint/hadolint
-  rev: v2.12.0
+  rev: v2.12.1-beta
   hooks:
   - id: hadolint-docker
