@@ -23,8 +23,8 @@ architecture by appending `--platform=linux/amd64` to the `FROM` line of your
 
 ## Why do I get errors when building the example `Dockerfiles`?
 
-Docker has a configuration setting for how much disk space to use. When this
-limit is reached, the error messages thrown by the container may not seem
+Docker Desktop has a configuration setting for how much disk space to use. When
+this limit is reached, the error messages thrown by the container may not seem
 related to disk space.  For example:
 
 - `micromamba install ...` may give the error
