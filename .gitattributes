@@ -1,0 +1,5 @@
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto
+
+# On Windows, keep LF line endings for shell scripts
+*.sh eol=lf
