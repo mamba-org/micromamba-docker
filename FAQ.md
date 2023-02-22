@@ -34,7 +34,3 @@ related to disk space.  For example:
 
 To free up some of the disk space allocated to Docker, execute
 `docker system prune --all`. Then attempt the `docker build ...` command again.
-
-Additionally, there is a
-[known issue](https://github.com/mamba-org/micromamba-docker/issues/251) where
-some of the examples fail to build on Windows.
