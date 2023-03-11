@@ -181,7 +181,7 @@ jobs:
             '{gsub(/<!-- DOCKER_TAGS_INSERTION_POINT -->/,r)}1' \
             README.md > README_with_tags.md
     - name: Copy GitHub README.md to Dockerhub
-      uses: peter-evans/dockerhub-description@93b93397c27ed52b4055b8c6b2f8d92456ab3c56
+      uses: peter-evans/dockerhub-description@202973a37c8a723405c0c5f0a71b6d99db470dae
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
