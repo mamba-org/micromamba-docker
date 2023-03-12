@@ -204,14 +204,14 @@ jobs:
       run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
     - name: Get last tag
       id: last_tag
-      uses: mathieudutour/github-tag-action@d745f2e74aaf1ee82e747b181f7a0967978abee0
+      uses: mathieudutour/github-tag-action@dbd80d2e9d640266d8fe579d11ab9896ed618e16
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         dry_run: true
     - name: Create git tag
       if: steps.last_tag.outputs.previous_tag != steps.get_version.outputs.leading_v_version
       id: create_tag
-      uses: mathieudutour/github-tag-action@86301c823dac64d427711dd6b99d7ffdd894d2dd
+      uses: mathieudutour/github-tag-action@dbd80d2e9d640266d8fe579d11ab9896ed618e16
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         custom_tag: ${{ steps.get_version.outputs.version }}
