@@ -39,7 +39,7 @@ jobs:
     - name: Install GNU parallel and shellcheck
       run: sudo apt-get install --no-install-recommends -y parallel shellcheck
     - name: Setup nox
-      uses: daisylb/setup-nox@c375841575e07f30359a5843bf0bffa7aa596782
+      uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
     - name: Checkout source
       uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
       with:
