@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - name: Checkout source
-      uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
+      uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
     - name: Set up Python
-      uses: actions/setup-python@47c4a7af1d72897a511c975c95a5335bb6329dec
+      uses: actions/setup-python@03eb867e3d1d557bdb958602013c4b401deef7a0
       with:
         python-version: "3.10"
     - name: Check available versions
