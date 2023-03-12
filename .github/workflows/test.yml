@@ -18,7 +18,7 @@ jobs:
       - name: Install GNU parallel
         run: sudo apt-get install --no-install-recommends -y parallel
       - name: Setup nox
-        uses: daisylb/setup-nox@c375841575e07f30359a5843bf0bffa7aa596782
+        uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
       - name: Run tests
         run: nox -s "default_base_image_tests"
   shellcheck:
@@ -40,7 +40,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
       - name: Setup nox
-        uses: daisylb/setup-nox@c375841575e07f30359a5843bf0bffa7aa596782
+        uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
       - name: Run tests
         run: nox -s "pylint"
   flake8:
@@ -50,7 +50,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
       - name: Setup nox
-        uses: daisylb/setup-nox@c375841575e07f30359a5843bf0bffa7aa596782
+        uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
       - name: Run tests
         run: nox -s "flake8"
   mypy:
@@ -60,7 +60,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
       - name: Setup nox
-        uses: daisylb/setup-nox@c375841575e07f30359a5843bf0bffa7aa596782
+        uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
       - name: Run tests
         run: nox -s "mypy"
   black:
@@ -70,7 +70,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
       - name: Setup nox
-        uses: daisylb/setup-nox@c375841575e07f30359a5843bf0bffa7aa596782
+        uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
       - name: Run tests
         run: nox -s "black"
   pytest:
@@ -80,6 +80,6 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
       - name: Setup nox
-        uses: daisylb/setup-nox@c375841575e07f30359a5843bf0bffa7aa596782
+        uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
       - name: Run tests
         run: nox -s "pytest"
