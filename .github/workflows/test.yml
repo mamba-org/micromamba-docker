@@ -83,4 +83,3 @@ jobs:
         uses: daisylb/setup-nox@c375841575e07f30359a5843bf0bffa7aa596782
       - name: Run tests
         run: nox -s "pytest"
-      uses: daisylb/setup-nox@c375841575e07f30359a5843bf0bffa7aa596782
