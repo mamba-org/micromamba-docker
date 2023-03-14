@@ -77,7 +77,9 @@ jobs:
       id: get_metadata
       uses: docker/metadata-action@3343011071fa59c64a174cc6aa415dc13b31b7b2
       with:
-        images: mambaorg/micromamba
+        images: |
+          mambaorg/micromamba
+          ghcr.io/mambaorg/micromamba
         flavor: latest=false
         # latest
         # base_image
@@ -107,6 +109,12 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Login to GHCR
+      uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build Docker images
       id: docker_build
       uses: docker/build-push-action@35434f557ad77672899d67f7992fb5560bda1071
