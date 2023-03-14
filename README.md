@@ -4,7 +4,9 @@
 of small [conda](https://docs.conda.io/)-based containers.
 
 Images available on Dockerhub at
-[mambaorg/micromamba](https://hub.docker.com/r/mambaorg/micromamba).
+[mambaorg/micromamba](https://hub.docker.com/r/mambaorg/micromamba) and GHCR at
+[ghcr.io/mamba-org/micromamba](
+https://github.com/mamba-org/micromamba-docker/pkgs/container/micromamba).
 Source code on GitHub at
 [mamba-org/micromamba-docker](https://github.com/mamba-org/micromamba-docker/).
 
