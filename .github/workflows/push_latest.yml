@@ -79,7 +79,7 @@ jobs:
       with:
         images: |
           mambaorg/micromamba
-          ghcr.io/mambaorg/micromamba
+          ghcr.io/mamba-org/micromamba
         flavor: latest=false
         # latest
         # base_image
