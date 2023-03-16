@@ -3,7 +3,9 @@
 - [Why am I getting the error "libmamba Could not solve for environment specs"?](
   #why-am-i-getting-the-error-libmamba-could-not-solve-for-environment-specs)
 - [Why do I get errors when building the example `Dockerfiles`?](
-  #why-do-I-get-errors-when-building-the-example-dockerfiles)
+  #why-do-i-get-errors-when-building-the-example-dockerfiles)
+- [Why am I getting the error `critical libmamba Subprocess call failed. Aborting.`?](
+  #why-am-i-getting-the-error-critical-libmamba-subprocess-call-failed-aborting)
 
 ## Why am I getting the error "libmamba Could not solve for environment specs"?
 
@@ -34,3 +36,10 @@ related to disk space.  For example:
 
 To free up some of the disk space allocated to Docker, execute
 `docker system prune --all`. Then attempt the `docker build ...` command again.
+
+## Why am I getting the error `critical libmamba Subprocess call failed. Aborting.`?
+
+`docker` had a change in how ulimit values are set within containers starting in
+`docker` v22.10. By passing `docker build` or `docker run` the flag
+`--ulimit nofile=65536:65536` you can increase the `nofile` limit within the 
+container.
