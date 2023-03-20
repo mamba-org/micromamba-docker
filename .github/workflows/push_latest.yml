@@ -125,7 +125,7 @@ jobs:
           BASE_IMAGE=${{ matrix.image }}
         tags: ${{ steps.get_metadata.outputs.tags }}
         labels: ${{ steps.get_metadata.outputs.labels}}
-        cache-from: type=registry,ref=mambaorg/micromamba:latest
+        cache-from: type=registry,ref=ghcr.io/mamba-org/micromamba:${{ steps.set_image_variables.outputs.tag }}
         cache-to: type=inline
     - name: Run tests
       env:
