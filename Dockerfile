@@ -3,7 +3,7 @@ ARG BASE_IMAGE=debian:bullseye-slim
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
 FROM --platform=$BUILDPLATFORM $BASE_IMAGE AS stage1
-ARG VERSION=1.3.1
+ARG VERSION=1.4.0
 
 # hadolint ignore=DL3018
 RUN if grep -q '^ID=alpine$' /etc/os-release; then \
