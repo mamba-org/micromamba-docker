@@ -6,6 +6,8 @@
   #why-do-i-get-errors-when-building-the-example-dockerfiles)
 - [Why am I getting the error `critical libmamba Subprocess call failed. Aborting.`?](
   #why-am-i-getting-the-error-critical-libmamba-subprocess-call-failed-aborting)
+- [How do I install software using `apt`/`apt-get`/ `apk`?](
+  #how-do-I-install-software-using-apt-apt-get-apk)
 
 ## Why am I getting the error "libmamba Could not solve for environment specs"?
 
@@ -41,5 +43,28 @@ To free up some of the disk space allocated to Docker, execute
 
 `docker` had a change in how ulimit values are set within containers starting in
 `docker` v22.10. By passing `docker build` or `docker run` the flag
-`--ulimit nofile=65536:65536` you can increase the `nofile` limit within the 
+`--ulimit nofile=65536:65536` you can increase the `nofile` limit within the
 container.
+
+## How do I install software using `apt`/`apt-get`/ `apk`?
+
+The default user in `mambaorg/micromamba` does not have root-level permissions.
+Therefore you need to switch to user `root` before installing software using
+the system package manager. After installing the software you should switch
+back to `$MAMBA_USER`.
+
+Here is an example Dockerfile:
+
+```dockerfile
+FROM mambaorg/micromamba:1.4.2
+
+COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
+RUN micromamba install -y -n base -f /tmp/env.yaml && \
+    micromamba clean --all --yes
+
+USER root
+RUN apt-get update && apt-get install -y \
+    bluetooth \
+    && rm -rf /var/lib/apt/lists/*
+USER $MAMBA_USER
+```
