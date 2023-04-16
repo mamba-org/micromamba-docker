@@ -73,6 +73,15 @@ jobs:
           echo "platforms=linux/amd64,linux/arm64,linux/ppc64le" >> $GITHUB_OUTPUT
         fi
         echo "is_default=$([ "$IMAGE" = "$DEFAULT_BASE_IMAGE" ] && echo true || echo false)" >> $GITHUB_OUTPUT
+    - name: Get stage1 docker metadata
+      id: get_stage1_metadata
+      uses: docker/metadata-action@3343011071fa59c64a174cc6aa415dc13b31b7b2
+      with:
+        images: |
+          ghcr.io/mamba-org/cache
+        flavor: latest=false
+        tags: |
+            type=raw,value=micromaba-stage1-${{ steps.set_image_variables.outputs.tag }}
     - name: Get docker metadata
       id: get_metadata
       uses: docker/metadata-action@3343011071fa59c64a174cc6aa415dc13b31b7b2
@@ -125,12 +134,28 @@ jobs:
           BASE_IMAGE=${{ matrix.image }}
         tags: ${{ steps.get_metadata.outputs.tags }}
         labels: ${{ steps.get_metadata.outputs.labels}}
-        cache-from: type=registry,ref=ghcr.io/mamba-org/micromamba:${{ steps.set_image_variables.outputs.tag }}
+        cache-from: |
+          type=registry,ref=ghcr.io/mamba-org/cache:micromaba-stage1-${{ steps.set_image_variables.outputs.tag }}
+          type=registry,ref=ghcr.io/mamba-org/micromamba:${{ steps.set_image_variables.outputs.tag }}
         cache-to: type=inline
     - name: Run tests
       env:
         IMAGE: ${{ matrix.image }}
       run: nox -s "image_tests(base_image='${IMAGE}')"
+    - name: Push stage1 Docker images
+      id: docker_push
+      uses: docker/build-push-action@35434f557ad77672899d67f7992fb5560bda1071
+      with:
+        target: stage1
+        platforms: ${{ steps.set_image_variables.outputs.platforms }}
+        push: true
+        build-args: |
+          BASE_IMAGE=${{ matrix.image }}
+        tags: ${{ steps.get_stage1_metadata.outputs.tags }}
+        labels: ${{ steps.get_stage1_metadata.outputs.labels}}
+        cache-from: |
+          type=registry,ref=ghcr.io/mamba-org/cache:micromaba-stage1-${{ steps.set_image_variables.outputs.tag }}
+        cache-to: type=inline
     - name: Push Docker images
       id: docker_push
       uses: docker/build-push-action@35434f557ad77672899d67f7992fb5560bda1071
