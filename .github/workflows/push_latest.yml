@@ -143,7 +143,7 @@ jobs:
         IMAGE: ${{ matrix.image }}
       run: nox -s "image_tests(base_image='${IMAGE}')"
     - name: Push stage1 Docker images
-      id: docker_push
+      id: docker_stage1_push
       uses: docker/build-push-action@35434f557ad77672899d67f7992fb5560bda1071
       with:
         target: stage1
