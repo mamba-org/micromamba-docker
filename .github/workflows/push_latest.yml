@@ -78,10 +78,10 @@ jobs:
       uses: docker/metadata-action@3343011071fa59c64a174cc6aa415dc13b31b7b2
       with:
         images: |
-          ghcr.io/mamba-org/cache
+          ghcr.io/mamba-org/micromamba-cache/stage1
         flavor: latest=false
         tags: |
-            type=raw,value=micromaba-stage1-${{ steps.set_image_variables.outputs.tag }}
+            type=raw,value=${{ steps.set_image_variables.outputs.tag }}
     - name: Get docker metadata
       id: get_metadata
       uses: docker/metadata-action@3343011071fa59c64a174cc6aa415dc13b31b7b2
@@ -135,7 +135,7 @@ jobs:
         tags: ${{ steps.get_metadata.outputs.tags }}
         labels: ${{ steps.get_metadata.outputs.labels}}
         cache-from: |
-          type=registry,ref=ghcr.io/mamba-org/cache:micromaba-stage1-${{ steps.set_image_variables.outputs.tag }}
+          type=registry,ref=ghcr.io/mamba-org/micromamba-cache/stage1:${{ steps.set_image_variables.outputs.tag }}
           type=registry,ref=ghcr.io/mamba-org/micromamba:${{ steps.set_image_variables.outputs.tag }}
         cache-to: type=inline
     - name: Run tests
@@ -154,7 +154,7 @@ jobs:
         tags: ${{ steps.get_stage1_metadata.outputs.tags }}
         labels: ${{ steps.get_stage1_metadata.outputs.labels}}
         cache-from: |
-          type=registry,ref=ghcr.io/mamba-org/cache:micromaba-stage1-${{ steps.set_image_variables.outputs.tag }}
+          type=registry,ref=ghcr.io/mamba-org/micromaba-cache/stage1:${{ steps.set_image_variables.outputs.tag }}
         cache-to: type=inline
     - name: Push Docker images
       id: docker_push
