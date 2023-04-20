@@ -401,6 +401,17 @@ ENV PATH "$MAMBA_ROOT_PREFIX/bin:$PATH"  # WARNING - not a prefered method
 However, this will not work in all cases, such as multiple conda environments within
 a single image.
 
+### Use of the `SHELL` command within a Dockerfile
+
+The `mambaorg/micromaba` Dockerfile makes use of the `SHELL` command:
+
+```Dockerfile
+SHELL ["/usr/local/bin/_dockerfile_shell.sh"]
+```
+
+If a derived image overrides this `SHELL` configuration, then some of
+the automatic conda environment activation functionality will break.
+
 ## Minimizing final image size
 
 Uwe Korn has a nice
