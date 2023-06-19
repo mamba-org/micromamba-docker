@@ -18,6 +18,8 @@ jobs:
     strategy:
       matrix:
         image:
+         - debian:bookworm-slim
+         - debian:bookworm
          - debian:bullseye-slim
          - debian:bullseye
          - ubuntu:kinetic
