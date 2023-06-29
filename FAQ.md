@@ -56,7 +56,7 @@ back to `$MAMBA_USER`.
 Here is an example Dockerfile:
 
 ```dockerfile
-FROM mambaorg/micromamba:1.4.4
+FROM mambaorg/micromamba:1.4.5
 
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
 RUN micromamba install -y -n base -f /tmp/env.yaml && \
