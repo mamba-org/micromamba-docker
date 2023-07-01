@@ -1,5 +1,3 @@
-:ref:`advanced-usages-label`
-
 Advanced Usages
 ===============
 
@@ -22,7 +20,7 @@ Using a lockfile
 Pinning a package to a version string doesn't guarantee the exact same
 package file is retrieved each time.  A lockfile utilizes package hashes
 to ensure package selection is reproducible. A lockfile can be generated
-using `conda-lock <https://github.com/mamba-org/mamba#micromamba>`_ or
+using `conda-lock <https://github.com/conda-incubator/conda-lock>`_ or
 ``micromamba``:
 
 .. code-block:: bash
@@ -52,10 +50,12 @@ Or the lockfile can be used to create and populate a new conda environment:
    RUN micromamba create --name my_env_name --yes --file /tmp/env.lock \
        && micromamba clean --all --yes
 
-When a lockfile is used to create an environment, the ``micromamba create ..``
+When a lockfile is used to create an environment, the ``micromamba create ...``
 command does not query the package channels or execute the solver. Therefore
 using a lockfile has the added benefit of reducing the time to create a conda
 environment.
+
+.. _multiple-environments:
 
 Multiple environments
 ---------------------
@@ -129,6 +129,7 @@ For example, to open an interactive bash shell without activating the
 environment:
 
 .. code-block:: bash
+
    docker run --rm -it -e MAMBA_SKIP_ACTIVATE=1 mambaorg/micromamba bash
 
 Details about automatic activation
@@ -138,6 +139,7 @@ At container runtime, activation occurs by default at two possible points:
 
 1. The end of the ``~/.bashrc`` file, which is loaded by interactive non-login
    Bash shells.
+
 1. The ``ENTRYPOINT`` script, which is automatically prepended to ``docker run``
    commands.
 
@@ -150,7 +152,8 @@ one-off commands when Docker is used non-interactively.
 Setting ``MAMBA_SKIP_ACTIVATE=1`` disables both of these automatic activation
 methods.
 
-### Adding micromamba to an existing Docker image
+Adding micromamba to an existing Docker image
+---------------------------------------------
 
 Adding micromamba functionality to an existing Docker image can be accomplished
 like this:
@@ -204,19 +207,23 @@ like this:
          jq && \
         micromamba clean --all --yes
 
-On ``docker exec``
-----------------
+On ``docker exec ...``
+----------------------
 
-Your experience using ``docker exec`` may not match your expectations for
-automatic environment activation (#128, #233). ``docker exec`` executes the given
-command directly, without an entrypoint or login/interactive shell. There is no
-known way to automatically (and correctly) trigger conda environment activation
-for a command run through ``docker exec``.
+Your experience using ``docker exec ...`` may not match your expectations for
+automatic environment activation (
+`#128 <https://github.com/mamba-org/micromamba-docker/issues/128>`_,
+`#233 <https://github.com/mamba-org/micromamba-docker/issues/233>`_)
+``docker exec ... <command>`` executes ``<command>`` directly, without an
+entrypoint or login/interactive shell. There is no known way to automatically
+(and correctly) trigger conda environment activation for a command run through
+``docker exec ...``.
 
 The *recommended* method to explicitly activate your environment when using
-``docker exec`` is:
+``docker exec ...`` is:
 
 .. code-block:: bash
+
    docker exec <container> micromamba run -n <environment_name> <command>
 
 If you want to use the base environment, you can omit ``-n <environment_name>``.
@@ -225,6 +232,7 @@ An alternative method to trigger activation is to explicitly run your command
 within an interactive ``bash`` shell with ``-i``:
 
 .. code-block:: bash
+
    docker exec <container> bash -i -c "<command>"
 
 Finally, you can modify the ``PATH`` at build-time to approximate an activated
@@ -233,10 +241,12 @@ environment during ``docker exec``:
 .. code-block:: Dockerfile
    :caption: Dockerfile
 
-   ENV PATH "$MAMBA_ROOT_PREFIX/bin:$PATH"  # WARNING - not a prefered method
+   ENV PATH "$MAMBA_ROOT_PREFIX/bin:$PATH"  # Not a preferred method!
 
-However, this will not work in all cases, such as multiple conda environments within
-a single image.
+.. warning::
+
+   Modifying ``PATH``  will not work in all cases, such as multiple conda
+   environments within a single image.
 
 Use of the ``SHELL`` command within a Dockerfile
 ------------------------------------------------
@@ -245,7 +255,10 @@ The ``mambaorg/micromaba`` Dockerfile makes use of the ``SHELL`` command:
 
 .. code-block:: Dockerfile
    :caption: Dockerfile
+
    SHELL ["/usr/local/bin/_dockerfile_shell.sh"]
 
-If a derived image overrides this ``SHELL`` configuration, then some of
-the automatic conda environment activation functionality will break.
+.. warning::
+
+   If a derived image overrides this ``SHELL`` configuration, then some of
+   the automatic conda environment activation functionality will break.

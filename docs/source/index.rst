@@ -13,9 +13,10 @@ Source code on GitHub at
 `mamba-org/micromamba-docker
 <https://github.com/mamba-org/micromamba-docker/>`_.
 
-"This is amazing. I switched CI for my projects to micromamba, and compared to
-using a miniconda docker image, this reduced build times more than 2x"
--- A new micromamba-docker user
+   *"This is amazing. I switched CI for my projects to micromamba, and compared
+   to using a miniconda docker image, this reduced build times more than 2x"*
+
+   -- A new micromamba-docker user
 
 .. toctree::
    :maxdepth: 2
@@ -27,12 +28,8 @@ using a miniconda docker image, this reduced build times more than 2x"
    advanced_usage
    image_size
    support
+   faq
    contributing
    development
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
