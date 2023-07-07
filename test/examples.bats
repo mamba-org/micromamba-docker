@@ -10,42 +10,32 @@ setup() {
     _common_setup
 }
 
-@test "build examples/cmdline_spec/Dockerfile" {
-    ORG="${PROJECT_ROOT}/examples/cmdline_spec/Dockerfile"
-    sed "s%^FROM mambaorg/micromamba:.*$%FROM ${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
+test_example() {
+    ORG="${PROJECT_ROOT}/examples/${1}/Dockerfile"
+    sed -E "s%^FROM mambaorg/micromamba:[^ ]+%FROM ${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
     docker build --quiet \
-                 "--tag=${MICROMAMBA_IMAGE}-cmdline_spec" \
+                 "--tag=${MICROMAMBA_IMAGE}-${1}" \
 		 "--file=${ORG}.test" \
-		 "$PROJECT_ROOT/examples/cmdline_spec" > /dev/null && \
+		 "$PROJECT_ROOT/examples/${1}" > /dev/null && \
     rm "${ORG}.test"
 }
 
-@test "build examples/multi_env/Dockerfile" {
-    ORG="${PROJECT_ROOT}/examples/multi_env/Dockerfile"
-    sed "s%^FROM mambaorg/micromamba:.*$%FROM ${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
-    docker build --quiet \
-                 "--tag=${MICROMAMBA_IMAGE}-multi_env" \
-		 "--file=${ORG}.test" \
-		 "$PROJECT_ROOT/examples/multi_env" > /dev/null && \
-    rm "${ORG}.test"
+@test "examples/add_micromamba" {
+    test_example add_micromamba
 }
 
-@test "build examples/yaml_spec/Dockerfile" {
-    ORG="${PROJECT_ROOT}/examples/yaml_spec/Dockerfile"
-    sed "s%^FROM mambaorg/micromamba:.*$%FROM ${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
-    docker build --quiet \
-                 "--tag=${MICROMAMBA_IMAGE}-yaml_spec" \
-		 "--file=${ORG}.test" \
-		 "$PROJECT_ROOT/examples/yaml_spec" > /dev/null && \
-    rm "${ORG}.test"
+@test "example/cmdline_spec" {
+    test_example cmdline_spec
 }
 
-@test "build examples/add_micromamba/Dockerfile" {
-    ORG="${PROJECT_ROOT}/examples/add_micromamba/Dockerfile"
-    sed "s%^FROM mambaorg/micromamba:[^ ]*%FROM ${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
-    docker build --quiet \
-                 "--tag=${MICROMAMBA_IMAGE}-add_micromamba" \
-		 "--file=${ORG}.test" \
-		 "$PROJECT_ROOT/examples/add_micromamba" > /dev/null && \
-    rm "${ORG}.test"
+@test "example/modify_username" {
+    test_example modify_username
+}
+
+@test "example/multi_env" {
+    test_example multi_env
+}
+
+@test "example/yaml_spec" {
+    test_example yaml_spec
 }

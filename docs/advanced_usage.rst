@@ -4,15 +4,9 @@ Advanced Usages
 Pass list of packages to install within a Dockerfile RUN command
 ----------------------------------------------------------------
 
-.. code-block:: Dockerfile
+.. literalinclude:: ../examples/cmdline_spec/Dockerfile
+   :language: Dockerfile
    :caption: Dockerfile
-
-   FROM mambaorg/micromamba:1.4.4
-   RUN micromamba install --yes --name base --channel conda-forge \
-         pyopenssl=20.0.1  \
-         python=3.9.1 \
-         requests=2.25.1 && \
-       micromamba clean --all --yes
 
 Using a lockfile
 ----------------
@@ -63,15 +57,9 @@ Multiple environments
 For most use cases you will only want a single conda environment within your
 derived image, but you can create multiple conda environments:
 
-.. code-block:: Dockerfile
+.. literalinclude:: ../examples/multi_env/Dockerfile
+   :language: Dockerfile
    :caption: Dockerfile
-
-   FROM mambaorg/micromamba:1.4.4
-   COPY --chown=$MAMBA_USER:$MAMBA_USER env1.yaml /tmp/env1.yaml
-   COPY --chown=$MAMBA_USER:$MAMBA_USER env2.yaml /tmp/env2.yaml
-   RUN micromamba create --yes --file /tmp/env1.yaml && \
-       micromamba create --yes --file /tmp/env2.yaml && \
-       micromamba clean --all --yes
 
 You can then set the active environment by passing the ``ENV_NAME``
 environment variable like:
@@ -99,24 +87,9 @@ other than ``mambauser``:
 
 #. When building an image ``FROM`` an existing micromamba image,
 
-   .. code-block:: Dockerfile
+   .. literalinclude:: ../examples/modify_username/Dockerfile
+      :language: Dockerfile
       :caption: Dockerfile
-
-      FROM mambaorg/micromamba:1.4.4
-      ARG NEW_MAMBA_USER=new-username
-      ARG NEW_MAMBA_USER_ID=1000
-      ARG NEW_MAMBA_USER_GID=1000
-      USER root
-      RUN usermod "--login=${NEW_MAMBA_USER}" "--home=/home/${NEW_MAMBA_USER}" \
-              --move-home "-u ${NEW_MAMBA_USER_ID}" "${MAMBA_USER}" && \
-          groupmod "--new-name=${NEW_MAMBA_USER}" \
-                   "-g ${NEW_MAMBA_USER_GID}" "${MAMBA_USER}" && \
-          # Update the expected value of MAMBA_USER for the
-          # _entrypoint.sh consistency check.
-          echo "${NEW_MAMBA_USER}" > "/etc/arg_mamba_user" && \
-          :
-      ENV MAMBA_USER=$NEW_MAMBA_USER
-      USER $MAMBA_USER
 
 Disabling automatic activation
 ------------------------------
@@ -158,54 +131,9 @@ Adding micromamba to an existing Docker image
 Adding micromamba functionality to an existing Docker image can be accomplished
 like this:
 
-.. code-block:: Dockerfile
+.. literalinclude:: ../examples/add_micromamba/Dockerfile
+   :language: Dockerfile
    :caption: Dockerfile
-
-   # bring in the micromamba image so we can copy files from it
-   FROM mambaorg/micromamba:1.4.4 as micromamba
-
-   # This is the image we are going add micromaba to:
-   FROM tomcat:9-jdk17-temurin-focal
-
-   USER root
-
-   # if your image defaults to a non-root user, then you may want to make the
-   # next 3 ARG commands match the values in your image. You can get the values
-   # by running: docker run --rm -it my/image id -a
-   ARG MAMBA_USER=mamba
-   ARG MAMBA_USER_ID=1000
-   ARG MAMBA_USER_GID=1000
-   ENV MAMBA_USER=$MAMBA_USER
-   ENV MAMBA_ROOT_PREFIX="/opt/conda"
-   ENV MAMBA_EXE="/bin/micromamba"
-
-   COPY --from=micromamba "$MAMBA_EXE" "$MAMBA_EXE"
-   COPY --from=micromamba /usr/local/bin/_activate_current_env.sh /usr/local/bin/_activate_current_env.sh
-   COPY --from=micromamba /usr/local/bin/_dockerfile_shell.sh /usr/local/bin/_dockerfile_shell.sh
-   COPY --from=micromamba /usr/local/bin/_entrypoint.sh /usr/local/bin/_entrypoint.sh
-   COPY --from=micromamba /usr/local/bin/_activate_current_env.sh /usr/local/bin/_activate_current_env.sh
-   COPY --from=micromamba /usr/local/bin/_dockerfile_initialize_user_accounts.sh /usr/local/bin/_dockerfile_initialize_user_accounts.sh
-   COPY --from=micromamba /usr/local/bin/_dockerfile_setup_root_prefix.sh /usr/local/bin/_dockerfile_setup_root_prefix.sh
-
-   RUN /usr/local/bin/_dockerfile_initialize_user_accounts.sh && \
-       /usr/local/bin/_dockerfile_setup_root_prefix.sh
-
-   USER $MAMBA_USER
-
-   SHELL ["/usr/local/bin/_dockerfile_shell.sh"]
-
-   ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
-   # Optional: if you want to customize the ENTRYPOINT and have a conda
-   # environment activated, then do this:
-   # ENTRYPOINT ["/usr/local/bin/_entrypoint.sh", "my_entrypoint_program"]
-
-   # You can modify the CMD statement as needed....
-   CMD ["/bin/bash"]
-
-   # Optional: you can now populate a conda environment:
-   RUN micromamba install --yes --name base --channel conda-forge \
-         jq && \
-        micromamba clean --all --yes
 
 On ``docker exec ...``
 ----------------------

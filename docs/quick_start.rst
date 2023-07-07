@@ -10,16 +10,9 @@ include ``python``.
 
 #. Define your desired conda environment in a yaml file
 
-   .. code-block:: yaml
+   .. literalinclude:: ../examples/yaml_spec/env.yaml
+      :language: yaml
       :caption: env.yaml
-
-      name: base
-      channels:
-        - conda-forge
-      dependencies:
-        - pyopenssl=20.0.1
-        - python=3.9.1
-        - requests=2.25.1
 
    .. warning::
 
@@ -31,13 +24,9 @@ include ``python``.
 #. Copy the yaml file into your docker image and then pass the yaml file as a
    parameter to ``micromamba`` via the ``--file`` switch
 
-   .. code-block:: Dockerfile
+   .. literalinclude:: ../examples/yaml_spec/Dockerfile
+      :language: Dockerfile
       :caption: Dockerfile
-
-      FROM mambaorg/micromamba:1.4.4
-      COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
-      RUN micromamba install --yes --name base --file /tmp/env.yaml && \
-          micromamba clean --all --yes
 
 #. Build your docker image
 
