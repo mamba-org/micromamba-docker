@@ -206,7 +206,7 @@ jobs:
           | while read file; do process_tags "$file"; done
         }
         echo "TAGS_MARKDOWN<<EOF" >> $GITHUB_ENV
-        echo "### Recent Tags" >> $GITHUB_ENV
+        echo "## Recent Tags" >> $GITHUB_ENV
         echo "" >> $GITHUB_ENV
         get_tags_markdown >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
