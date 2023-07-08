@@ -3,4 +3,5 @@
 *.swp
 Dockerfile.test
 .venv/
+_build/
 __pycache__/
