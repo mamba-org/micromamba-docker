@@ -194,7 +194,7 @@ jobs:
           | grep -v 'ghcr.io' \
           | sed 's%^mambaorg/micromamba:\(.*\)$%`\1`, %' \
           | tr -d '\n' \
-          | sed 's%, $%%'
+          | sed 's%, $%%' \
           | sed 's%^\(.*\)$%[\1](https://github.com/mamba-org/micromamba-docker/blob/main/Dockerfile)%' \
           printf '\n\n'
         }
