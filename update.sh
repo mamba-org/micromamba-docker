@@ -23,6 +23,7 @@ if [[ $# -ne 1 ]]; then
 fi
 
 VERSION="${1}"
+DATE="$(date "+%-d %B %Y")"
 
 DOCKERFILES=$(find "${SCRIPT_DIR}" -not -path "./test/bats/*" -name '*Dockerfile')
 
@@ -32,6 +33,8 @@ done
 
 sed -i.bak  "s%^ARG VERSION=[^ \t]*%ARG VERSION=${VERSION}%" "${SCRIPT_DIR}/Dockerfile"
 
-for f in README.md FAQ.md; do
-  sed -i.bak "s%mambaorg/micromamba:[^ \t]*%mambaorg/micromamba:${VERSION}%" "${SCRIPT_DIR}/$f"
-done
+sed -i.bak "s%\(CHANGELOG.md).\)%\1
+
+## ${DATE}
+
+- Updated to micromamba version ${VERSION}%" "${SCRIPT_DIR}/CHANGELOG.md"
