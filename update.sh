@@ -34,3 +34,5 @@ done
 sed -i.bak  "s%^ARG VERSION=[^ \t]*%ARG VERSION=${VERSION}%" "${SCRIPT_DIR}/Dockerfile"
 
 sed -i.bak "s%\(CHANGELOG.md).\)%\1\n\n## ${DATE}\n\n- Updated to micromamba version ${VERSION}%" "${SCRIPT_DIR}/CHANGELOG.md"
+
+sed -i.bak "s%^release = '.*'$%release = '${VERSION}'%" "${SCRIPT_DIR}/docs/conf.py"
