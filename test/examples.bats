@@ -24,18 +24,34 @@ test_example() {
     test_example add_micromamba
 }
 
-@test "example/cmdline_spec" {
+@test "examples/apt_install" {
+    test_example apt_install
+}
+
+@test "examples/cmdline_spec" {
     test_example cmdline_spec
 }
 
-@test "example/modify_username" {
+@test "examples/generate_lock" {
+    { cd examples/generate_lock && . ./generate_lock.sh; }
+}
+
+@test "examples/install_lock" {
+    test_example install_lock
+}
+
+@test "examples/modify_username" {
     test_example modify_username
 }
 
-@test "example/multi_env" {
+@test "examples/multi_env" {
     test_example multi_env
 }
 
-@test "example/yaml_spec" {
+@test "examples/new_lock" {
+    test_example new_lock
+}
+
+@test "examples/yaml_spec" {
     test_example yaml_spec
 }

@@ -17,32 +17,21 @@ to ensure package selection is reproducible. A lockfile can be generated
 using `conda-lock <https://github.com/conda-incubator/conda-lock>`_ or
 ``micromamba``:
 
-.. code-block:: bash
-
-   docker run -it --rm -v $(pwd):/tmp mambaorg/micromamba:1.4.4 \
-      /bin/bash -c "micromamba create --yes --name new_env --file env.yaml && \
-                    micromamba env export --name new_env --explicit > env.lock"
+.. literalinclude:: ../examples/generate_lock/generate_lock.sh
+   :language: bash
 
 The lockfile can then be used to install into the pre-existing ``base`` conda
 environment:
 
-.. code-block:: Dockerfile
+.. literalinclude:: ../examples/install_lock/Dockerfile
+   :language: Dockerfile
    :caption: Dockerfile
-
-   FROM mambaorg/micromamba:1.4.4
-   COPY --chown=$MAMBA_USER:$MAMBA_USER env.lock /tmp/env.lock
-   RUN micromamba install --name base --yes --file /tmp/env.lock \
-       && micromamba clean --all --yes
 
 Or the lockfile can be used to create and populate a new conda environment:
 
-.. code-block:: Dockerfile
+.. literalinclude:: ../examples/new_lock/Dockerfile
+   :language: Dockerfile
    :caption: Dockerfile
-
-   FROM mambaorg/micromamba:1.4.4
-   COPY --chown=$MAMBA_USER:$MAMBA_USER env.lock /tmp/env.lock
-   RUN micromamba create --name my_env_name --yes --file /tmp/env.lock \
-       && micromamba clean --all --yes
 
 When a lockfile is used to create an environment, the ``micromamba create ...``
 command does not query the package channels or execute the solver. Therefore
