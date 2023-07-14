@@ -47,6 +47,7 @@ nox.options.sessions = [
     "mypy",
     "black",
     "pytest",
+    "build_docs",
 ]
 
 PYLINT_DEPS = [
@@ -148,3 +149,10 @@ def pytest(session):
     """tests python code, mainly check_version.py"""
     session.install("-r", "requirements.txt", *PYTEST_DEPS)
     session.run("pytest", *session.posargs, "test")
+
+
+@nox.session(python=PY_VERSION)
+def build_docs(session):
+    """build the html version of the documentation"""
+    session.install("-r", "docs/requirements.txt")
+    session.run("make", "-C", "docs", "html")

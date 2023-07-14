@@ -84,3 +84,13 @@ jobs:
         uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
       - name: Run tests
         run: nox -s "pytest"
+  build_docs:
+    name: build_docs
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
+      - name: Setup nox
+        uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
+      - name: Run tests
+        run: nox -s "build_docs"
