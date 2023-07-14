@@ -33,7 +33,11 @@ test_example() {
 }
 
 @test "examples/generate_lock" {
-    { cd examples/generate_lock && . ./generate_lock.sh; }
+    ORG="${PROJECT_ROOT}/examples/generate_lock/generate_lock.sh"
+    sed -E "s%^mambaorg/micromamba:[^ ]+%${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
+    # shellcheck source=/dev/null
+    { cd "$(dirname "${ORG}")" && . "${ORG}.test"; }
+    rm "${ORG}.test"
 }
 
 @test "examples/install_lock" {
