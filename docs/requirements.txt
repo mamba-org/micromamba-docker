@@ -41,8 +41,11 @@ snowballstemmer==2.2.0
 sphinx==6.2.1
     # via
     #   -r requirements.in
+    #   sphinx-copybutton
     #   sphinx-rtd-theme
     #   sphinxcontrib-jquery
+sphinx-copybutton==0.5.2
+    # via -r requirements.in
 sphinx-rtd-theme==1.2.2
     # via -r requirements.in
 sphinxcontrib-applehelp==1.0.4
@@ -61,5 +64,5 @@ sphinxcontrib-serializinghtml==1.1.5
     # via sphinx
 urllib3==2.0.3
     # via requests
-zipp==3.15.0
+zipp==3.16.1
     # via importlib-metadata
