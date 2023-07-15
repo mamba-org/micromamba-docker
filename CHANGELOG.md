@@ -3,6 +3,11 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 15 July 2023
+
+- Add base images for cuda version 12.2.0
+- Remove base images containing Ubuntu 18.04 (bionic) as they are end of life
+
 ## 13 July 2023
 
 - Updated to micromamba version 1.4.9
