@@ -25,7 +25,6 @@ jobs:
          - ubuntu:kinetic
          - ubuntu:jammy
          - ubuntu:focal
-         - ubuntu:bionic
          - frolvlad/alpine-glibc:alpine-3.17
          - nvidia/cuda:12.2.0-base-ubuntu22.04
          - nvidia/cuda:12.2.0-base-ubuntu20.04
@@ -36,9 +35,7 @@ jobs:
          - nvidia/cuda:11.7.1-base-ubuntu22.04
          - nvidia/cuda:11.7.1-base-ubuntu20.04
          - nvidia/cuda:11.6.2-base-ubuntu20.04
-         - nvidia/cuda:11.6.2-base-ubuntu18.04
          - nvidia/cuda:11.3.1-base-ubuntu20.04
-         - nvidia/cuda:11.3.1-base-ubuntu18.04
     steps:
     - name: Install GNU parallel and shellcheck
       run: sudo apt-get install --no-install-recommends -y parallel shellcheck
