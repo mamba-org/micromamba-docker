@@ -165,6 +165,31 @@ environment during ``docker exec``:
    Modifying ``PATH``  will not work in all cases, such as multiple conda
    environments within a single image.
 
+Use of the ``ENTRYPOINT`` command within a Dockerfile
+-----------------------------------------------------
+
+The ``mambaorg/micromaba`` Dockerfile makes use of the ``ENTRYPOINT`` command:
+
+.. code-block:: Dockerfile
+   :caption: Dockerfile
+
+   ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
+
+.. warning::
+
+   If a derived image overrides this ``ENTRYPOINT`` configuration, then some of
+   the automatic conda environment activation functionality will break.
+
+If you wish to modify the entrypoint for a derived image while retaining
+automatic conda environment activation, then append your command to the
+end of the ``ENTRYPOINT`` list:
+
+.. code-block:: Dockerfile
+   :caption: Dockerfile
+
+   ENTRYPOINT ["/usr/local/bin/_entrypoint.sh", "new-addition.sh"]
+
+
 Use of the ``SHELL`` command within a Dockerfile
 ------------------------------------------------
 
