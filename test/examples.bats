@@ -1,5 +1,3 @@
-# shellcheck disable=SC2317 # bats test make some code appear unreachable
-
 setup_file() {
     load 'test_helper/common-setup'
     _common_setup
@@ -25,6 +23,10 @@ test_example() {
 }
 
 @test "examples/apt_install" {
+    if [[ $BASE_IMAGE =~ "alpine" ]]; then
+      # shellcheck disable=SC1009
+      skip "apt-git install is not supported on Alpine"
+    fi
     test_example apt_install
 }
 
