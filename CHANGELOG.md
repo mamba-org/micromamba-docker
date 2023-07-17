@@ -7,7 +7,7 @@ This change log covers changes to the docker image and does not include
 
 - Add base image ubuntu:lunar
 
-  uid and gid 1000 is not available in ubuntu:lunar, mambauser uid and git is
+  uid and gid 1000 is not available in ubuntu:lunar, mambauser uid and gid is
   set to 57439
 
 - tests updated to allow for ubuntu:lunar's uid and gid values
