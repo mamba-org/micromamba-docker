@@ -1,7 +1,7 @@
 FROM mambaorg/micromamba:1.4.9
 ARG NEW_MAMBA_USER=new-username
-ARG NEW_MAMBA_USER_ID=1000
-ARG NEW_MAMBA_USER_GID=1000
+ARG NEW_MAMBA_USER_ID=57440
+ARG NEW_MAMBA_USER_GID=57440
 USER root
 
 RUN if grep -q '^ID=alpine$' /etc/os-release; then \

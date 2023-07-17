@@ -3,6 +3,15 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 17 July 2023
+
+- Add base image ubuntu:lunar
+
+  uid and gid 1000 is not available in ubuntu:lunar, mambauser uid and git is
+  set to 57439
+
+- tests updated to allow for ubuntu:lunar's uid and gid values
+
 ## 15 July 2023
 
 - Add base images for cuda version 12.2.0
