@@ -157,6 +157,8 @@ jobs:
         push: true
         build-args: |
           BASE_IMAGE=${{ matrix.image }}
+          MAMBA_USER_ID=${{ steps.set_image_variables.outputs.uid }}
+          MAMBA_USER_GID=${{ steps.set_image_variables.outputs.gid }}
         tags: ${{ steps.get_stage1_metadata.outputs.tags }}
         labels: ${{ steps.get_stage1_metadata.outputs.labels}}
         cache-from: |
@@ -170,6 +172,8 @@ jobs:
         push: true
         build-args: |
           BASE_IMAGE=${{ matrix.image }}
+          MAMBA_USER_ID=${{ steps.set_image_variables.outputs.uid }}
+          MAMBA_USER_GID=${{ steps.set_image_variables.outputs.gid }}
         tags: ${{ steps.get_metadata.outputs.tags }}
         labels: ${{ steps.get_metadata.outputs.labels}}
     - uses: actions/upload-artifact@65d862660abb392b8c4a3d1195a2108db131dd05
