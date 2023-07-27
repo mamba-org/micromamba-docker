@@ -54,3 +54,19 @@ back to ``$MAMBA_USER``:
 .. literalinclude:: ../examples/apt_install/Dockerfile
    :language: Dockerfile
    :caption: Dockerfile
+
+How can I stop ``micromamba`` from hanging when emulating a different CPU architecture?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A bug in QEMU can cause ``micromamba install ...`` to hang when emulating a
+different CPU. In particular, this has been observed when emulating x86 on
+ARM-based CPUs (such as Apple M1 and M2 CPUs). To work around this, you can
+configure ``micromamba`` to use only one thread for extracting packages:
+
+.. code-block:: console
+
+   micromamba config set extract_threads 1 \
+   && micromamba install ...
+
+For more information see issue
+`#349 <https://github.com/mamba-org/micromamba-docker/issues/349>`_,
