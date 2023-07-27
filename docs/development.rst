@@ -48,6 +48,9 @@ The current road map for expanding the number of base images and supported
 shells is as follows:
 
 #. Add non-Debian based distributions that have community interest
+
+   * Add ``public.ecr.aws/amazonlinux/amazonlinux:2023`` as a base image
+
 #. Add support for non-``bash`` shells based on community interest
 
 The build and test infrastructure will need to be altered to support additional
