@@ -55,18 +55,33 @@ back to ``$MAMBA_USER``:
    :language: Dockerfile
    :caption: Dockerfile
 
-How can I stop ``micromamba`` from hanging when emulating a different CPU architecture?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+How can I use a ``mambaorg/micromamba`` based image in a GitHub Action?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A bug in QEMU can cause ``micromamba install ...`` to hang when emulating a
-different CPU. In particular, this has been observed when emulating x86 on
-ARM-based CPUs (such as Apple M1 and M2 CPUs). To work around this, you can
-configure ``micromamba`` to use only one thread for extracting packages:
+GitHub Actions override the two methods our images use to automatically
+activate environments. First, the ``ENTRYPOINT`` script is disabled and second,
+the ``~/.bashrc`` file is not sourced becuase the location of the home
+directory is modified.
 
-.. code-block:: console
+To enable automatic activation of environments, you can use the
+``_entrypoint.sh`` script as the ``shell`` command in your GitHub Action.
 
-   micromamba config set extract_threads 1 \
-   && micromamba install ...
+.. code-block::
 
-For more information see issue
-`#349 <https://github.com/mamba-org/micromamba-docker/issues/349>`_,
+   jobs:
+     my_job:
+       runs-on: ubuntu-latest
+       container:
+         image: mambaorg/micromamba:latest
+         options: --user=root
+       steps:
+       - uses: actions/checkout@master
+       - shell: _entrypoint.sh /bin/bash --noprofile --norc -eo pipefail {0}
+         run: |
+           micromamba info
+           which micromamba
+
+If you are using the ``actions/checkout`` action, you will need to add the
+``--user=root`` option to the ``container`` section of your GitHub Action.
+This is because the ``actions/checkout`` action creates a directory in the
+container that is owned by ``root``.
