@@ -7,6 +7,7 @@ This change log covers changes to the docker image and does not include
 
 - Updated to micromamba version 1.5.0
 - Move all images to have `mambauser` use UID/GID 57439
+- `latest` tag now references an image based on `debian:bookworm-slim`
 - Add script `test_with_all_images.sh`
 
 ## 23 August 2023

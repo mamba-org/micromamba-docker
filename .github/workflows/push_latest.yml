@@ -9,7 +9,7 @@ on:
       - 'v*'
 
 env:
-  DEFAULT_BASE_IMAGE: 'debian:bullseye-slim'
+  DEFAULT_BASE_IMAGE: 'debian:bookworm-slim'
 
 jobs:
   build_docker_image_and_push:

@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=debian:bullseye-slim
+ARG BASE_IMAGE=debian:bookworm-slim
 
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
