@@ -74,8 +74,6 @@ jobs:
           echo "platforms=linux/amd64,linux/arm64,linux/ppc64le" >> $GITHUB_OUTPUT
         fi
         echo "is_default=$([ "$IMAGE" = "$DEFAULT_BASE_IMAGE" ] && echo true || echo false)" >> $GITHUB_OUTPUT
-        echo "uid=$([[ $IMAGE =~ "lunar" ]] && echo 57439 || echo 1000)" >> $GITHUB_OUTPUT
-        echo "gid=$([[ $IMAGE =~ "lunar" ]] && echo 57439 || echo 1000)" >> $GITHUB_OUTPUT
     - name: Get stage1 docker metadata
       id: get_stage1_metadata
       uses: docker/metadata-action@3343011071fa59c64a174cc6aa415dc13b31b7b2
@@ -135,8 +133,6 @@ jobs:
         push: false
         build-args: |
           BASE_IMAGE=${{ matrix.image }}
-          MAMBA_USER_ID=${{ steps.set_image_variables.outputs.uid }}
-          MAMBA_USER_GID=${{ steps.set_image_variables.outputs.gid }}
         tags: ${{ steps.get_metadata.outputs.tags }}
         labels: ${{ steps.get_metadata.outputs.labels}}
         cache-from: |
@@ -156,8 +152,6 @@ jobs:
         push: true
         build-args: |
           BASE_IMAGE=${{ matrix.image }}
-          MAMBA_USER_ID=${{ steps.set_image_variables.outputs.uid }}
-          MAMBA_USER_GID=${{ steps.set_image_variables.outputs.gid }}
         tags: ${{ steps.get_stage1_metadata.outputs.tags }}
         labels: ${{ steps.get_stage1_metadata.outputs.labels}}
         cache-from: |
@@ -171,8 +165,6 @@ jobs:
         push: true
         build-args: |
           BASE_IMAGE=${{ matrix.image }}
-          MAMBA_USER_ID=${{ steps.set_image_variables.outputs.uid }}
-          MAMBA_USER_GID=${{ steps.set_image_variables.outputs.gid }}
         tags: ${{ steps.get_metadata.outputs.tags }}
         labels: ${{ steps.get_metadata.outputs.labels}}
     - uses: actions/upload-artifact@65d862660abb392b8c4a3d1195a2108db131dd05

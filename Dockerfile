@@ -40,9 +40,11 @@ COPY --from=stage1 /tmp/bin/micromamba "$MAMBA_EXE"
 RUN { grep -q '^ID=alpine$' /etc/os-release && apk add --no-cache bash; } || true
 
 ARG MAMBA_USER=mambauser
-ARG MAMBA_USER_ID=1000
-ARG MAMBA_USER_GID=1000
+ARG MAMBA_USER_ID=57439
+ARG MAMBA_USER_GID=57439
 ENV MAMBA_USER=$MAMBA_USER
+ENV MAMBA_USER_ID=$MAMBA_USER_ID
+ENV MAMBA_USER_GID=$MAMBA_USER_GID
 
 COPY _dockerfile_initialize_user_accounts.sh /usr/local/bin/_dockerfile_initialize_user_accounts.sh
 COPY _dockerfile_setup_root_prefix.sh /usr/local/bin/_dockerfile_setup_root_prefix.sh
