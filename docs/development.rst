@@ -32,7 +32,7 @@ which will bring in the git sub-modules for Bats.
 installed separately. To execute the test suite on all base
 images, run ``nox`` in the top-level directory of the repo. To execute the test
 suite on a single base image, run
-``nox --session "tests(base_image='debian:bullseye-slim')"``.
+``nox --session "tests(base_image='debian:bookworm-slim')"``.
 If GNU ``parallel`` is available on the ``$PATH``, then the test suite will be run
 in parallel using all logical CPU cores available.
 

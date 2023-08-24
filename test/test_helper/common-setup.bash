@@ -10,15 +10,8 @@ _common_setup() {
 
     export MICROMAMBA_IMAGE="micromamba:test-${TAG}"
 
-    MAMBA_USER_ID="$([[ $BASE_IMAGE =~ "lunar" ]] && echo 57439 || echo 1000)"
-    export MAMBA_USER_ID
-    MAMBA_USER_GID="$([[ $BASE_IMAGE =~ "lunar" ]] && echo 57439 || echo 1000)"
-    export MAMBA_USER_GID
-
     docker build --quiet \
 		 "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
-		 "--build-arg=MAMBA_USER_ID=${MAMBA_USER_ID}" \
-		 "--build-arg=MAMBA_USER_GID=${MAMBA_USER_GID}" \
                  "--tag=${MICROMAMBA_IMAGE}" \
 		 "--file=${PROJECT_ROOT}/Dockerfile" \
 		 "$PROJECT_ROOT" > /dev/null
