@@ -3,4 +3,6 @@
 *.swp
 Dockerfile.test
 .venv/
+_build/
 __pycache__/
+examples/generate_lock/env.lock

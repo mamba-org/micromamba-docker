@@ -1,5 +1,3 @@
-# shellcheck disable=SC2317 # bats test make some code appear unreachable
-
 setup_file() {
     load 'test_helper/common-setup'
     _common_setup
@@ -10,42 +8,56 @@ setup() {
     _common_setup
 }
 
-@test "build examples/cmdline_spec/Dockerfile" {
-    ORG="${PROJECT_ROOT}/examples/cmdline_spec/Dockerfile"
-    sed "s%^FROM mambaorg/micromamba:.*$%FROM ${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
+test_example() {
+    ORG="${PROJECT_ROOT}/examples/${1}/Dockerfile"
+    sed -E "s%^FROM mambaorg/micromamba:[^ ]+%FROM ${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
     docker build --quiet \
-                 "--tag=${MICROMAMBA_IMAGE}-cmdline_spec" \
+                 "--tag=${MICROMAMBA_IMAGE}-${1}" \
 		 "--file=${ORG}.test" \
-		 "$PROJECT_ROOT/examples/cmdline_spec" > /dev/null && \
+		 "$PROJECT_ROOT/examples/${1}" > /dev/null && \
     rm "${ORG}.test"
 }
 
-@test "build examples/multi_env/Dockerfile" {
-    ORG="${PROJECT_ROOT}/examples/multi_env/Dockerfile"
-    sed "s%^FROM mambaorg/micromamba:.*$%FROM ${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
-    docker build --quiet \
-                 "--tag=${MICROMAMBA_IMAGE}-multi_env" \
-		 "--file=${ORG}.test" \
-		 "$PROJECT_ROOT/examples/multi_env" > /dev/null && \
+@test "examples/add_micromamba" {
+    test_example add_micromamba
+}
+
+@test "examples/apt_install" {
+    if [[ $BASE_IMAGE =~ "alpine" ]]; then
+      # shellcheck disable=SC1009
+      skip "apt-git install is not supported on Alpine"
+    fi
+    test_example apt_install
+}
+
+@test "examples/cmdline_spec" {
+    test_example cmdline_spec
+}
+
+@test "examples/generate_lock" {
+    ORG="${PROJECT_ROOT}/examples/generate_lock/generate_lock.sh"
+    sed -E "s%^mambaorg/micromamba:[^ ]+%${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
+    # shellcheck source=/dev/null
+    { cd "$(dirname "${ORG}")" && . "${ORG}.test"; }
     rm "${ORG}.test"
 }
 
-@test "build examples/yaml_spec/Dockerfile" {
-    ORG="${PROJECT_ROOT}/examples/yaml_spec/Dockerfile"
-    sed "s%^FROM mambaorg/micromamba:.*$%FROM ${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
-    docker build --quiet \
-                 "--tag=${MICROMAMBA_IMAGE}-yaml_spec" \
-		 "--file=${ORG}.test" \
-		 "$PROJECT_ROOT/examples/yaml_spec" > /dev/null && \
-    rm "${ORG}.test"
+@test "examples/install_lock" {
+    test_example install_lock
 }
 
-@test "build examples/add_micromamba/Dockerfile" {
-    ORG="${PROJECT_ROOT}/examples/add_micromamba/Dockerfile"
-    sed "s%^FROM mambaorg/micromamba:[^ ]*%FROM ${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
-    docker build --quiet \
-                 "--tag=${MICROMAMBA_IMAGE}-add_micromamba" \
-		 "--file=${ORG}.test" \
-		 "$PROJECT_ROOT/examples/add_micromamba" > /dev/null && \
-    rm "${ORG}.test"
+@test "examples/modify_username" {
+    test_example modify_username
+}
+
+@test "examples/multi_env" {
+    test_example multi_env
+}
+
+@test "examples/new_lock" {
+    test_example new_lock
+}
+
+@test "examples/yaml_spec" {
+    test_example yaml_spec
 }

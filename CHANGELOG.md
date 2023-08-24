@@ -3,6 +3,96 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 23 August 2023
+
+- Remove end of life base image ubuntu:kinetic
+
+## 17 July 2023
+
+- Add base image ubuntu:lunar
+
+  uid and gid 1000 is not available in ubuntu:lunar, mambauser uid and gid is
+  set to 57439
+
+- tests updated to allow for ubuntu:lunar's uid and gid values
+
+## 15 July 2023
+
+- Add base images for cuda version 12.2.0
+- Remove base images containing Ubuntu 18.04 (bionic) as they are end of life
+
+## 13 July 2023
+
+- Updated to micromamba version 1.4.9
+
+## 11 July 2023
+
+- Updated to micromamba version 1.4.8
+
+## 8 July 2023
+
+- Documentation converted to rst format, hosted on readthedocs.io
+
+## 6 July 2023
+
+- Update to micromamba version 1.4.7
+
+## 1 July 2023
+
+- Update to micromamba version 1.4.6
+
+## 29 Jun 2023
+
+- Update to micromamba version 1.4.5
+
+## 20 June 2023
+
+- Add Debian Bookworm base images
+
+## 15 June 2023
+
+- Update to micromamba version 1.4.4
+
+## 23 May 2023
+
+- bump requests python package from 2.26.0 to 2.31.0
+
+## 16 May 2023
+
+- Update to micromamba version 1.4.3
+
+## 15 May 2023
+
+- Revert broken add of ubuntu:lunar base image
+
+## 13 May 2023
+
+- Add ubuntu:lunar base image
+
+## 10 May 2023
+
+- Add base images for cuda 12.1.1
+
+## 7 April 2023
+
+- Update to micromamba version 1.4.2
+
+## 28 March 2023
+
+- Update to micromamba version 1.4.1
+
+## 23 March 2023
+
+- Update to micromamba version 1.4.0
+
+## 14 March 2023
+
+- Also push images to GitHub Container Registry
+
+## 10 March 2023
+
+- Add base images for cuda 12.1.0
+
 ## 21 Febuary 2023
 
 - In `.gitattributes` fix line endings for `*.sh` files to allow building on Windows
@@ -13,7 +103,7 @@ This change log covers changes to the docker image and does not include
 
 ## 9 Febuary 2023
 
-- update add_micromamba example to include `USER root` before copying files in
+- update `add_micromamba` example to include `USER root` before copying files in
 
 ## 3 Febuary 2023
 

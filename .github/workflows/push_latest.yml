@@ -18,13 +18,16 @@ jobs:
     strategy:
       matrix:
         image:
+         - debian:bookworm-slim
+         - debian:bookworm
          - debian:bullseye-slim
          - debian:bullseye
-         - ubuntu:kinetic
+         - ubuntu:lunar
          - ubuntu:jammy
          - ubuntu:focal
-         - ubuntu:bionic
          - frolvlad/alpine-glibc:alpine-3.17
+         - nvidia/cuda:12.2.0-base-ubuntu22.04
+         - nvidia/cuda:12.2.0-base-ubuntu20.04
          - nvidia/cuda:12.1.1-base-ubuntu22.04
          - nvidia/cuda:12.1.1-base-ubuntu20.04
          - nvidia/cuda:11.8.0-base-ubuntu22.04
@@ -32,9 +35,7 @@ jobs:
          - nvidia/cuda:11.7.1-base-ubuntu22.04
          - nvidia/cuda:11.7.1-base-ubuntu20.04
          - nvidia/cuda:11.6.2-base-ubuntu20.04
-         - nvidia/cuda:11.6.2-base-ubuntu18.04
          - nvidia/cuda:11.3.1-base-ubuntu20.04
-         - nvidia/cuda:11.3.1-base-ubuntu18.04
     steps:
     - name: Install GNU parallel and shellcheck
       run: sudo apt-get install --no-install-recommends -y parallel shellcheck
@@ -73,6 +74,8 @@ jobs:
           echo "platforms=linux/amd64,linux/arm64,linux/ppc64le" >> $GITHUB_OUTPUT
         fi
         echo "is_default=$([ "$IMAGE" = "$DEFAULT_BASE_IMAGE" ] && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "uid=$([[ $IMAGE =~ "lunar" ]] && echo 57439 || echo 1000)" >> $GITHUB_OUTPUT
+        echo "gid=$([[ $IMAGE =~ "lunar" ]] && echo 57439 || echo 1000)" >> $GITHUB_OUTPUT
     - name: Get stage1 docker metadata
       id: get_stage1_metadata
       uses: docker/metadata-action@3343011071fa59c64a174cc6aa415dc13b31b7b2
@@ -132,6 +135,8 @@ jobs:
         push: false
         build-args: |
           BASE_IMAGE=${{ matrix.image }}
+          MAMBA_USER_ID=${{ steps.set_image_variables.outputs.uid }}
+          MAMBA_USER_GID=${{ steps.set_image_variables.outputs.gid }}
         tags: ${{ steps.get_metadata.outputs.tags }}
         labels: ${{ steps.get_metadata.outputs.labels}}
         cache-from: |
@@ -151,6 +156,8 @@ jobs:
         push: true
         build-args: |
           BASE_IMAGE=${{ matrix.image }}
+          MAMBA_USER_ID=${{ steps.set_image_variables.outputs.uid }}
+          MAMBA_USER_GID=${{ steps.set_image_variables.outputs.gid }}
         tags: ${{ steps.get_stage1_metadata.outputs.tags }}
         labels: ${{ steps.get_stage1_metadata.outputs.labels}}
         cache-from: |
@@ -164,6 +171,8 @@ jobs:
         push: true
         build-args: |
           BASE_IMAGE=${{ matrix.image }}
+          MAMBA_USER_ID=${{ steps.set_image_variables.outputs.uid }}
+          MAMBA_USER_GID=${{ steps.set_image_variables.outputs.gid }}
         tags: ${{ steps.get_metadata.outputs.tags }}
         labels: ${{ steps.get_metadata.outputs.labels}}
     - uses: actions/upload-artifact@65d862660abb392b8c4a3d1195a2108db131dd05
@@ -189,9 +198,11 @@ jobs:
         function process_tags {
           printf '* '
           jq  -r '.target."docker-metadata-action".tags[]' "$1" \
-          | sed 's%\(.*:\(.*\)\)%[`\2`](https://hub.docker.com/r/\1)%' \
-          | tr '\n' ',' \
-          | sed 's%,$%%'
+          | grep -v 'ghcr.io' \
+          | sed 's%^mambaorg/micromamba:\(.*\)$%`\1`, %' \
+          | tr -d '\n' \
+          | sed 's%, $%%' \
+          | sed 's%^\(.*\)$%[\1](https://github.com/mamba-org/micromamba-docker/blob/main/Dockerfile)%'
           printf '\n\n'
         }
         function get_tags_markdown {
@@ -204,7 +215,7 @@ jobs:
           | while read file; do process_tags "$file"; done
         }
         echo "TAGS_MARKDOWN<<EOF" >> $GITHUB_ENV
-        echo "### Recent Tags" >> $GITHUB_ENV
+        echo "## Recent Tags" >> $GITHUB_ENV
         echo "" >> $GITHUB_ENV
         get_tags_markdown >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV

@@ -23,6 +23,7 @@ if [[ $# -ne 1 ]]; then
 fi
 
 VERSION="${1}"
+DATE="$(date "+%-d %B %Y")"
 
 DOCKERFILES=$(find "${SCRIPT_DIR}" -not -path "./test/bats/*" -name '*Dockerfile')
 
@@ -30,8 +31,10 @@ for f in $DOCKERFILES; do
   sed -i.bak  "s%^FROM mambaorg/micromamba:[^ \t ]*%FROM mambaorg/micromamba:${VERSION}%" "$f"
 done
 
+sed -i.bak  "s%mambaorg/micromamba:[^ \t ]*%mambaorg/micromamba:${VERSION}%" "examples/generate_lock/generate_lock.sh"
+
 sed -i.bak  "s%^ARG VERSION=[^ \t]*%ARG VERSION=${VERSION}%" "${SCRIPT_DIR}/Dockerfile"
 
-for f in README.md FAQ.md; do
-  sed -i.bak "s%mambaorg/micromamba:[^ \t]*%mambaorg/micromamba:${VERSION}%" "${SCRIPT_DIR}/$f"
-done
+sed -i.bak "s%\(CHANGELOG.md).\)%\1\n\n## ${DATE}\n\n- Updated to micromamba version ${VERSION}%" "${SCRIPT_DIR}/CHANGELOG.md"
+
+sed -i.bak "s%^release = '.*'$%release = '${VERSION}'%" "${SCRIPT_DIR}/docs/conf.py"
