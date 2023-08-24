@@ -14,11 +14,11 @@ The set of tags includes permutations of:
    * for CUDA base images, this portion of the tag is set to
      ``<ubuntu_code_name>-cuda-<cuda_version>``
    * for Debian base images, this portion of the tag is set to the code name
-     (such as ``bullseye``) plus ``-slim`` if derived from a slim image
+     (such as ``bookworm``) plus ``-slim`` if derived from a slim image
    * for Ubuntu base images, this portion of the tag is set to the code name
 
 The tag ``latest`` is based on the ``slim`` image of the most recent Debian
-release, currently ``bullseye-slim``.
+release, currently ``bookworm-slim``.
 
 Tags that do not contain ``git`` are rolling tags, meaning these tags get
 reassigned to new images each time these images are built.

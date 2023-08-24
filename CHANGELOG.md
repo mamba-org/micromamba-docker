@@ -3,6 +3,14 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 24 August 2023
+
+- Updated to micromamba version 1.5.0
+- Move all images to have `mambauser` use UID/GID 57439
+- `latest` tag now references an image based on `debian:bookworm-slim`
+- Add script `test_with_all_images.sh`
+- fix test for example of generating a conda lock file
+
 ## 23 August 2023
 
 - Remove end of life base image ubuntu:kinetic

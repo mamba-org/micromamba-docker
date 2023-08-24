@@ -12,8 +12,6 @@ setup_file() {
                  "--tag=${MICROMAMBA_IMAGE}-different-user" \
                  "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
                  "--build-arg=MAMBA_USER=$altered_mamba_user" \
-                 "--build-arg=MAMBA_USER_ID=${MAMBA_USER_ID}" \
-                 "--build-arg=MAMBA_USER_GID=${MAMBA_USER_GID}" \
                  "--file=${PROJECT_ROOT}/Dockerfile" \
                  "$PROJECT_ROOT" > /dev/null
     docker build --quiet \
