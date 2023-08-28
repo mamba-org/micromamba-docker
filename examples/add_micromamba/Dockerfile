@@ -9,9 +9,9 @@ USER root
 # if your image defaults to a non-root user, then you may want to make the
 # next 3 ARG commands match the values in your image. You can get the values
 # by running: docker run --rm -it my/image id -a
-ARG MAMBA_USER=mamba
-ARG MAMBA_USER_ID=1000
-ARG MAMBA_USER_GID=1000
+ARG MAMBA_USER=mambauser
+ARG MAMBA_USER_ID=57439
+ARG MAMBA_USER_GID=57439
 ENV MAMBA_USER=$MAMBA_USER
 ENV MAMBA_ROOT_PREFIX="/opt/conda"
 ENV MAMBA_EXE="/bin/micromamba"
