@@ -101,3 +101,27 @@ If you are using the ``actions/checkout`` action, you will need to add the
 ``--user=root`` option to the ``container`` section of your GitHub Action.
 This is because the ``actions/checkout`` action creates a directory in the
 container that is owned by ``root``.
+
+How can I use a ``mambaorg/micromamba`` based image with ``apptainer``?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There are three ``apptainer``/``singularity`` sub-commands that can be used to
+execute a container:
+
+#. ``apptainer run`` will execute the entrypoint script and automatically
+   activate the ``base`` environment.
+
+#. ``apptainer exec`` does not execute the entrypoint script and therefore
+   does not automatically activate the ``base`` environment. By prepending
+   ``/usr/local/bin/_entrypoint.sh`` to the command you want to execute within
+   the container, you can activate the ``base`` environment. For example:
+
+   .. code-block:: console
+
+      apptainer exec /usr/local/bin/_entrypoint.sh micromamba info
+
+#. ``apptainer shell`` does not execute the entrypoint script and therefore
+   does not automatically activate the ``base`` environment. By supplying the
+   ``--shell /usr/local/bin/_apptainer_shell.sh`` option to ``apptainer exec``,
+   you can activate the ``base`` environment. This option can alternatively be
+   supplied via the ``APPTAINER_SHELL`` environment variable.
