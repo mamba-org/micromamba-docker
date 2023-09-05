@@ -20,6 +20,8 @@ test_example() {
 
 @test "examples/add_micromamba" {
     test_example add_micromamba
+    run docker run --rm "${MICROMAMBA_IMAGE}-add_micromamba" jq --version
+    assert_success
 }
 
 @test "examples/apt_install" {
