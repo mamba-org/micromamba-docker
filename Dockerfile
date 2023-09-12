@@ -16,6 +16,7 @@ RUN if grep -q '^ID=alpine$' /etc/os-release; then \
         bzip2 \
         ca-certificates \
         curl \
+        netbase \
       && rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log; \
    fi
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
