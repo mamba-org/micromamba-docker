@@ -63,3 +63,7 @@ test_example() {
 @test "examples/yaml_spec" {
     test_example yaml_spec
 }
+
+@test "examples/run_activate" {
+    test_example run_activate
+}
