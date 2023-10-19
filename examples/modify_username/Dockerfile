@@ -6,7 +6,7 @@ USER root
 
 RUN if grep -q '^ID=alpine$' /etc/os-release; then \
       # alpine does not have usermod/groupmod
-      apk add --no-cache --virtual temp-packages shadow=4.13-r0; \
+      apk add --no-cache --virtual temp-packages shadow; \
     fi && \
     usermod "--login=${NEW_MAMBA_USER}" "--home=/home/${NEW_MAMBA_USER}" \
         --move-home "-u ${NEW_MAMBA_USER_ID}" "${MAMBA_USER}" && \
