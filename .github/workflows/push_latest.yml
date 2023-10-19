@@ -22,6 +22,7 @@ jobs:
          - debian:bookworm
          - debian:bullseye-slim
          - debian:bullseye
+         - ubuntu:mantic
          - ubuntu:lunar
          - ubuntu:jammy
          - ubuntu:focal
