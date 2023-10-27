@@ -204,7 +204,7 @@ jobs:
       id: format_tags
       run: |
         function process_tags {
-          distro_id="$(jq  -r '.target."docker-metadata-action".labels[distro_id]' "$1")"
+          distro_id="$(jq  -r '.target."docker-metadata-action".labels["distro_id"]' "$1")"
           printf '* '
           jq  -r '.target."docker-metadata-action".tags[]' "$1" \
           | grep -v 'ghcr.io' \
@@ -222,9 +222,6 @@ jobs:
           find . -name docker-metadata-action-bake.json \
           | grep -v "${latest}" \
           | while read file; do process_tags "$file"; done
-        }
-        function get_distro_id {
-          echo # need to get this from image and append to Dockerfile link
         }
         echo "TAGS_MARKDOWN<<EOF" >> $GITHUB_ENV
         echo "## Recent Tags" >> $GITHUB_ENV
