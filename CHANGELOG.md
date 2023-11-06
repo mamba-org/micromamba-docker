@@ -7,6 +7,7 @@ This change log covers changes to the docker image and does not include
 
 - Added `/usr/local/bin/_apptainer_shell.sh` for use with
   `apptainer shell -shell /usr/local/bin/_apptainer_shell.sh ...`
+- Add tests of `apptainer run`, `apptainer exec`, and `apptainer shell`
 
 ## 19 October 2023
 

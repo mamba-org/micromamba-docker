@@ -1,6 +1,9 @@
 Development
 ===========
 
+Branches
+--------
+
 Code contributions should start on a feature branch derived from the ``dev``
 branch. Pull requests will then be merged into the ``dev`` branch. When a new
 major or minor version of ``micromamba`` is released, then the ``dev`` branch
@@ -24,20 +27,41 @@ code for the feature.
 Testing
 -------
 
+Testing Dependencies
+^^^^^^^^^^^^^^^^^^^^
+
+* ``docker``
+* ``nox``
+* GNU ``parallel`` (optional)
+* ``apptainer`` (optional)
+* ``pre-commit`` (optional)
+
+Setup
+^^^^^
+
 The `Bats <https://github.com/bats-core/bats-core>`_ testing framework is used
 to test the micromamba docker images and derived images. When cloning this
 repo you'll want to use ``git clone --recurse-submodules ...``,
 which will bring in the git sub-modules for Bats.
-`Nox <https://nox.thea.codes>`_ is used to automate tests and must be
-installed separately. To execute the test suite on all base
-images, run ``nox`` in the top-level directory of the repo. To execute the test
-suite on a single base image, run
-``nox --session "tests(base_image='debian:bookworm-slim')"``.
-If GNU ``parallel`` is available on the ``$PATH``, then the test suite will be run
-in parallel using all logical CPU cores available.
 
 `Pre-commit <https://pre-commit.com>`_ should be enabled after cloning the
 repo by executing ``pre-commit install`` in the root of the repo.
+
+`Nox <https://nox.thea.codes>`_ is used to automate tests and must be
+installed separately.
+
+Executing Tests
+^^^^^^^^^^^^^^^
+
+To execute the test suite on all base images, run ``nox`` in the top-level
+directory of the repo. To execute the test suite on a single base image, run
+``nox --session "tests(base_image='debian:bookworm-slim')"``.
+
+If GNU ``parallel`` is available on the ``$PATH``, then the test suite will be
+run in parallel using all logical CPU cores available.
+
+Tests requiring ``apptainer`` will automatically be skipped if ``apptainer``
+is not found on the ``$PATH``.
 
 .. _road-map-label:
 
