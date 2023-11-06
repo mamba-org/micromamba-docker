@@ -56,6 +56,9 @@ USER $MAMBA_USER
 
 WORKDIR /tmp
 
+# for use with 'apptainer shell --shell /usr/local/bin/_apptainer_shell.sh ...'
+COPY _apptainer_shell.sh /usr/local/bin/_apptainer_shell.sh
+
 # Script which launches commands passed to "docker run"
 COPY _entrypoint.sh /usr/local/bin/_entrypoint.sh
 COPY _activate_current_env.sh /usr/local/bin/_activate_current_env.sh
