@@ -56,6 +56,9 @@ USER $MAMBA_USER
 
 WORKDIR /tmp
 
+# this will enable singularity/apptainer subcommands exec/shell to find the installation (base env)
+ENV PATH="$MAMBA_ROOT_PREFIX/bin:$PATH"
+
 # for use with 'apptainer shell --shell /usr/local/bin/_apptainer_shell.sh ...'
 COPY _apptainer_shell.sh /usr/local/bin/_apptainer_shell.sh
 
