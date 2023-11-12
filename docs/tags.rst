@@ -16,6 +16,8 @@ The set of tags includes permutations of:
    * for Debian base images, this portion of the tag is set to the code name
      (such as ``bookworm``) plus ``-slim`` if derived from a slim image
    * for Ubuntu base images, this portion of the tag is set to the code name
+   * for AmazonLinux base images, this portion of the tag is set to 
+     ``amazon<release_year>
 
 The tag ``latest`` is based on the ``slim`` image of the most recent Debian
 release, currently ``bookworm-slim``.
