@@ -142,7 +142,7 @@ jobs:
       id: docker_build
       uses: docker/build-push-action@35434f557ad77672899d67f7992fb5560bda1071
       with:
-        dockerfile: Dockerfile.${{ steps.set_image_variables.outputs.distro_id }}
+        dockerfile: ${{ steps.set_image_variables.outputs.distro_id }}.Dockerfile
         platforms: ${{ steps.set_image_variables.outputs.platforms }}
         push: false
         build-args: |
@@ -161,7 +161,7 @@ jobs:
       id: docker_stage1_push
       uses: docker/build-push-action@35434f557ad77672899d67f7992fb5560bda1071
       with:
-        dockerfile: Dockerfile.${{ steps.set_image_variables.outputs.distro_id }}
+        dockerfile: ${{ steps.set_image_variables.outputs.distro_id }}.Dockerfile
         target: stage1
         platforms: ${{ steps.set_image_variables.outputs.platforms }}
         push: true
@@ -176,7 +176,7 @@ jobs:
       id: docker_push
       uses: docker/build-push-action@35434f557ad77672899d67f7992fb5560bda1071
       with:
-        dockerfile: Dockerfile.${{ steps.set_image_variables.outputs.distro_id }}
+        dockerfile: ${{ steps.set_image_variables.outputs.distro_id }}.Dockerfile
         platforms: ${{ steps.set_image_variables.outputs.platforms }}
         push: true
         build-args: |
@@ -211,7 +211,7 @@ jobs:
           | sed 's%^mambaorg/micromamba:\(.*\)$%`\1`, %' \
           | tr -d '\n' \
           | sed 's%, $%%' \
-          | sed "s%^\(.*\)$%[\1](https://github.com/mamba-org/micromamba-docker/blob/main/Dockerfile.${distro_id}")%'
+          | sed "s%^\(.*\)$%[\1](https://github.com/mamba-org/micromamba-docker/blob/main/${distro_id}.Dockerfile")%'
           printf '\n\n'
         }
         function get_tags_markdown {
