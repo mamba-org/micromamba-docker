@@ -29,11 +29,10 @@ DOCKERFILES=$(find "${SCRIPT_DIR}" -not -path "./test/bats/*" -name '*Dockerfile
 
 for f in $DOCKERFILES; do
   sed -i.bak  "s%^FROM mambaorg/micromamba:[^ \t ]*%FROM mambaorg/micromamba:${VERSION}%" "$f"
+  sed -i.bak  "s%^ARG VERSION=[^ \t]*%ARG VERSION=${VERSION}%" "$f"
 done
 
 sed -i.bak  "s%mambaorg/micromamba:[^ \t ]*%mambaorg/micromamba:${VERSION}%" "examples/generate_lock/generate_lock.sh"
-
-sed -i.bak  "s%^ARG VERSION=[^ \t]*%ARG VERSION=${VERSION}%" "${SCRIPT_DIR}/Dockerfile"
 
 sed -i.bak "s%\(CHANGELOG.md).\)%\1\n\n## ${DATE}\n\n- Updated to micromamba version ${VERSION}%" "${SCRIPT_DIR}/CHANGELOG.md"
 
