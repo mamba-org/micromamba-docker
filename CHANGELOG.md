@@ -3,6 +3,10 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 14 November 2023
+
+- Updated to micromamba version 1.5.3
+
 ## 5 November 2023
 
 - Added `/usr/local/bin/_apptainer_shell.sh` for use with
