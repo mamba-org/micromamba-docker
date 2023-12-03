@@ -3,6 +3,11 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 2 December2023
+
+- Add base images for cuda version 12.2.0
+- Remove `alpine:3.17` base image as it no longer receives a unique tag
+
 ## 14 November 2023
 
 - Updated to micromamba version 1.5.3
