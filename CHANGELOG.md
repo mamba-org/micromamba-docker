@@ -6,6 +6,7 @@ This change log covers changes to the docker image and does not include
 ## 2 December2023
 
 - Add base images for cuda version 12.2.0
+- Remove `alpine:3.17` base image as it no longer receives a unique tag
 
 ## 5 November 2023
 
