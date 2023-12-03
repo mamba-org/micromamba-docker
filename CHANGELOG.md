@@ -8,6 +8,10 @@ This change log covers changes to the docker image and does not include
 - Add base images for cuda version 12.2.0
 - Remove `alpine:3.17` base image as it no longer receives a unique tag
 
+## 14 November 2023
+
+- Updated to micromamba version 1.5.3
+
 ## 5 November 2023
 
 - Added `/usr/local/bin/_apptainer_shell.sh` for use with
