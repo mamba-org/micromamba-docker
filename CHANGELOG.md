@@ -5,7 +5,7 @@ This change log covers changes to the docker image and does not include
 
 ## 4 December 2023
 
-- Add image based on `nvidia/cuda:11.4.3-base-ubuntu20.04` build
+- Add image based on `nvidia/cuda:11.4.3-base-ubuntu20.04`
 
 ## 2 December 2023
 
