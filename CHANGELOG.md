@@ -3,6 +3,12 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 13 December 2023
+
+- Add image based on `nvidia/cuda:11.2.2-base-ubuntu20.04`
+- Update CUDA v12.2.0 images to CUDA v12.2.2
+- Update CUDA v12.3.0 images to CUDA v12.3.1
+
 ## 4 December 2023
 
 - Add image based on `nvidia/cuda:11.4.3-base-ubuntu20.04`
