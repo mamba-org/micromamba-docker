@@ -3,6 +3,10 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 22 December 2023
+
+- Updated to micromamba version 1.5.6
+
 ## 21 December 2023
 
 - Improved error handling in `check_version.py`
