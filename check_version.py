@@ -23,7 +23,10 @@ ArchVersions = Dict[str, List[VersionInfo]]
 
 def to_version(ver: str) -> VersionInfo:
     """Converts str to VersionInfo"""
-    return VersionInfo.parse(ver)
+    try:
+        return VersionInfo.parse(ver)
+    except ValueError:
+        return VersionInfo.parse("0.0.1")
 
 
 def anaconda_versions(url: str) -> Dict[str, List[VersionInfo]]:
