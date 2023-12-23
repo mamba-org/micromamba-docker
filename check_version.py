@@ -3,10 +3,10 @@
 # pylint: disable=line-too-long,missing-module-docstring,missing-function-docstring,import-error
 # flake8: noqa
 import logging
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Set
 
 import requests
-from semver import VersionInfo
+from packaging.version import Version, InvalidVersion
 
 ANACONDA_PLATFORMS = {
     "linux-64": "amd64",
@@ -18,18 +18,15 @@ ANACONDA_API_URL = "https://api.anaconda.org/package/conda-forge/micromamba/file
 DOCKERHUB_API_URL = "https://hub.docker.com/v2/repositories/mambaorg/micromamba/tags/?page_size=25&page=1&ordering=last_updated"
 
 
-ArchVersions = Dict[str, List[VersionInfo]]
+ArchVersions = Dict[str, List[Version]]
 
 
-def to_version(ver: str) -> VersionInfo:
-    """Converts str to VersionInfo"""
-    try:
-        return VersionInfo.parse(ver)
-    except ValueError:
-        return VersionInfo.parse("0.0.1")
+def to_version(ver: str) -> Version:
+    """Converts str to Version"""
+    return Version(ver)
 
 
-def anaconda_versions(url: str) -> Dict[str, List[VersionInfo]]:
+def anaconda_versions(url: str) -> Dict[str, List[Version]]:
     res = requests.get(url)
     result = res.json()
     out: ArchVersions = {arch: [] for arch in ARCHITECTURES}
@@ -49,31 +46,43 @@ def dockerhub_versions(url: str) -> ArchVersions:
     out: ArchVersions = {arch: [] for arch in ARCHITECTURES}
     for release in dh_result["results"]:
         version_str = release["name"].split("-")[0]
-        if VersionInfo.isvalid(version_str):
-            for image in release["images"]:
-                arch = image["architecture"]
-                if arch in ARCHITECTURES:
+        for image in release["images"]:
+            arch = image["architecture"]
+            if arch in ARCHITECTURES:
+                try:
                     out[arch].append(to_version(version_str))
+                except InvalidVersion:
+                    pass
     logging.debug("Dockerhub versions=%s", out)
     return out
 
+def is_regular_version(ver: Version) -> bool:
+    """Check if version is regular (not pre/post-release or dev)"""
+    return not (ver.is_prerelease or ver.is_postrelease or ver.is_devrelease)
 
-def max_version_available_for_all_arch(versions: ArchVersions) -> Optional[VersionInfo]:
+
+def filter_out_irregular_versions(versions: Set[Version]) -> Set[Version]:
+    """Filter out versions that pre/post-release or dev versions"""
+    return {ver for ver in versions if is_regular_version(ver)}
+
+
+def max_version_available_for_all_arch(versions: ArchVersions) -> Optional[Version]:
     set_per_arch = [set(v) for v in versions.values()]
     all_arch_versions = set.intersection(*set_per_arch)
+    all_regular_arch_versions = filter_out_irregular_versions(all_arch_versions)
     try:
-        return max(all_arch_versions)
+        return max(all_regular_arch_versions)
     except ValueError:
         return None
 
 
-def combined_version_list(versions: ArchVersions) -> List[VersionInfo]:
+def combined_version_list(versions: ArchVersions) -> List[Version]:
     """Union of versions from all arch"""
     set_per_arch = [set(v) for v in versions.values()]
     return list(set.union(*set_per_arch))
 
 
-def get_version_and_build_status() -> Tuple[Optional[VersionInfo], bool]:
+def get_version_and_build_status() -> Tuple[Optional[Version], bool]:
     logging.basicConfig(level=logging.DEBUG)
     conda_versions = anaconda_versions(ANACONDA_API_URL)
     conda_latest = max_version_available_for_all_arch(conda_versions)
