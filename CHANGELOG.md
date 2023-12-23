@@ -3,6 +3,10 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 23 December 2023
+
+- Use `packaging.version` instead of `semver` to parse version numbers in `check_version.py`
+
 ## 22 December 2023
 
 - Updated to micromamba version 1.5.6
@@ -44,7 +48,8 @@ This change log covers changes to the docker image and does not include
 
 - Add image based on `alpine:3.18`
 - Add image based on `ubuntu:mantic`
-- Removed package version pinning for `shadow` from modify username example as it was causing issues with testing
+- Removed package version pinning for `shadow` from modify username example as
+  it was causing issues with testing
 
 ## 12 September 2023
 
