@@ -56,6 +56,7 @@ def dockerhub_versions(url: str) -> ArchVersions:
     logging.debug("Dockerhub versions=%s", out)
     return out
 
+
 def is_regular_version(ver: Version) -> bool:
     """Check if version is regular (not pre/post-release or dev)"""
     return not (ver.is_prerelease or ver.is_postrelease or ver.is_devrelease)

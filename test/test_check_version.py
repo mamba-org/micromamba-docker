@@ -1,5 +1,5 @@
 # pylint: disable=missing-module-docstring,missing-function-docstring,import-error
-import semver
+from packaging.version import Version
 
 import check_version
 
@@ -192,10 +192,10 @@ DOCKERHUB_JSON = {
 
 
 def test_combined_version_list01():
-    arch_ver = {"arch1": [semver.VersionInfo.parse("1.0.0")], "arch2": [semver.VersionInfo.parse("2.0.0")]}
+    arch_ver = {"arch1": [Version("1.0.0")], "arch2": [Version("2.0.0")]}
     versions = {
-        semver.VersionInfo(major=1, minor=0, patch=0, prerelease=None, build=None),
-        semver.VersionInfo(major=2, minor=0, patch=0, prerelease=None, build=None),
+        Version("1.0.0"),
+        Version("2.0.0"),
     }
     assert set(check_version.combined_version_list(arch_ver)) == versions
 
@@ -207,14 +207,14 @@ def test_combined_version_list02():
 
 def test_max_version_available_for_all_arch01():
     arch_ver = {
-        "arch1": [semver.VersionInfo.parse("2.0.0"), semver.VersionInfo.parse("1.0.1")],
-        "arch2": [semver.VersionInfo.parse("2.0.0"), semver.VersionInfo.parse("2.0.1")],
+        "arch1": [Version("2.0.0"), Version("1.0.1")],
+        "arch2": [Version("2.0.0"), Version("2.0.1")],
     }
-    assert check_version.max_version_available_for_all_arch(arch_ver) == semver.VersionInfo.parse("2.0.0")
+    assert check_version.max_version_available_for_all_arch(arch_ver) == Version("2.0.0")
 
 
 def test_max_version_available_for_all_arch02():
-    arch_ver = {"arch1": [semver.VersionInfo.parse("1.0.0")], "arch2": [semver.VersionInfo.parse("2.0.0")]}
+    arch_ver = {"arch1": [Version("1.0.0")], "arch2": [Version("2.0.0")]}
     assert check_version.max_version_available_for_all_arch(arch_ver) is None
 
 
@@ -240,9 +240,9 @@ def mocked_requests_get(*args, **_):
 def test_dockerhub_verions01(mocker):
     mocker.patch("requests.get", side_effect=mocked_requests_get)
     expected = {
-        "amd64": [semver.VersionInfo(major=0, minor=2, patch=0, prerelease=None, build=None)],
-        "arm64": [semver.VersionInfo(major=0, minor=2, patch=0, prerelease=None, build=None)],
-        "ppc64le": [semver.VersionInfo(major=0, minor=2, patch=0, prerelease=None, build=None)],
+        "amd64": [Version("0.2.0")],
+        "arm64": [Version("0.2.0")],
+        "ppc64le": [Version("0.2.0")],
     }
     assert check_version.dockerhub_versions(check_version.DOCKERHUB_API_URL) == expected
 
@@ -250,9 +250,9 @@ def test_dockerhub_verions01(mocker):
 def test_anaconda_versions01(mocker):
     mocker.patch("requests.get", side_effect=mocked_requests_get)
     expected = {
-        "amd64": [semver.VersionInfo(major=0, minor=3, patch=8, prerelease=None, build=None)],
-        "arm64": [semver.VersionInfo(major=0, minor=3, patch=8, prerelease=None, build=None)],
-        "ppc64le": [semver.VersionInfo(major=0, minor=3, patch=8, prerelease=None, build=None)],
+        "amd64": [Version("0.3.8")],
+        "arm64": [Version("0.3.8")],
+        "ppc64le": [Version("0.3.8")],
     }
     assert check_version.anaconda_versions(check_version.ANACONDA_API_URL) == expected
 
@@ -260,6 +260,6 @@ def test_anaconda_versions01(mocker):
 def test_get_version_and_build_status01(mocker):
     mocker.patch("requests.get", side_effect=mocked_requests_get)
     assert check_version.get_version_and_build_status() == (
-        semver.VersionInfo(major=0, minor=3, patch=8, prerelease=None, build=None),
+        Version("0.3.8"),
         True,
     )
