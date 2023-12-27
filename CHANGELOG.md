@@ -3,6 +3,13 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 27 December 2023
+
+- Added back `alpine:3.17` base image with `alpine3.17` as the tag
+- Added tag `alpine3.18` for `alpine:3.18` base image
+- Tag `alpine` will now be a rolling tag that is assigned to the most recent
+  alpine image
+
 ## 23 December 2023
 
 - Use `packaging.version` instead of `semver` to parse version numbers in `check_version.py`

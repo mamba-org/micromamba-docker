@@ -10,6 +10,7 @@ on:
 
 env:
   DEFAULT_BASE_IMAGE: 'debian:bookworm-slim'
+  LATEST_ALPINE_BASE_IMAGE: 'frolvlad/alpine-glibc:alpine-3.18'
 
 jobs:
   build_docker_image_and_push:
@@ -27,6 +28,7 @@ jobs:
          - ubuntu:jammy
          - ubuntu:focal
          - frolvlad/alpine-glibc:alpine-3.18
+         - frolvlad/alpine-glibc:alpine-3.17
          - nvidia/cuda:12.3.1-base-ubuntu22.04
          - nvidia/cuda:12.3.1-base-ubuntu20.04
          - nvidia/cuda:12.2.2-base-ubuntu22.04
@@ -71,18 +73,21 @@ jobs:
           code_name[20.04]=focal
           code_name[18.04]=bionic
           ubuntu_version_number="${IMAGE##*-ubuntu}"
-          tag="${IMAGE##*:}"
-          cuda_version="${tag%%-*}"
+          base_tag="${IMAGE##*:}"
+          cuda_version="${base_tag%%-*}"
           echo "tag=${code_name[$ubuntu_version_number]}-cuda-${cuda_version}" >> $GITHUB_OUTPUT
           echo "platforms=linux/amd64,linux/arm64" >> $GITHUB_OUTPUT
         elif [ "${IMAGE%%:*}" = "frolvlad/alpine-glibc" ]; then
-          echo "tag=alpine" >> $GITHUB_OUTPUT
+          base_tag="${IMAGE##*:}"
+          alpine_version="${base_tag##alpine-}"
+          echo "tag=alpine${alpine_version}" >> $GITHUB_OUTPUT
           echo "platforms=linux/amd64" >> $GITHUB_OUTPUT
         else
           echo "tag=$(echo "$IMAGE" | cut -d: -f2)" >> $GITHUB_OUTPUT
           echo "platforms=linux/amd64,linux/arm64,linux/ppc64le" >> $GITHUB_OUTPUT
         fi
         echo "is_default=$([ "$IMAGE" = "$DEFAULT_BASE_IMAGE" ] && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "is_latest_alpine=$([ "$IMAGE" = "$LATEST_ALPINE_BASE_IMAGE" ] && echo true || echo false)" >> $GITHUB_OUTPUT
     - name: Get stage1 docker metadata
       id: get_stage1_metadata
       uses: docker/metadata-action@3343011071fa59c64a174cc6aa415dc13b31b7b2
@@ -102,6 +107,7 @@ jobs:
         flavor: latest=false
         # latest
         # base_image
+        # alpine
         # major.minor.patch
         # major.minor
         # major
@@ -113,6 +119,7 @@ jobs:
         tags: |
             type=raw,value=latest,priority=1000,enable=${{ steps.set_image_variables.outputs.is_default }}
             type=raw,value=${{ steps.set_image_variables.outputs.tag }},priority=900
+            type=raw,value=alpine,priority=850,enable=${{ steps.set_image_variables.outputs.is_lastest_alpine }}
             type=semver,pattern={{version}},enable=${{ steps.set_image_variables.outputs.is_default }},value=${{ steps.get_version.outputs.version }},priority=800
             type=semver,pattern={{major}}.{{minor}},enable=${{ steps.set_image_variables.outputs.is_default }},value=${{ steps.get_version.outputs.version }},priority=700
             type=semver,pattern={{major}},enable=${{ steps.set_image_variables.outputs.is_default }},value=${{ steps.get_version.outputs.version }},priority=600
