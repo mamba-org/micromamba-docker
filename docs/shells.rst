@@ -1,5 +1,8 @@
 Supported Shells
 ================
 
-We have been focused on supporting use of the ``bash`` shell. Support for
-additional shells is on our :ref:`road-map-label`.
+Currently we only support the ``bash`` shell.
+
+We will consider supporting other shells if there is substantial community
+interest or a pull request. But thus far interest in other shells has been
+very limited.
