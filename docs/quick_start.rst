@@ -1,12 +1,13 @@
 Quick Start
 ===========
 
-The micromamba image comes with an empty environment named ``base``. Usually you
-will install software into this ``base`` environment. The
-``mambaorg/micromamba`` image includes any programs from its parent image, the
-``micromamba`` binary, and SSL certificates. ``micromamba`` does not have a
-``python`` dependency, and therefore the ``mambaorg/micromamba`` image does not
-include ``python``.
+The ``mambaorg/micromamba`` images contain only the programs from their parent
+image, the ``micromamba`` binary, ``bash``, SSL certificates, and ``glibc``.
+``micromamba`` does not have a ``python`` dependency, and therefore the
+``mambaorg/micromamba`` images do not contain ``python``.
+
+The micromamba images have an empty conda environment named ``base``. Usually
+you will install software into this ``base`` environment.
 
 #. Define your desired conda environment in a yaml file
 
@@ -19,7 +20,6 @@ include ``python``.
       Using an environment name other than ``base`` is not recommended! If you
       must use a different environment name, then read the :ref:`documentation
       on multiple environments <multiple-environments>`.
-
 
 #. Copy the yaml file into your docker image and then pass the yaml file as a
    parameter to ``micromamba`` via the ``--file`` switch
@@ -46,9 +46,10 @@ include ``python``.
 Running commands in Dockerfile within the conda environment
 -----------------------------------------------------------
 
-While the conda environment is automatically activated for ``docker run ...``
-commands, it is not automatically activated during build. To ``RUN`` a command
-from a conda environment within a Dockerfile, as explained in detail in the
+The conda environment is automatically activated for ``docker run ...``
+commands, but it is not automatically activated during the build of an image
+(``docker build ...``). In order to use a ``RUN`` command to execute a program
+from a conda environment within a ``Dockerfile``, as explained in detail in the
 next two subsections, you *must*:
 
 #. Set ``ARG MAMBA_DOCKERFILE_ACTIVATE=1`` to activate the conda environment
@@ -59,8 +60,9 @@ Activating a conda environment for ``RUN`` commands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 No conda environment is automatically activated during the execution
-of ``RUN`` commands within a Dockerfile. To have an environment active during
-a ``RUN`` command, you must set ``ARG MAMBA_DOCKERFILE_ACTIVATE=1``. For example:
+of ``RUN`` commands within a ``Dockerfile``. To have an environment active
+during a ``RUN`` command, you must set ``ARG MAMBA_DOCKERFILE_ACTIVATE=1``.
+For example:
 
    .. literalinclude:: ../examples/run_activate/Dockerfile
 
@@ -85,7 +87,7 @@ the context of a conda environment.
 Activating a conda environment for ``ENTRYPOINT`` commands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Dockerfile for building the ``mambaorg/micromamba`` image contains:
+The ``Dockerfile`` for building the ``mambaorg/micromamba`` images contains:
 
    .. code-block::
 

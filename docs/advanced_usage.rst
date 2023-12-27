@@ -143,7 +143,7 @@ The *recommended* method to explicitly activate your environment when using
 
    docker exec <container> micromamba run -n <environment_name> <command>
 
-If you want to use the base environment, you can omit ``-n <environment_name>``.
+If you want to use the ``base`` environment, you can omit ``-n <environment_name>``.
 
 An alternative method to trigger activation is to explicitly run your command
 within an interactive ``bash`` shell with ``-i``:

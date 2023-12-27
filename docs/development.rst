@@ -68,22 +68,34 @@ is not found on the ``$PATH``.
 Road map
 --------
 
-The current road map for expanding the number of base images and supported
-shells is as follows:
+Community members are welcomed and encouraged to propose development
+work that supports their needs.
 
-#. Add non-Debian based distributions that have community interest
+The image maintainers are currently working on or planning to work on:
+
+#. Adding non-Debian based distributions that have community interest
 
    * Add ``public.ecr.aws/amazonlinux/amazonlinux:2023`` as a base image
 
-#. Add support for non-``bash`` shells based on community interest
+#. Better supporting conda environment activation when using
+   ``apptainer``/``singularity``
 
-The build and test infrastructure will need to be altered to support additional
-base images such that automated test and build occur for all images produced.
+#. Improved caching during our image builds such that image digests only are
+   modified by pull requests that alter the image. Documentation changes
+   should not result in new image digests.
 
 Policies
 --------
 
+#. No additional programs or packages are installed into the parent images
+   except for those required by ``micromamba``, our helper scripts, and 
+   ``glibc`` (as conda packges generally have a dependency on ``glibc``).
+   We aim to keep our images small and limit our dependencies.
+
 #. Entrypoint script should not write to files in the home directory. On some
-   container execution systems, the host home directory is automatically
-   mounted and we don't want to mess up or pollute the home directory on the
-   host system.
+   container execution systems, such as ``appatainer``, the host home
+   directory is automatically mounted and we don't want to mess up or pollute
+   the home directory on the host system.
+
+#. We do not update any packages within the parent images (ie, we do not
+   ``apt-get update`` or similar).
