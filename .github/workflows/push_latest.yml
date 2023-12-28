@@ -119,7 +119,7 @@ jobs:
         tags: |
             type=raw,value=latest,priority=1000,enable=${{ steps.set_image_variables.outputs.is_default }}
             type=raw,value=${{ steps.set_image_variables.outputs.tag }},priority=900
-            type=raw,value=alpine,priority=850,enable=${{ steps.set_image_variables.outputs.is_lastest_alpine }}
+            type=raw,value=alpine,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_alpine }}
             type=semver,pattern={{version}},enable=${{ steps.set_image_variables.outputs.is_default }},value=${{ steps.get_version.outputs.version }},priority=800
             type=semver,pattern={{major}}.{{minor}},enable=${{ steps.set_image_variables.outputs.is_default }},value=${{ steps.get_version.outputs.version }},priority=700
             type=semver,pattern={{major}},enable=${{ steps.set_image_variables.outputs.is_default }},value=${{ steps.get_version.outputs.version }},priority=600
