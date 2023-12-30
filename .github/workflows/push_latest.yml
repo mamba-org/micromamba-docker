@@ -10,7 +10,7 @@ on:
 
 env:
   DEFAULT_BASE_IMAGE: 'debian:bookworm-slim'
-  LATEST_ALPINE_BASE_IMAGE: 'frolvlad/alpine-glibc:alpine-3.18'
+  LATEST_ALPINE_BASE_IMAGE: 'frolvlad/alpine-glibc:alpine-3.19'
 
 jobs:
   build_docker_image_and_push:
@@ -27,6 +27,7 @@ jobs:
          - ubuntu:lunar
          - ubuntu:jammy
          - ubuntu:focal
+         - frolvlad/alpine-glibc:alpine-3.19
          - frolvlad/alpine-glibc:alpine-3.18
          - frolvlad/alpine-glibc:alpine-3.17
          - nvidia/cuda:12.3.1-base-ubuntu22.04
