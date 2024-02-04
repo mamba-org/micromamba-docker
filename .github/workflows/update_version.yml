@@ -13,7 +13,7 @@ jobs:
     - name: Checkout source
       uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
     - name: Set up Python
-      uses: actions/setup-python@03eb867e3d1d557bdb958602013c4b401deef7a0
+      uses: actions/setup-python@871daa956ca9ea99f3c3e30acb424b7960676734
       with:
         python-version: "3.10"
     - name: Check available versions
