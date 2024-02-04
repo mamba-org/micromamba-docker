@@ -130,7 +130,7 @@ jobs:
             type=sha,prefix=git-,suffix=-${{ steps.set_image_variables.outputs.tag }},priority=200
             type=sha,prefix=git-,enable=${{ steps.set_image_variables.outputs.is_default }},priority=100
     - name: Setup docker buildx
-      uses: docker/setup-buildx-action@07aea5fc9c8874ece2fab5ca5c18fdfc5d526272
+      uses: docker/setup-buildx-action@edfb0fe6204400c56fbfd3feba3fe9ad1adfa345
     - name: Login to DockerHub
       uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
       with:
