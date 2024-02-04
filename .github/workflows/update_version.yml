@@ -30,7 +30,7 @@ jobs:
       run: ./update.sh ${{ steps.check_version.outputs.latest_version }}
     - name: commit updated files
       if: steps.check_version.outputs.do_pr == 'True'
-      uses: peter-evans/create-pull-request@ee93d78b55ada32aa74b5e9957aac9c2523dd22c
+      uses: peter-evans/create-pull-request@b1ddad2c994a25fbc81a28b3ec0e368bb2021c50
       with:
         branch: "update-${{ steps.check_version.outputs.latest_version }}"
         commit-message: "Update to micromamba version ${{ steps.check_version.outputs.latest_version }}"
