@@ -54,7 +54,7 @@ jobs:
     - name: Setup nox
       uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
     - name: Checkout source
-      uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       with:
         submodules: recursive
     - name: Get short git hash
@@ -182,7 +182,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - name: Checkout source
-      uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
     - name: Get artifacts
       uses: actions/download-artifact@3ad8411bbdac537922aa8fb779989d55b1df4a4e
       with:
@@ -232,7 +232,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - name: Checkout source
-      uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
     - name: Get micromamba version number
       id: get_version
       run: |

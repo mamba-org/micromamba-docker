@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
         with:
           submodules: recursive
       - name: Install GNU parallel and apptainer
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Install curl and xz-utils
         run: sudo apt-get install --no-install-recommends -y curl xz-utils
       - name: Install shellcheck
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Setup nox
         uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
       - name: Run tests
@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Setup nox
         uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
       - name: Run tests
@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Setup nox
         uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
       - name: Run tests
@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Setup nox
         uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
       - name: Run tests
@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Setup nox
         uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
       - name: Run tests
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Setup nox
         uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
       - name: Run tests
