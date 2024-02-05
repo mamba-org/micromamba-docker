@@ -184,7 +184,7 @@ jobs:
     - name: Checkout source
       uses: actions/checkout@27135e314dd1818f797af1db9dae03a9f045786b
     - name: Get artifacts
-      uses: actions/download-artifact@e9ef242655d12993efdcda9058dee2db83a2cb9b
+      uses: actions/download-artifact@3ad8411bbdac537922aa8fb779989d55b1df4a4e
       with:
         path: artifacts
     - name: Format tags
