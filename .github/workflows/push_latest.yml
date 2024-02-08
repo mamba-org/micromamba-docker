@@ -52,7 +52,7 @@ jobs:
         sudo apt update
         sudo apt install -y apptainer
     - name: Setup nox
-      uses: wntrblm/nox@119fd00cbb7584127e6deae5c1e4c1c9811f850e
+      uses: wntrblm/nox@5c82dc553bd04ee017784fc16193da0b35a44ab6
     - name: Checkout source
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       with:
