@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - name: Checkout source
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
     - name: Set up Python
       uses: actions/setup-python@9a7ac94420f42ee15fc60ab88d0dca4be1fd5757
       with:
