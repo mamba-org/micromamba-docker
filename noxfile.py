@@ -71,7 +71,7 @@ PYTEST_DEPS = [
 ]
 
 MYPY_DEPS = [
-    "mypy==0.931",
+    "mypy==1.9.0",
     "types-requests",
 ]
 
