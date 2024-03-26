@@ -3,7 +3,7 @@ ARG BASE_IMAGE=debian:bookworm-slim
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
 FROM --platform=$BUILDPLATFORM $BASE_IMAGE AS stage1
-ARG VERSION=1.5.7
+ARG VERSION=1.5.8
 
 # hadolint ignore=DL3018
 RUN if grep -q '^ID=alpine$' /etc/os-release; then \

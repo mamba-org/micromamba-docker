@@ -9,7 +9,7 @@
 project = 'micromamba-docker'
 copyright = '2023, micromamba documentation contributors'
 author = 'micromamba documentation contributors'
-release = '1.5.7'
+release = '1.5.8'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
