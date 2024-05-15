@@ -147,7 +147,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build Docker images
       id: docker_build
-      uses: docker/build-push-action@eb539f44b153603ccbfbd98e2ab9d4d0dcaf23a4
+      uses: docker/build-push-action@df19a799eba09c72273c5a94c70800e243e76ebc
       with:
         platforms: ${{ steps.set_image_variables.outputs.platforms }}
         push: false
@@ -163,7 +163,7 @@ jobs:
       run: nox -s "image_tests(base_image='${IMAGE}')"
     - name: Push Docker images
       id: docker_push
-      uses: docker/build-push-action@eb539f44b153603ccbfbd98e2ab9d4d0dcaf23a4
+      uses: docker/build-push-action@df19a799eba09c72273c5a94c70800e243e76ebc
       with:
         platforms: ${{ steps.set_image_variables.outputs.platforms }}
         push: true
