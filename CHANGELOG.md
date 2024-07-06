@@ -3,6 +3,13 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 5 July 2024
+
+- Add image based on `alpine:3.20`
+- Add image based on `nvidia/cuda:12.5.0-base-ubuntu22.04`
+- Add image based on `nvidia/cuda:12.5.0-base-ubuntu20.04`
+- Update CUDA v12.3.1 images to CUDA v12.3.2
+
 ## 26 April 2024
 
 - Add image based on `ubuntu:noble`
