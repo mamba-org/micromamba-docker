@@ -34,8 +34,8 @@ jobs:
          - frolvlad/alpine-glibc:alpine-3.17
          - nvidia/cuda:12.4.1-base-ubuntu22.04
          - nvidia/cuda:12.4.1-base-ubuntu20.04
-         - nvidia/cuda:12.3.1-base-ubuntu22.04
-         - nvidia/cuda:12.3.1-base-ubuntu20.04
+         - nvidia/cuda:12.3.2-base-ubuntu22.04
+         - nvidia/cuda:12.3.2-base-ubuntu20.04
          - nvidia/cuda:12.2.2-base-ubuntu22.04
          - nvidia/cuda:12.2.2-base-ubuntu20.04
          - nvidia/cuda:12.1.1-base-ubuntu22.04
