@@ -180,7 +180,7 @@ jobs:
         labels: ${{ steps.get_metadata.outputs.labels}}
         cache-from: type=registry,ref=ghcr.io/mamba-org/micromamba-cache/cache:${{ steps.set_image_variables.outputs.tag }}
         cache-to: type=registry,ref=ghcr.io/mamba-org/micromamba-cache/cache:${{ steps.set_image_variables.outputs.tag }},mode=max
-    - uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b
+    - uses: actions/upload-artifact@89ef406dd8d7e03cfd12d9e0a4a378f454709029
       with:
         name: ${{ steps.set_image_variables.outputs.tag }}
         path: ${{ steps.get_metadata.outputs.bake-file }}
