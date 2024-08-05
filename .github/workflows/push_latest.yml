@@ -267,7 +267,7 @@ jobs:
         create_annotated_tag: true
     - name: Create a GitHub release
       if: steps.last_tag.outputs.previous_tag != steps.get_version.outputs.leading_v_version
-      uses: ncipollo/release-action@00fc2857229c3d51311c8ff6e4954b38203edbd4
+      uses: ncipollo/release-action@a8bcd956fb63e2672c1e57eafb1accf4eaa68c31
       with:
         tag: ${{ steps.create_tag.outputs.new_tag }}
         name: micromamba ${{ steps.create_tag.outputs.new_tag }}
