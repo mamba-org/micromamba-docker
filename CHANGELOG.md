@@ -3,6 +3,10 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 31 August 2024
+
+- Updated to micromamba version 1.5.9
+
 ## 5 July 2024
 
 - Add image based on `alpine:3.20`
