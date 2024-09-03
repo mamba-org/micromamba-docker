@@ -76,9 +76,9 @@ jobs:
       run: |
         if [ "${IMAGE%%:*}" = "nvidia/cuda" ]; then
           declare -A code_name
+          code_name[24.04]=noble
           code_name[22.04]=jammy
           code_name[20.04]=focal
-          code_name[18.04]=bionic
           ubuntu_version_number="${IMAGE##*-ubuntu}"
           base_tag="${IMAGE##*:}"
           cuda_version="${base_tag%%-*}"
