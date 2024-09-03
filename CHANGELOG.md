@@ -3,6 +3,17 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 3 September 2024
+
+- Add image based on `nvidia/cuda:12.6.0-base-ubuntu24.04`
+- Add image based on `nvidia/cuda:12.6.0-base-ubuntu22.04`
+- Add image based on `nvidia/cuda:12.6.0-base-ubuntu20.04`
+- Update CUDA v12.5.0 images to CUDA v12.5.1
+- Removed end of life base image `ubuntu:lunar`
+- Removed end of life base image `ubuntu:mantic`
+- Removed end of life base image `nvidia/cuda:11.3.1-base-ubuntu20.04`
+- Removed end of life base image `nvidia/cuda:11.2.2-base-ubuntu20.04`
+
 ## 31 August 2024
 
 - Updated to micromamba version 1.5.9

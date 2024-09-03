@@ -24,16 +24,18 @@ jobs:
          - debian:bullseye-slim
          - debian:bullseye
          - ubuntu:noble
-         - ubuntu:mantic
-         - ubuntu:lunar
          - ubuntu:jammy
          - ubuntu:focal
          - frolvlad/alpine-glibc:alpine-3.20
          - frolvlad/alpine-glibc:alpine-3.19
          - frolvlad/alpine-glibc:alpine-3.18
          - frolvlad/alpine-glibc:alpine-3.17
-         - nvidia/cuda:12.5.0-base-ubuntu22.04
-         - nvidia/cuda:12.5.0-base-ubuntu20.04
+         - nvidia/cuda:12.6.0-base-ubuntu24.04
+         - nvidia/cuda:12.6.0-base-ubuntu22.04
+         - nvidia/cuda:12.6.0-base-ubuntu20.04
+         - nvidia/cuda:12.5.1-base-ubuntu24.04
+         - nvidia/cuda:12.5.1-base-ubuntu22.04
+         - nvidia/cuda:12.5.1-base-ubuntu20.04
          - nvidia/cuda:12.4.1-base-ubuntu22.04
          - nvidia/cuda:12.4.1-base-ubuntu20.04
          - nvidia/cuda:12.3.2-base-ubuntu22.04
@@ -48,8 +50,6 @@ jobs:
          - nvidia/cuda:11.7.1-base-ubuntu20.04
          - nvidia/cuda:11.6.2-base-ubuntu20.04
          - nvidia/cuda:11.4.3-base-ubuntu20.04
-         - nvidia/cuda:11.3.1-base-ubuntu20.04
-         - nvidia/cuda:11.2.2-base-ubuntu20.04
     steps:
     - name: Install GNU parallel, shellcheck, and apptainer
       run: |
