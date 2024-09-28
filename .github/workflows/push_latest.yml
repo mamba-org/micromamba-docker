@@ -30,6 +30,7 @@ jobs:
          - frolvlad/alpine-glibc:alpine-3.19
          - frolvlad/alpine-glibc:alpine-3.18
          - frolvlad/alpine-glibc:alpine-3.17
+         - public.ecr.aws/amazonlinux/amazonlinux:2024
          - nvidia/cuda:12.6.0-base-ubuntu24.04
          - nvidia/cuda:12.6.0-base-ubuntu22.04
          - nvidia/cuda:12.6.0-base-ubuntu20.04
@@ -72,29 +73,35 @@ jobs:
     - name: Set image variables
       id: set_image_variables
       env:
-        IMAGE: ${{ matrix.image }}
+        BASE_IMAGE: ${{ matrix.image }}
       run: |
-        if [ "${IMAGE%%:*}" = "nvidia/cuda" ]; then
+        base_tag="${BASE_IMAGE##*:}"
+        base_name="${BASE_IMAGE%%:*}"
+        if [ "${base_name}" = 'nvidia/cuda' ]; then
           declare -A code_name
           code_name[24.04]=noble
           code_name[22.04]=jammy
           code_name[20.04]=focal
-          ubuntu_version_number="${IMAGE##*-ubuntu}"
-          base_tag="${IMAGE##*:}"
+          ubuntu_version_number="${base_tag##*-ubuntu}"
           cuda_version="${base_tag%%-*}"
+          echo 'distro_id=debian' >> $GITHUB_OUTPUT
           echo "tag=${code_name[$ubuntu_version_number]}-cuda-${cuda_version}" >> $GITHUB_OUTPUT
-          echo "platforms=linux/amd64,linux/arm64" >> $GITHUB_OUTPUT
-        elif [ "${IMAGE%%:*}" = "frolvlad/alpine-glibc" ]; then
-          base_tag="${IMAGE##*:}"
-          alpine_version="${base_tag##alpine-}"
-          echo "tag=alpine${alpine_version}" >> $GITHUB_OUTPUT
-          echo "platforms=linux/amd64" >> $GITHUB_OUTPUT
+          echo 'platforms=linux/amd64,linux/arm64' >> $GITHUB_OUTPUT
+        elif [ "${base_name}" = 'frolvlad/alpine-glibc' ]; then
+          echo 'distro_id=alpine' >> $GITHUB_OUTPUT
+          echo 'tag=alpine' >> $GITHUB_OUTPUT
+          echo 'platforms=linux/amd64' >> $GITHUB_OUTPUT
+        elif [ "${base_name}" = 'public.ecr.aws/amazonlinux/amazonlinux' ]; then
+          echo 'distro_id=amzn' >> $GITHUB_OUTPUT
+          echo "tag=amazon${base_tag}" >> $GITHUB_OUTPUT
+          echo 'platforms=linux/amd64,linux/arm64' >> $GITHUB_OUTPUT
         else
-          echo "tag=$(echo "$IMAGE" | cut -d: -f2)" >> $GITHUB_OUTPUT
-          echo "platforms=linux/amd64,linux/arm64,linux/ppc64le" >> $GITHUB_OUTPUT
+          echo 'distro_id=debian' >> $GITHUB_OUTPUT
+          echo "tag=${base_name}" >> $GITHUB_OUTPUT
+          echo 'platforms=linux/amd64,linux/arm64,linux/ppc64le' >> $GITHUB_OUTPUT
         fi
-        echo "is_default=$([ "$IMAGE" = "$DEFAULT_BASE_IMAGE" ] && echo true || echo false)" >> $GITHUB_OUTPUT
-        echo "is_latest_alpine=$([ "$IMAGE" = "$LATEST_ALPINE_BASE_IMAGE" ] && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "is_default=$([ "$BASE_IMAGE" = "$DEFAULT_BASE_IMAGE" ] \
+                           && echo true || echo false)" >> $GITHUB_OUTPUT
     - name: Get stage1 docker metadata
       id: get_stage1_metadata
       uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81
@@ -135,6 +142,8 @@ jobs:
             type=semver,pattern={{major}}-${{ steps.set_image_variables.outputs.tag}},value=${{ steps.get_version.outputs.version }},priority=300
             type=sha,prefix=git-,suffix=-${{ steps.set_image_variables.outputs.tag }},priority=200
             type=sha,prefix=git-,enable=${{ steps.set_image_variables.outputs.is_default }},priority=100
+        labels: |
+          distro_id=${{ steps.set_image_variables.outputs.distro_id }}
     - name: Setup docker buildx
       uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db
     - name: Login to DockerHub
@@ -154,6 +163,7 @@ jobs:
       env:
         DOCKER_BUILD_RECORD_UPLOAD: false
       with:
+        dockerfile: ${{ steps.set_image_variables.outputs.distro_id }}.Dockerfile
         platforms: ${{ steps.set_image_variables.outputs.platforms }}
         push: false
         build-args: |
@@ -166,12 +176,28 @@ jobs:
       env:
         IMAGE: ${{ matrix.image }}
       run: nox -s "image_tests(base_image='${IMAGE}')"
+    - name: Push stage1 Docker images
+      id: docker_stage1_push
+      uses: docker/build-push-action@35434f557ad77672899d67f7992fb5560bda1071
+      with:
+        dockerfile: ${{ steps.set_image_variables.outputs.distro_id }}.Dockerfile
+        target: stage1
+        platforms: ${{ steps.set_image_variables.outputs.platforms }}
+        push: true
+        build-args: |
+          BASE_IMAGE=${{ matrix.image }}
+        tags: ${{ steps.get_stage1_metadata.outputs.tags }}
+        labels: ${{ steps.get_stage1_metadata.outputs.labels}}
+        cache-from: |
+          type=registry,ref=ghcr.io/mamba-org/micromaba-cache/stage1:${{ steps.set_image_variables.outputs.tag }}
+        cache-to: type=inline
     - name: Push Docker images
       id: docker_push
       uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85
       env:
         DOCKER_BUILD_RECORD_UPLOAD: false
       with:
+        dockerfile: ${{ steps.set_image_variables.outputs.distro_id }}.Dockerfile
         platforms: ${{ steps.set_image_variables.outputs.platforms }}
         push: true
         build-args: |
@@ -201,13 +227,14 @@ jobs:
       id: format_tags
       run: |
         function process_tags {
+          distro_id="$(jq  -r '.target."docker-metadata-action".labels["distro_id"]' "$1")"
           printf '* '
           jq  -r '.target."docker-metadata-action".tags[]' "$1" \
           | grep -v 'ghcr.io' \
           | sed 's%^mambaorg/micromamba:\(.*\)$%`\1`, %' \
           | tr -d '\n' \
           | sed 's%, $%%' \
-          | sed 's%^\(.*\)$%[\1](https://github.com/mamba-org/micromamba-docker/blob/main/Dockerfile)%'
+          | sed "s%^\(.*\)$%[\1](https://github.com/mamba-org/micromamba-docker/blob/main/${distro_id}.Dockerfile")%'
           printf '\n\n'
         }
         function get_tags_markdown {

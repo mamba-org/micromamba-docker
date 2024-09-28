@@ -25,9 +25,9 @@ test_example() {
 }
 
 @test "examples/apt_install" {
-    if [[ $BASE_IMAGE =~ "alpine" ]]; then
+    if [[ $distro_id =~ "alpine" ]] || [[ $distro_id =~ amzn ]]; then
       # shellcheck disable=SC1009
-      skip "apt-git install is not supported on Alpine"
+      skip "apt-git install is not supported on this distribution"
     fi
     test_example apt_install
 }

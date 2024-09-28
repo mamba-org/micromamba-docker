@@ -12,14 +12,14 @@ setup_file() {
                  "--tag=${MICROMAMBA_IMAGE}-different-user" \
                  "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
                  "--build-arg=MAMBA_USER=$altered_mamba_user" \
-                 "--file=${PROJECT_ROOT}/Dockerfile" \
+                 "--file=${PROJECT_ROOT}/Dockerfile.${distro_id}" \
                  "$PROJECT_ROOT" > /dev/null
     docker build --quiet \
                  "--tag=${MICROMAMBA_IMAGE}-modify-user-id-gid-base" \
                  "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
                  "--build-arg=MAMBA_USER_ID=$custom_mamba_user_id" \
                  "--build-arg=MAMBA_USER_GID=$custom_mamba_user_gid" \
-                 "--file=${PROJECT_ROOT}/Dockerfile" \
+                 "--file=${PROJECT_ROOT}/Dockerfile.${distro_id}" \
                  "$PROJECT_ROOT" > /dev/null
     docker build --quiet \
                  "--tag=${MICROMAMBA_IMAGE}-modify-username" \
@@ -112,3 +112,7 @@ setup() {
         assert_success
         assert_output "uid=1100(MaMbAmIcRo) gid=2000(MaMbAmIcRo) groups=2000(MaMbAmIcRo)"
 }
+    distro_id="$(docker run --rm "${BASE_IMAGE}" \
+	           grep '^ID=' /etc/os-release \
+                   | tr -d '"' \
+		   | cut -d= -f2-)"
