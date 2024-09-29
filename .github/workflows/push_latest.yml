@@ -9,7 +9,7 @@ on:
       - 'v*'
 
 env:
-  DEFAULT_BASE_IMAGE: 'debian:bookworm-slim'
+  DEFAULT_BASE_IMAGE: 'debian:12-slim'
   LATEST_ALPINE_BASE_IMAGE: 'frolvlad/alpine-glibc:alpine-3.20'
 
 jobs:
@@ -19,18 +19,18 @@ jobs:
     strategy:
       matrix:
         image:
-         - debian:bookworm-slim
-         - debian:bookworm
-         - debian:bullseye-slim
-         - debian:bullseye
-         - ubuntu:noble
-         - ubuntu:jammy
-         - ubuntu:focal
+         - debian:12-slim
+         - debian:12
+         - debian:11-slim
+         - debian:11
+         - ubuntu:24.04
+         - ubuntu:22.04
+         - ubunut:20.04
          - frolvlad/alpine-glibc:alpine-3.20
          - frolvlad/alpine-glibc:alpine-3.19
          - frolvlad/alpine-glibc:alpine-3.18
          - frolvlad/alpine-glibc:alpine-3.17
-         - public.ecr.aws/amazonlinux/amazonlinux:2024
+         - public.ecr.aws/amazonlinux/amazonlinux:2023
          - nvidia/cuda:12.6.0-base-ubuntu24.04
          - nvidia/cuda:12.6.0-base-ubuntu22.04
          - nvidia/cuda:12.6.0-base-ubuntu20.04
@@ -78,23 +78,24 @@ jobs:
         base_tag="${BASE_IMAGE##*:}"
         base_name="${BASE_IMAGE%%:*}"
         if [ "${base_name}" = 'nvidia/cuda' ]; then
-          declare -A code_name
-          code_name[24.04]=noble
-          code_name[22.04]=jammy
-          code_name[20.04]=focal
           ubuntu_version_number="${base_tag##*-ubuntu}"
           cuda_version="${base_tag%%-*}"
           echo 'distro_id=debian' >> $GITHUB_OUTPUT
-          echo "tag=${code_name[$ubuntu_version_number]}-cuda-${cuda_version}" >> $GITHUB_OUTPUT
+          echo "tag=cuda${cuda_version}-ubuntu${ubuntu_version_number}" >> $GITHUB_OUTPUT
           echo 'platforms=linux/amd64,linux/arm64' >> $GITHUB_OUTPUT
         elif [ "${base_name}" = 'frolvlad/alpine-glibc' ]; then
           echo 'distro_id=alpine' >> $GITHUB_OUTPUT
-          echo 'tag=alpine' >> $GITHUB_OUTPUT
+          alpine_version_number="${base_tag##alpine-}"
+          echo "tag=alpine${alpine_version_number}" >> $GITHUB_OUTPUT
           echo 'platforms=linux/amd64' >> $GITHUB_OUTPUT
         elif [ "${base_name}" = 'public.ecr.aws/amazonlinux/amazonlinux' ]; then
           echo 'distro_id=amzn' >> $GITHUB_OUTPUT
           echo "tag=amazon${base_tag}" >> $GITHUB_OUTPUT
           echo 'platforms=linux/amd64,linux/arm64' >> $GITHUB_OUTPUT
+        elif [ "${base_name}" = 'ubuntu' ]; then
+          echo 'distro_id=debian' >> $GITHUB_OUTPUT
+          echo "tag=ubuntu${base_tag}" >> $GITHUB_OUTPUT
+          echo 'platforms=linux/amd64,linux/arm64,linux/ppc64le' >> $GITHUB_OUTPUT
         else
           echo 'distro_id=debian' >> $GITHUB_OUTPUT
           echo "tag=${base_name}" >> $GITHUB_OUTPUT
