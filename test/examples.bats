@@ -25,7 +25,7 @@ test_example() {
 }
 
 @test "examples/apt_install" {
-    if [[ $distro_id =~ "alpine" ]] || [[ $distro_id =~ amzn ]]; then
+    if [[ $DISTRO_ID =~ "alpine" ]] || [[ $DISTRO_ID =~ amzn ]]; then
       # shellcheck disable=SC1009
       skip "apt-git install is not supported on this distribution"
     fi

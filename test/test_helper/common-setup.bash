@@ -10,14 +10,15 @@ _common_setup() {
 
     export MICROMAMBA_IMAGE="micromamba:test-${TAG}"
 
-    distro_id="$(docker run --rm "${BASE_IMAGE}" \
+    DISTRO_ID="$(docker run --rm "${BASE_IMAGE}" \
 	           grep '^ID=' /etc/os-release \
                    | tr -d '"' \
 		   | cut -d= -f2-)"
+    export DISTRO_ID
     docker build --quiet \
 		 "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
                  "--tag=${MICROMAMBA_IMAGE}" \
-		 "--file=${PROJECT_ROOT}/Dockerfile.${distro_id}" \
+		 "--file=${PROJECT_ROOT}/Dockerfile.${DISTRO_ID}" \
 		 "$PROJECT_ROOT" > /dev/null
 
     # Simulate TTY input for the docker run command
