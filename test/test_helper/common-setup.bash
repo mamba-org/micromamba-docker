@@ -18,7 +18,7 @@ _common_setup() {
     docker build --quiet \
 		 "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
                  "--tag=${MICROMAMBA_IMAGE}" \
-		 "--file=${PROJECT_ROOT}/Dockerfile.${DISTRO_ID}" \
+		 "--file=${PROJECT_ROOT}/${DISTRO_ID}.Dockerfile" \
 		 "$PROJECT_ROOT" > /dev/null
 
     # Simulate TTY input for the docker run command
