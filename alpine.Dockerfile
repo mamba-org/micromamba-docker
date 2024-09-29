@@ -1,10 +1,11 @@
-ARG BASE_IMAGE=frolvlad/alpine-glibc:alpine-3.18
+ARG BASE_IMAGE=frolvlad/alpine-glibc:alpine-3.20
 
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
 FROM --platform=$BUILDPLATFORM $BASE_IMAGE AS stage1
 ARG TARGETARCH
-ARG VERSION=1.5.1
+ARG VERSION=2.0.0
+# hadolint ignore=DL3018
 RUN apk add --no-cache \
       bash \
       bzip2 \
@@ -31,6 +32,7 @@ COPY --from=stage1 "${CERT_SOURCE}" "${CERT_SOURCE}"
 COPY _dockerfile_initialize_user_accounts.sh /usr/local/bin/_dockerfile_initialize_user_accounts.sh
 COPY _dockerfile_setup_root_prefix.sh /usr/local/bin/_dockerfile_setup_root_prefix.sh
 
+# hadolint ignore=DL3018
 RUN apk add --no-cache \
       bash \
     && /usr/local/bin/_dockerfile_initialize_user_accounts.sh \
