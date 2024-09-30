@@ -10,7 +10,12 @@ on:
 
 env:
   DEFAULT_BASE_IMAGE: 'debian:12-slim'
+  LATEST_DEBIAN_BASE_IMAGE: 'debian:12'
+  LATEST_DEBIAN_SLIM_BASE_IMAGE: 'debian:12-slim'
+  LATEST_UBUNTU_BASE_IMAGE: 'ubuntu:24.04'
+  LATEST_AMAZON_BASE_IMAGE: 'public.ecr.aws/amazonlinux/amazonlinux:2023'
   LATEST_ALPINE_BASE_IMAGE: 'frolvlad/alpine-glibc:alpine-3.20'
+  LATEST_CUDA_BASE_IMAGE: 'nvidia/cuda:12.6.0-base-ubuntu24.04'
 
 jobs:
   build_docker_image_and_push:
@@ -102,6 +107,18 @@ jobs:
         fi
         echo "is_default=$([ "$BASE_IMAGE" = "$DEFAULT_BASE_IMAGE" ] \
                            && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "is_latest_alpine=$([ "$IMAGE" = "$LATEST_ALPINE_BASE_IMAGE" ] \
+                          && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "is_latest_debian=$([ "$IMAGE" = "$LATEST_DEBIAN_BASE_IMAGE" ] \
+                          && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "is_latest_debian_slim=$([ "$IMAGE" = "$LATEST_DEBIAN_SLIM_BASE_IMAGE" ] \
+                          && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "is_latest_ubuntu=$([ "$IMAGE" = "$LATEST_UBUNTU_BASE_IMAGE" ] \
+                          && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "is_latest_amazon=$([ "$IMAGE" = "$LATEST_AMAZON_BASE_IMAGE" ] \
+                          && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "is_latest_cuda=$([ "$IMAGE" = "$LATEST_CUDA_BASE_IMAGE" ] \
+                          && echo true || echo false)" >> $GITHUB_OUTPUT
     - name: Get stage1 docker metadata
       id: get_stage1_metadata
       uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81
@@ -123,6 +140,11 @@ jobs:
         # latest
         # base_image
         # alpine
+        # debian
+        # debian-slim
+        # ubuntu
+        # amazon
+        # cuda
         # major.minor.patch
         # major.minor
         # major
@@ -135,6 +157,11 @@ jobs:
             type=raw,value=latest,priority=1000,enable=${{ steps.set_image_variables.outputs.is_default }}
             type=raw,value=${{ steps.set_image_variables.outputs.tag }},priority=900
             type=raw,value=alpine,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_alpine }}
+            type=raw,value=debian,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_debian }}
+            type=raw,value=debian-slim,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_debian-slim }}
+            type=raw,value=ubuntu,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_ubuntu }}
+            type=raw,value=amazon,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_amazon }}
+            type=raw,value=cuda,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_cuda }}
             type=semver,pattern={{version}},enable=${{ steps.set_image_variables.outputs.is_default }},value=${{ steps.get_version.outputs.version }},priority=800
             type=semver,pattern={{major}}.{{minor}},enable=${{ steps.set_image_variables.outputs.is_default }},value=${{ steps.get_version.outputs.version }},priority=700
             type=semver,pattern={{major}},enable=${{ steps.set_image_variables.outputs.is_default }},value=${{ steps.get_version.outputs.version }},priority=600
