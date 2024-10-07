@@ -18,12 +18,12 @@ setup() {
 
 @test "docker run ${MICROMAMBA_IMAGE}-cli-invocations python --version" {
     run docker run --rm "--platform=${DOCKER_PLATFORM}" "${MICROMAMBA_IMAGE}-cli-invocations" python --version
-    assert_output 'Python 3.9.1'
+    assert_output 'Python 3.12.7'
 }
 
 @test "docker run --user=1001:1001 ${MICROMAMBA_IMAGE}-cli-invocations python --version" {
     run docker run --rm "--platform=${DOCKER_PLATFORM}" --user=1001:1001 "${MICROMAMBA_IMAGE}-cli-invocations" python --version
-    assert_output 'Python 3.9.1'
+    assert_output 'Python 3.12.7'
 }
 
 @test "docker run ${MICROMAMBA_IMAGE} micromamba install -y -n base -c conda-forge ca-certificates" {
@@ -39,17 +39,17 @@ setup() {
 @test "apptainer --silent run docker-daemon:${MICROMAMBA_IMAGE}-cli-invocations python --version" {
     which apptainer || skip 'apptainer not available'
     run apptainer --silent run docker-daemon:"${MICROMAMBA_IMAGE}-cli-invocations" python --version
-    assert_output 'Python 3.9.1'
+    assert_output 'Python 3.12.7'
 }
 
 @test "apptainer --silent exec docker-daemon:${MICROMAMBA_IMAGE}-cli-invocations /usr/local/bin/_entrypoint.sh python --version" {
     which apptainer || skip 'apptainer not available'
     run apptainer --silent exec docker-daemon:"${MICROMAMBA_IMAGE}-cli-invocations" /usr/local/bin/_entrypoint.sh python --version
-    assert_output 'Python 3.9.1'
+    assert_output 'Python 3.12.7'
 }
 
 @test "apptainer --silent shell --shell /usr/local/bin/_apptainer_shell.sh docker-daemon:${MICROMAMBA_IMAGE}-cli-invocations /usr/local/bin/_entrypoint.sh python --version" {
     which apptainer || skip 'apptainer not available'
     run apptainer --silent exec docker-daemon:"${MICROMAMBA_IMAGE}-cli-invocations" /usr/local/bin/_entrypoint.sh python --version
-    assert_output 'Python 3.9.1'
+    assert_output 'Python 3.12.7'
 }
