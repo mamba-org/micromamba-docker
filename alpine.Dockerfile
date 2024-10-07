@@ -2,7 +2,7 @@ ARG BASE_IMAGE=frolvlad/alpine-glibc:alpine-3.20
 
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
-FROM --platform=$TARGETPLATFORM $BASE_IMAGE AS stage1
+FROM $BASE_IMAGE AS stage1
 ARG TARGETARCH
 ARG VERSION=2.0.0
 # hadolint ignore=DL3018
@@ -13,7 +13,7 @@ RUN apk add --no-cache \
 COPY _download_micromamba.sh /usr/local/bin/
 RUN _download_micromamba.sh
 
-FROM --platform=$TARGETPLATFORM $BASE_IMAGE AS stage2
+FROM $BASE_IMAGE AS stage2
 
 ARG CERT_SOURCE='/etc/ssl/certs/ca-certificates.crt'
 ARG MAMBA_USER=mambauser
