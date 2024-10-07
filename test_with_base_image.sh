@@ -16,8 +16,6 @@ else
    export DOCKER_PLATFORM='linux/amd64'
 fi
 
-export DOCKER_BUILDKIT=1
-
 PROJECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 function load { :; }  # common-setup.bash needs this defined

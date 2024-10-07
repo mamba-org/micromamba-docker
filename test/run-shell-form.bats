@@ -3,12 +3,7 @@
 setup_file() {
     load 'test_helper/common-setup'
     _common_setup
-    docker build --quiet \
-                 "--build-arg=BASE_IMAGE=${MICROMAMBA_IMAGE}" \
-                 "--platform=${DOCKER_PLATFORM}" \
-                 "--tag=${MICROMAMBA_IMAGE}-run-shell-form" \
-		 "--file=${PROJECT_ROOT}/test/run-shell-form.Dockerfile" \
-		 "${PROJECT_ROOT}/test" > /dev/null
+    build_image run-shell-form.Dockerfile
 }
 
 setup() {
@@ -17,6 +12,7 @@ setup() {
 }
 
 @test "RUN python -c \"import os; os.system('touch foobar')\"" {
-    run docker run --rm "--platform=${DOCKER_PLATFORM}" "${MICROMAMBA_IMAGE}-run-shell-form" ls -1 foobar
+    # shellcheck disable=SC2086
+    run docker run $RUN_FLAGS "${MICROMAMBA_IMAGE}-run-shell-form" ls -1 foobar
     assert_output 'foobar'
 }

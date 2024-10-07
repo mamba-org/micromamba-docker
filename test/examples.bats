@@ -21,7 +21,8 @@ test_example() {
 
 @test "examples/add_micromamba" {
     test_example add_micromamba
-    run docker run --rm "--platform=${DOCKER_PLATFORM}" "${MICROMAMBA_IMAGE}-add_micromamba" jq --version
+    # shellcheck disable=SC2086
+    run docker run $RUN_FLAGS "${MICROMAMBA_IMAGE}-add_micromamba" jq --version
     assert_success
 }
 

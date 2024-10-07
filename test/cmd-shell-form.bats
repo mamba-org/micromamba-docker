@@ -3,12 +3,7 @@
 setup_file() {
     load 'test_helper/common-setup'
     _common_setup
-    docker build --quiet \
-                 "--build-arg=BASE_IMAGE=${MICROMAMBA_IMAGE}" \
-                 "--platform=${DOCKER_PLATFORM}" \
-                 "--tag=${MICROMAMBA_IMAGE}-cmd-shell-form" \
-		 "--file=${PROJECT_ROOT}/test/cmd-shell-form.Dockerfile" \
-		 "${PROJECT_ROOT}/test" > /dev/null
+    build_image cmd-shell-form.Dockerfile
 }
 
 setup() {
@@ -17,11 +12,13 @@ setup() {
 }
 
 @test "CMD python -c \"print('hello')\"" {
-    run docker run --rm "--platform=${DOCKER_PLATFORM}" "${MICROMAMBA_IMAGE}-cmd-shell-form"
+    # shellcheck disable=SC2086
+    run docker run $RUN_FLAGS "${MICROMAMBA_IMAGE}-cmd-shell-form"
     assert_output 'hello'
 }
 
 @test "CMD python -c \"print('hello')\" with --user" {
-    run docker run --rm "--platform=${DOCKER_PLATFORM}" --user=1001:1001 "${MICROMAMBA_IMAGE}-cmd-shell-form"
+    # shellcheck disable=SC2086
+    run docker run $RUN_FLAGS --user=1001:1001 "${MICROMAMBA_IMAGE}-cmd-shell-form"
     assert_output 'hello'
 }
