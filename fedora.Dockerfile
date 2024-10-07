@@ -2,7 +2,7 @@ ARG BASE_IMAGE=public.ecr.aws/amazonlinux/amazonlinux:2023
 
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
-FROM --platform=$BUILDPLATFORM $BASE_IMAGE AS stage1
+FROM --platform=$TARGETPLATFORM $BASE_IMAGE AS stage1
 ARG TARGETARCH
 ARG VERSION=2.0.0
 # hadolint ignore=DL3033
@@ -13,7 +13,7 @@ RUN yum update -y && yum install -y \
 COPY _download_micromamba.sh /usr/local/bin/
 RUN _download_micromamba.sh
 
-FROM $BASE_IMAGE
+FROM --platform=$TARGETPLATFORM $BASE_IMAGE
 
 ARG MAMBA_USER=mambauser
 ARG MAMBA_USER_ID=57439

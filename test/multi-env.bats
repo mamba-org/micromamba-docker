@@ -5,6 +5,7 @@ setup_file() {
     _common_setup
     docker build --quiet \
                  "--build-arg=BASE_IMAGE=${MICROMAMBA_IMAGE}" \
+                 "--platform=${DOCKER_PLATFORM}" \
                  "--tag=${MICROMAMBA_IMAGE}-multi-env" \
 		 "--file=${PROJECT_ROOT}/test/multi-env.Dockerfile" \
 		 "${PROJECT_ROOT}/test" > /dev/null
@@ -15,12 +16,12 @@ setup() {
     _common_setup
 }
 
-@test "docker run --rm  -e ENV_NAME=env1 ${MICROMAMBA_IMAGE}-multi-env curl --version" {
-    run docker run --rm  -e ENV_NAME=env1 "${MICROMAMBA_IMAGE}-multi-env" curl --version
+@test "docker run -e ENV_NAME=env1 ${MICROMAMBA_IMAGE}-multi-env curl --version" {
+    run docker run --rm "--platform=${DOCKER_PLATFORM}"  -e ENV_NAME=env1 "${MICROMAMBA_IMAGE}-multi-env" curl --version
     assert_output  --partial 'curl 7.71.1'
 }
 
-@test "docker run --rm -e ENV_NAME=env2 ${MICROMAMBA_IMAGE}-multi-env jq --version" {
-    run docker run --rm -e ENV_NAME=env2 "${MICROMAMBA_IMAGE}-multi-env" jq --version
+@test "docker run -e ENV_NAME=env2 ${MICROMAMBA_IMAGE}-multi-env jq --version" {
+    run docker run --rm "--platform=${DOCKER_PLATFORM}" -e ENV_NAME=env2 "${MICROMAMBA_IMAGE}-multi-env" jq --version
     assert_output 'jq-1.6'
 }

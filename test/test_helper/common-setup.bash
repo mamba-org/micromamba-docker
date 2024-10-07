@@ -9,17 +9,22 @@ _common_setup() {
     TAG="$(echo "$BASE_IMAGE" | tr ':/' '-')"
 
     export MICROMAMBA_IMAGE="micromamba:test-${TAG}"
+    DOCKER_PLATFORM="linux/amd64"
+    RUN_FLAGS="--rm --platform=${DOCKER_PLATFORM}"
+    export RUN_FLAGS
 
-    DISTRO_ID="$(docker run --rm "${BASE_IMAGE}" \
-	           grep '^ID=' /etc/os-release \
+    DISTRO_ID="$(docker run --rm --platform=${DOCKER_PLATFORM} "${BASE_IMAGE}" /bin/sh -c "\
+	           ( grep '^ID_LIKE=' /etc/os-release || grep '^ID=' /etc/os-release )" \
                    | tr -d '"' \
 		   | cut -d= -f2-)"
     export DISTRO_ID
     docker build --quiet \
 		 "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
-                 "--tag=${MICROMAMBA_IMAGE}" \
+		 "--platform=${DOCKER_PLATFORM}" \
+     "--tag=${MICROMAMBA_IMAGE}" \
 		 "--file=${PROJECT_ROOT}/${DISTRO_ID}.Dockerfile" \
 		 "$PROJECT_ROOT" > /dev/null
+
 
     # Simulate TTY input for the docker run command
     # https://stackoverflow.com/questions/1401002/

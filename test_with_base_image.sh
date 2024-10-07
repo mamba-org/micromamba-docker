@@ -1,13 +1,20 @@
 #!/bin/bash
 set -eu -o pipefail
 
-if [[ $# -ne 1 ]]; then
-    echo "Usage: $0 base_image" >&2
+if [[ $# -lt 1 ]]; then
+    echo "Usage: $0 base_image" [platform] ...>&2
     exit 2
 fi
 
 export BASE_IMAGE="$1"
 shift
+
+if [[ $# -gt 0 ]]; then
+   export DOCKER_PLATFORM="$1"
+   shift
+else
+   export DOCKER_PLATFORM='linux/amd64'
+fi
 
 export DOCKER_BUILDKIT=1
 
