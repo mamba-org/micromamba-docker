@@ -3,9 +3,9 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
-## 29 September 2024
+## 7 October 2024
 
-- Updated to micromamba version 2.0.0
+- Updated to micromamba version 2.0.2
 - **Breaking Change**: Our image tagging scheme has been changed. We are no
   longer making use of release names (such as `bullseye` or `bookworm` for
   `debian` or `noble` or `jammy` for `ubuntu`) in the tags. Instead we are
