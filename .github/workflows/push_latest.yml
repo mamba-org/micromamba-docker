@@ -158,7 +158,7 @@ jobs:
             type=raw,value=${{ steps.set_image_variables.outputs.tag }},priority=900
             type=raw,value=alpine,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_alpine }}
             type=raw,value=debian,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_debian }}
-            type=raw,value=debian-slim,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_debian-slim }}
+            type=raw,value=debian-slim,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_debian_slim }}
             type=raw,value=ubuntu,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_ubuntu }}
             type=raw,value=amazon,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_amazon }}
             type=raw,value=cuda,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_cuda }}
