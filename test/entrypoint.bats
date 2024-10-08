@@ -3,11 +3,7 @@
 setup_file() {
     load 'test_helper/common-setup'
     _common_setup
-    docker build --quiet \
-                 "--build-arg=BASE_IMAGE=${MICROMAMBA_IMAGE}" \
-                 "--tag=${MICROMAMBA_IMAGE}-entrypoint" \
-		 "--file=${PROJECT_ROOT}/test/entrypoint.Dockerfile" \
-		 "${PROJECT_ROOT}/test" > /dev/null
+    build_image entrypoint.Dockerfile
 }
 
 setup() {
@@ -15,7 +11,8 @@ setup() {
     _common_setup
 }
 
-@test "docker run --rm ${MICROMAMBA_IMAGE}-entrypoint -c 'import sys; print(sys.version_info[0])'" {
-    run docker run --rm "${MICROMAMBA_IMAGE}-entrypoint" -c 'import sys; print(sys.version_info[0])'
+@test "docker run ${MICROMAMBA_IMAGE}-entrypoint -c 'import sys; print(sys.version_info[0])'" {
+    # shellcheck disable=SC2086
+    run docker run $RUN_FLAGS "${MICROMAMBA_IMAGE}-entrypoint" -c 'import sys; print(sys.version_info[0])'
     assert_output '3'
 }

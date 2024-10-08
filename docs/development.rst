@@ -55,7 +55,7 @@ Executing Tests
 
 To execute the test suite on all base images, run ``nox`` in the top-level
 directory of the repo. To execute the test suite on a single base image, run
-``nox --session "tests(base_image='debian:bookworm-slim')"``.
+``nox --session "tests(base_image='debian:12-slim')"``.
 
 If GNU ``parallel`` is available on the ``$PATH``, then the test suite will be
 run in parallel using all logical CPU cores available.
@@ -88,7 +88,7 @@ Policies
 --------
 
 #. No additional programs or packages are installed into the parent images
-   except for those required by ``micromamba``, our helper scripts, and 
+   except for those required by ``micromamba``, our helper scripts, and
    ``glibc`` (as conda packges generally have a dependency on ``glibc``).
    We aim to keep our images small and limit our dependencies.
 

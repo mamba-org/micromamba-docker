@@ -3,6 +3,19 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 8 October 2024
+
+- Updated to micromamba version 2.0.2
+- **Breaking Change**: Our image tagging scheme has been changed. We are no
+  longer making use of release names (such as `bullseye` or `bookworm` for
+  `debian` or `noble` or `jammy` for `ubuntu`) in the tags. Instead we are
+  using version numbers such as `12` for `debian` or `22.04` for `ubuntu`. As
+  always, you can find the [full list of current tags](
+  https://hub.docker.com/r/mambaorg/micromamba) on Dockerhub.
+- Add image based on `public.ecr.aws/amazonlinux/amazonlinux:2023`
+- To support adding the `amazonlinux` base image (which is derived from RHEL),
+  we have moved from a single `Dockerfile`, to multiple `Dockerfile` files.
+
 ## 20 September 2024
 
 - Updated to micromamba version 1.5.10

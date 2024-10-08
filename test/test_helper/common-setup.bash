@@ -9,12 +9,33 @@ _common_setup() {
     TAG="$(echo "$BASE_IMAGE" | tr ':/' '-')"
 
     export MICROMAMBA_IMAGE="micromamba:test-${TAG}"
+    export RUN_FLAGS="--rm --platform=${DOCKER_PLATFORM}"
 
+    # shellcheck disable=SC2086
+    DISTRO_ID="$(docker run $RUN_FLAGS "${BASE_IMAGE}" /bin/sh -c "\
+                   ( grep '^ID_LIKE=' /etc/os-release || grep '^ID=' /etc/os-release )" \
+                   | tr -d '"' \
+                   | cut -d= -f2-)"
+    export DISTRO_ID
+
+    export DOCKER_BUILDKIT=1
     docker build --quiet \
-		 "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
+                 "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
+                 "--platform=${DOCKER_PLATFORM}" \
                  "--tag=${MICROMAMBA_IMAGE}" \
-		 "--file=${PROJECT_ROOT}/Dockerfile" \
-		 "$PROJECT_ROOT" > /dev/null
+                 "--file=${PROJECT_ROOT}/${DISTRO_ID}.Dockerfile" \
+                 "$PROJECT_ROOT" > /dev/null
+
+    build_image() {
+	local docker_file_name="$1"
+	local pre_file_name="${docker_file_name%.Dockerfile}"
+        docker build --quiet \
+                     "--build-arg=BASE_IMAGE=${MICROMAMBA_IMAGE}" \
+                     "--platform=${DOCKER_PLATFORM}" \
+                     "--tag=${MICROMAMBA_IMAGE}-${pre_file_name}" \
+                     "--file=${PROJECT_ROOT}/test/${docker_file_name}" \
+                     "${PROJECT_ROOT}/test" > /dev/null
+    }
 
     # Simulate TTY input for the docker run command
     # https://stackoverflow.com/questions/1401002/

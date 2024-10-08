@@ -10,24 +10,26 @@ setup() {
 
 test_example() {
     ORG="${PROJECT_ROOT}/examples/${1}/Dockerfile"
-    sed -E "s%^FROM mambaorg/micromamba:[^ ]+%FROM ${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
+    sed -E "s%^FROM mambaorg/micromamba:[^ ]+%FROM --platform=$TARGETPLATFORM ${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
     docker build --quiet \
+                 "--platform=${DOCKER_PLATFORM}" \
                  "--tag=${MICROMAMBA_IMAGE}-${1}" \
-		 "--file=${ORG}.test" \
-		 "$PROJECT_ROOT/examples/${1}" > /dev/null && \
+                 "--file=${ORG}.test" \
+                 "$PROJECT_ROOT/examples/${1}" > /dev/null && \
     rm "${ORG}.test"
 }
 
 @test "examples/add_micromamba" {
     test_example add_micromamba
-    run docker run --rm "${MICROMAMBA_IMAGE}-add_micromamba" jq --version
+    # shellcheck disable=SC2086
+    run docker run $RUN_FLAGS "${MICROMAMBA_IMAGE}-add_micromamba" jq --version
     assert_success
 }
 
 @test "examples/apt_install" {
-    if [[ $BASE_IMAGE =~ "alpine" ]]; then
+    if [[ $DISTRO_ID =~ alpine ]] || [[ $DISTRO_ID =~ fedora ]]; then
       # shellcheck disable=SC1009
-      skip "apt-git install is not supported on Alpine"
+      skip "apt-git install is not supported on this distribution"
     fi
     test_example apt_install
 }

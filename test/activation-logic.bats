@@ -3,11 +3,7 @@
 setup_file() {
     load 'test_helper/common-setup'
     _common_setup
-    docker build --quiet \
-                 "--build-arg=BASE_IMAGE=${MICROMAMBA_IMAGE}" \
-                 "--tag=${MICROMAMBA_IMAGE}-cli-invocations" \
-		 "--file=${PROJECT_ROOT}/test/cli-invocations.Dockerfile" \
-		 "${PROJECT_ROOT}/test" > /dev/null
+    build_image cli-invocations.Dockerfile
 }
 
 setup() {
@@ -16,14 +12,16 @@ setup() {
 }
 
 # Activation should succeed in the simplest case.
-@test "docker run --rm ${MICROMAMBA_IMAGE}-cli-invocations python --version" {
-    docker run --rm "${MICROMAMBA_IMAGE}-cli-invocations" python --version
+@test "docker run ${MICROMAMBA_IMAGE}-cli-invocations python --version" {
+    # shellcheck disable=SC2086
+    docker run $RUN_FLAGS "${MICROMAMBA_IMAGE}-cli-invocations" python --version
 }
 
 # Activation should skip in the simplest case when MAMBA_SKIP_ACTIVATE=1.
-@test "docker run --rm -e MAMBA_SKIP_ACTIVATE=1 ${MICROMAMBA_IMAGE}-cli-invocations python --version" {
+@test "docker run -e MAMBA_SKIP_ACTIVATE=1 ${MICROMAMBA_IMAGE}-cli-invocations python --version" {
     f() {
-        docker run --rm -e MAMBA_SKIP_ACTIVATE=1 "${MICROMAMBA_IMAGE}-cli-invocations" "$@"
+        # shellcheck disable=SC2086
+        docker run $RUN_FLAGS -e MAMBA_SKIP_ACTIVATE=1 "${MICROMAMBA_IMAGE}-cli-invocations" "$@"
     }
     run ! f python --version
     # Make sure that a similar command actually succeeds
@@ -31,10 +29,11 @@ setup() {
 }
 
 # Activation should succeed in an interactive terminal.
-@test "'docker run --rm -it ${MICROMAMBA_IMAGE}-cli-invocations' with 'python --version; exit'" {
+@test "'docker run -it ${MICROMAMBA_IMAGE}-cli-invocations' with 'python --version; exit'" {
     f() {
+        # shellcheck disable=SC2086
         echo -e "$1" | faketty \
-            docker run --rm -it "${MICROMAMBA_IMAGE}-cli-invocations"
+            docker run $RUN_FLAGS -it "${MICROMAMBA_IMAGE}-cli-invocations"
     }
     run f 'python --version; exit'
     # Make sure that a similar command actually fails
@@ -43,10 +42,11 @@ setup() {
 
 # Activation should also succeed in an interactive terminal with the entrypoint
 # disabled, thanks to activation in .bashrc.
-@test "'docker run --rm -it --entrypoint=/bin/bash ${MICROMAMBA_IMAGE}-cli-invocations' with 'python --version; exit'" {
+@test "'docker run -it --entrypoint=/bin/bash ${MICROMAMBA_IMAGE}-cli-invocations' with 'python --version; exit'" {
     f() {
+        # shellcheck disable=SC2086
         echo -e "$1" | faketty \
-            docker run --rm -it --entrypoint=/bin/bash "${MICROMAMBA_IMAGE}-cli-invocations"
+            docker run $RUN_FLAGS -it --entrypoint=/bin/bash "${MICROMAMBA_IMAGE}-cli-invocations"
     }
     run f 'python --version; exit'
     # Make sure that a similar command actually fails
@@ -54,10 +54,11 @@ setup() {
 }
 
 # ... Now that we isolated activation to .bashrc, disable it via MAMBA_SKIP_ACTIVATE=1.
-@test "'docker run --rm -it --entrypoint=/bin/bash -e MAMBA_SKIP_ACTIVATE=1 ${MICROMAMBA_IMAGE}-cli-invocations' with 'python --version; exit'" {
+@test "'docker run -it --entrypoint=/bin/bash -e MAMBA_SKIP_ACTIVATE=1 ${MICROMAMBA_IMAGE}-cli-invocations' with 'python --version; exit'" {
     f() {
+        # shellcheck disable=SC2086
         echo -e "$1" | faketty \
-            docker run --rm -it --entrypoint=/bin/bash -e MAMBA_SKIP_ACTIVATE=1 "${MICROMAMBA_IMAGE}-cli-invocations"
+            docker run $RUN_FLAGS -it --entrypoint=/bin/bash -e MAMBA_SKIP_ACTIVATE=1 "${MICROMAMBA_IMAGE}-cli-invocations"
     }
     run ! f 'python --version; exit'
     # Make sure that a similar command actually succeeds
@@ -68,9 +69,10 @@ setup() {
 
 # Unlike the interactive terminal above, in a non-interactive terminal, activation skips
 # when the entrypoint is overridden because "bash -c" sources .bashrc non-interactively.
-@test "docker run --rm --entrypoint='' ${MICROMAMBA_IMAGE}-cli-invocations /bin/bash -c 'python --version'" {
+@test "docker run --entrypoint='' ${MICROMAMBA_IMAGE}-cli-invocations /bin/bash -c 'python --version'" {
     f() {
-        docker run --rm --entrypoint='' "${MICROMAMBA_IMAGE}-cli-invocations" /bin/bash -c "$1"
+        # shellcheck disable=SC2086
+        docker run $RUN_FLAGS --entrypoint='' "${MICROMAMBA_IMAGE}-cli-invocations" /bin/bash -c "$1"
     }
     run ! f 'python --version'
     # Make sure that a similar command actually succeeds
@@ -78,14 +80,16 @@ setup() {
 }
 
 # ... Therefore, activation succeeds exclusively thanks to the entrypoint.
-@test "docker run --rm ${MICROMAMBA_IMAGE}-cli-invocations /bin/bash -c 'python --version'" {
-    docker run --rm "${MICROMAMBA_IMAGE}-cli-invocations" /bin/bash -c 'python --version'
+@test "docker run ${MICROMAMBA_IMAGE}-cli-invocations /bin/bash -c 'python --version'" {
+    # shellcheck disable=SC2086
+    docker run $RUN_FLAGS "${MICROMAMBA_IMAGE}-cli-invocations" /bin/bash -c 'python --version'
 }
 
 # ... Verify that MAMBA_SKIP_ACTIVATE=1 correctly skips activation from the entrypoint.
-@test "docker run --rm -e MAMBA_SKIP_ACTIVATE=1 ${MICROMAMBA_IMAGE}-cli-invocations /bin/bash -c 'python --version'" {
+@test "docker run -e MAMBA_SKIP_ACTIVATE=1 ${MICROMAMBA_IMAGE}-cli-invocations /bin/bash -c 'python --version'" {
     f() {
-        docker run --rm -e MAMBA_SKIP_ACTIVATE=1 "${MICROMAMBA_IMAGE}-cli-invocations" /bin/bash -c "$1"
+        # shellcheck disable=SC2086
+        docker run $RUN_FLAGS -e MAMBA_SKIP_ACTIVATE=1 "${MICROMAMBA_IMAGE}-cli-invocations" /bin/bash -c "$1"
     }
     run ! f 'python --version'
     # Make sure that a similar command actually succeeds
@@ -107,8 +111,9 @@ setup() {
         exit  \n
     '
     f () {
+        # shellcheck disable=SC2086
         echo -e "$1" | faketty \
-            docker run --rm -it --user=root -e MAMBA_SKIP_ACTIVATE=1 "${MICROMAMBA_IMAGE}-cli-invocations"
+            docker run $RUN_FLAGS -it --user=root -e MAMBA_SKIP_ACTIVATE=1 "${MICROMAMBA_IMAGE}-cli-invocations"
     }
     run f "$input"
 }
