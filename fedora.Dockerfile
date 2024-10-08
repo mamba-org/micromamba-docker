@@ -4,7 +4,7 @@ ARG BASE_IMAGE=public.ecr.aws/amazonlinux/amazonlinux:2023
 # curl and openssl installed
 FROM $BASE_IMAGE AS stage1
 ARG TARGETARCH
-ARG VERSION=2.0.0
+ARG VERSION=2.0.2
 # hadolint ignore=DL3033
 RUN yum update -y && yum install -y \
       bzip2 \
