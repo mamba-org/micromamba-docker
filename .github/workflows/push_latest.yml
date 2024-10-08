@@ -103,7 +103,11 @@ jobs:
         else
           echo 'distro_id=debian' >> $GITHUB_OUTPUT
           echo "tag=${base_name}" >> $GITHUB_OUTPUT
-          echo 'platforms=linux/amd64,linux/arm64,linux/ppc64le' >> $GITHUB_OUTPUT
+          if [ "${base_tag}" = '11' ] || [ "${base_tag}" = '11-slim' ]; then
+            echo 'platforms=linux/amd64,linux/arm64' >> $GITHUB_OUTPUT
+          else
+            echo 'platforms=linux/amd64,linux/arm64,linux/ppc64le' >> $GITHUB_OUTPUT
+          fi
         fi
         echo "is_default=$([ "$BASE_IMAGE" = "$DEFAULT_BASE_IMAGE" ] \
                            && echo true || echo false)" >> $GITHUB_OUTPUT
