@@ -41,7 +41,7 @@ you will install software into this ``base`` environment.
    .. code-block::
 
       $ docker run -it --rm my_app python --version
-      3.9.1
+      3.12.7
 
 Running commands in Dockerfile within the conda environment
 -----------------------------------------------------------

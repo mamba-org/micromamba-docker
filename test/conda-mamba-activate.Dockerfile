@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=micromamba:test-debian-bullseye-slim
+ARG BASE_IMAGE=micromamba:test-debian12-slim
 
 FROM $BASE_IMAGE
 

@@ -9,28 +9,33 @@ on:
       - 'v*'
 
 env:
-  DEFAULT_BASE_IMAGE: 'debian:bookworm-slim'
+  DEFAULT_BASE_IMAGE: 'debian:12-slim'
+  LATEST_DEBIAN_BASE_IMAGE: 'debian:12'
+  LATEST_DEBIAN_SLIM_BASE_IMAGE: 'debian:12-slim'
+  LATEST_UBUNTU_BASE_IMAGE: 'ubuntu:24.04'
+  LATEST_AMAZON_BASE_IMAGE: 'public.ecr.aws/amazonlinux/amazonlinux:2023'
   LATEST_ALPINE_BASE_IMAGE: 'frolvlad/alpine-glibc:alpine-3.20'
+  LATEST_CUDA_BASE_IMAGE: 'nvidia/cuda:12.6.0-base-ubuntu24.04'
 
 jobs:
   build_docker_image_and_push:
     if: github.repository == 'mamba-org/micromamba-docker'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         image:
-         - debian:bookworm-slim
-         - debian:bookworm
-         - debian:bullseye-slim
-         - debian:bullseye
-         - ubuntu:noble
-         - ubuntu:jammy
-         - ubuntu:focal
+         - debian:12-slim
+         - debian:12
+         - debian:11-slim
+         - debian:11
+         - ubuntu:24.04
+         - ubuntu:22.04
+         - ubuntu:20.04
          - frolvlad/alpine-glibc:alpine-3.20
          - frolvlad/alpine-glibc:alpine-3.19
          - frolvlad/alpine-glibc:alpine-3.18
          - frolvlad/alpine-glibc:alpine-3.17
-         - public.ecr.aws/amazonlinux/amazonlinux:2024
+         - public.ecr.aws/amazonlinux/amazonlinux:2023
          - nvidia/cuda:12.6.0-base-ubuntu24.04
          - nvidia/cuda:12.6.0-base-ubuntu22.04
          - nvidia/cuda:12.6.0-base-ubuntu20.04
@@ -54,14 +59,13 @@ jobs:
     steps:
     - name: Install GNU parallel, shellcheck, and apptainer
       run: |
-        sudo apt-get install --no-install-recommends -y parallel shellcheck software-properties-common
         sudo add-apt-repository -y ppa:apptainer/ppa
         sudo apt update
-        sudo apt install -y apptainer
+        sudo apt-get install --no-install-recommends -y parallel shellcheck software-properties-common apptainer
     - name: Setup nox
       uses: wntrblm/nox@5656fcedc31a1ea37d016e4d94d00185330cc528
     - name: Checkout source
-      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+      uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
       with:
         submodules: recursive
     - name: Get short git hash
@@ -69,7 +73,7 @@ jobs:
       run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
     - name: Get micromamba version
       id: get_version
-      run: echo "version=$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)" >> $GITHUB_OUTPUT
+      run: echo "version=$(grep '^ARG VERSION=' debian.Dockerfile  | cut -d= -f2)" >> $GITHUB_OUTPUT
     - name: Set image variables
       id: set_image_variables
       env:
@@ -78,23 +82,24 @@ jobs:
         base_tag="${BASE_IMAGE##*:}"
         base_name="${BASE_IMAGE%%:*}"
         if [ "${base_name}" = 'nvidia/cuda' ]; then
-          declare -A code_name
-          code_name[24.04]=noble
-          code_name[22.04]=jammy
-          code_name[20.04]=focal
           ubuntu_version_number="${base_tag##*-ubuntu}"
           cuda_version="${base_tag%%-*}"
           echo 'distro_id=debian' >> $GITHUB_OUTPUT
-          echo "tag=${code_name[$ubuntu_version_number]}-cuda-${cuda_version}" >> $GITHUB_OUTPUT
+          echo "tag=cuda${cuda_version}-ubuntu${ubuntu_version_number}" >> $GITHUB_OUTPUT
           echo 'platforms=linux/amd64,linux/arm64' >> $GITHUB_OUTPUT
         elif [ "${base_name}" = 'frolvlad/alpine-glibc' ]; then
           echo 'distro_id=alpine' >> $GITHUB_OUTPUT
-          echo 'tag=alpine' >> $GITHUB_OUTPUT
+          alpine_version_number="${base_tag##alpine-}"
+          echo "tag=alpine${alpine_version_number}" >> $GITHUB_OUTPUT
           echo 'platforms=linux/amd64' >> $GITHUB_OUTPUT
         elif [ "${base_name}" = 'public.ecr.aws/amazonlinux/amazonlinux' ]; then
           echo 'distro_id=amzn' >> $GITHUB_OUTPUT
           echo "tag=amazon${base_tag}" >> $GITHUB_OUTPUT
           echo 'platforms=linux/amd64,linux/arm64' >> $GITHUB_OUTPUT
+        elif [ "${base_name}" = 'ubuntu' ]; then
+          echo 'distro_id=debian' >> $GITHUB_OUTPUT
+          echo "tag=ubuntu${base_tag}" >> $GITHUB_OUTPUT
+          echo 'platforms=linux/amd64,linux/arm64,linux/ppc64le' >> $GITHUB_OUTPUT
         else
           echo 'distro_id=debian' >> $GITHUB_OUTPUT
           echo "tag=${base_name}" >> $GITHUB_OUTPUT
@@ -102,6 +107,18 @@ jobs:
         fi
         echo "is_default=$([ "$BASE_IMAGE" = "$DEFAULT_BASE_IMAGE" ] \
                            && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "is_latest_alpine=$([ "$IMAGE" = "$LATEST_ALPINE_BASE_IMAGE" ] \
+                          && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "is_latest_debian=$([ "$IMAGE" = "$LATEST_DEBIAN_BASE_IMAGE" ] \
+                          && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "is_latest_debian_slim=$([ "$IMAGE" = "$LATEST_DEBIAN_SLIM_BASE_IMAGE" ] \
+                          && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "is_latest_ubuntu=$([ "$IMAGE" = "$LATEST_UBUNTU_BASE_IMAGE" ] \
+                          && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "is_latest_amazon=$([ "$IMAGE" = "$LATEST_AMAZON_BASE_IMAGE" ] \
+                          && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "is_latest_cuda=$([ "$IMAGE" = "$LATEST_CUDA_BASE_IMAGE" ] \
+                          && echo true || echo false)" >> $GITHUB_OUTPUT
     - name: Get stage1 docker metadata
       id: get_stage1_metadata
       uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81
@@ -119,9 +136,15 @@ jobs:
           mambaorg/micromamba
           ghcr.io/mamba-org/micromamba
         flavor: latest=false
+        # This comment provides a summary of the tags generated by this action:
         # latest
         # base_image
         # alpine
+        # debian
+        # debian-slim
+        # ubuntu
+        # amazon
+        # cuda
         # major.minor.patch
         # major.minor
         # major
@@ -134,6 +157,11 @@ jobs:
             type=raw,value=latest,priority=1000,enable=${{ steps.set_image_variables.outputs.is_default }}
             type=raw,value=${{ steps.set_image_variables.outputs.tag }},priority=900
             type=raw,value=alpine,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_alpine }}
+            type=raw,value=debian,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_debian }}
+            type=raw,value=debian-slim,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_debian-slim }}
+            type=raw,value=ubuntu,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_ubuntu }}
+            type=raw,value=amazon,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_amazon }}
+            type=raw,value=cuda,priority=850,enable=${{ steps.set_image_variables.outputs.is_latest_cuda }}
             type=semver,pattern={{version}},enable=${{ steps.set_image_variables.outputs.is_default }},value=${{ steps.get_version.outputs.version }},priority=800
             type=semver,pattern={{major}}.{{minor}},enable=${{ steps.set_image_variables.outputs.is_default }},value=${{ steps.get_version.outputs.version }},priority=700
             type=semver,pattern={{major}},enable=${{ steps.set_image_variables.outputs.is_default }},value=${{ steps.get_version.outputs.version }},priority=600
@@ -145,7 +173,7 @@ jobs:
         labels: |
           distro_id=${{ steps.set_image_variables.outputs.distro_id }}
     - name: Setup docker buildx
-      uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db
+      uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349
     - name: Login to DockerHub
       uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
       with:
@@ -157,9 +185,9 @@ jobs:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    - name: Build Docker images
+    - name: Build Docker images but do not push them yet
       id: docker_build
-      uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85
+      uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75
       env:
         DOCKER_BUILD_RECORD_UPLOAD: false
       with:
@@ -193,7 +221,7 @@ jobs:
         cache-to: type=inline
     - name: Push Docker images
       id: docker_push
-      uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85
+      uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75
       env:
         DOCKER_BUILD_RECORD_UPLOAD: false
       with:
@@ -215,10 +243,10 @@ jobs:
   update_dockerhub_discription:
     if: github.repository == 'mamba-org/micromamba-docker'
     needs: build_docker_image_and_push
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
     - name: Checkout source
-      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+      uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
     - name: Get artifacts
       uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16
       with:
@@ -266,15 +294,15 @@ jobs:
   tag_and_release:
     if: github.repository == 'mamba-org/micromamba-docker'
     needs: build_docker_image_and_push
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
     - name: Checkout source
-      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+      uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
     - name: Get micromamba version number
       id: get_version
       run: |
-        echo "version=$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)" >> $GITHUB_OUTPUT
-        echo "leading_v_version=v$(grep '^ARG VERSION=' Dockerfile  | cut -d= -f2)" >> $GITHUB_OUTPUT
+        echo "version=$(grep '^ARG VERSION=' debian.Dockerfile  | cut -d= -f2)" >> $GITHUB_OUTPUT
+        echo "leading_v_version=v$(grep '^ARG VERSION=' debian.Dockerfile  | cut -d= -f2)" >> $GITHUB_OUTPUT
     - name: Get current date
       id: date
       run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
