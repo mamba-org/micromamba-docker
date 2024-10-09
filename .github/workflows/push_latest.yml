@@ -102,7 +102,7 @@ jobs:
           echo 'platforms=linux/amd64,linux/arm64,linux/ppc64le' >> $GITHUB_OUTPUT
         else
           echo 'distro_id=debian' >> $GITHUB_OUTPUT
-          echo "tag=${base_name}" >> $GITHUB_OUTPUT
+          echo "tag=debian${base_tag}" >> $GITHUB_OUTPUT
           if [ "${base_tag}" = '11' ] || [ "${base_tag}" = '11-slim' ]; then
             echo 'platforms=linux/amd64,linux/arm64' >> $GITHUB_OUTPUT
           else
