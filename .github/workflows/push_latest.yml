@@ -93,7 +93,7 @@ jobs:
           echo "tag=alpine${alpine_version_number}" >> $GITHUB_OUTPUT
           echo 'platforms=linux/amd64' >> $GITHUB_OUTPUT
         elif [ "${base_name}" = 'public.ecr.aws/amazonlinux/amazonlinux' ]; then
-          echo 'distro_id=amzn' >> $GITHUB_OUTPUT
+          echo 'distro_id=fedora' >> $GITHUB_OUTPUT
           echo "tag=amazon${base_tag}" >> $GITHUB_OUTPUT
           echo 'platforms=linux/amd64,linux/arm64' >> $GITHUB_OUTPUT
         elif [ "${base_name}" = 'ubuntu' ]; then
