@@ -111,17 +111,17 @@ jobs:
         fi
         echo "is_default=$([ "$BASE_IMAGE" = "$DEFAULT_BASE_IMAGE" ] \
                            && echo true || echo false)" >> $GITHUB_OUTPUT
-        echo "is_latest_alpine=$([ "$IMAGE" = "$LATEST_ALPINE_BASE_IMAGE" ] \
+        echo "is_latest_alpine=$([ "$BASE_IMAGE" = "$LATEST_ALPINE_BASE_IMAGE" ] \
                           && echo true || echo false)" >> $GITHUB_OUTPUT
-        echo "is_latest_debian=$([ "$IMAGE" = "$LATEST_DEBIAN_BASE_IMAGE" ] \
+        echo "is_latest_debian=$([ "$BASE_IMAGE" = "$LATEST_DEBIAN_BASE_IMAGE" ] \
                           && echo true || echo false)" >> $GITHUB_OUTPUT
-        echo "is_latest_debian_slim=$([ "$IMAGE" = "$LATEST_DEBIAN_SLIM_BASE_IMAGE" ] \
+        echo "is_latest_debian_slim=$([ "$BASE_IMAGE" = "$LATEST_DEBIAN_SLIM_BASE_IMAGE" ] \
                           && echo true || echo false)" >> $GITHUB_OUTPUT
-        echo "is_latest_ubuntu=$([ "$IMAGE" = "$LATEST_UBUNTU_BASE_IMAGE" ] \
+        echo "is_latest_ubuntu=$([ "$BASE_IMAGE" = "$LATEST_UBUNTU_BASE_IMAGE" ] \
                           && echo true || echo false)" >> $GITHUB_OUTPUT
-        echo "is_latest_amazon=$([ "$IMAGE" = "$LATEST_AMAZON_BASE_IMAGE" ] \
+        echo "is_latest_amazon=$([ "$BASE_IMAGE" = "$LATEST_AMAZON_BASE_IMAGE" ] \
                           && echo true || echo false)" >> $GITHUB_OUTPUT
-        echo "is_latest_cuda=$([ "$IMAGE" = "$LATEST_CUDA_BASE_IMAGE" ] \
+        echo "is_latest_cuda=$([ "$BASE_IMAGE" = "$LATEST_CUDA_BASE_IMAGE" ] \
                           && echo true || echo false)" >> $GITHUB_OUTPUT
     - name: Get stage1 docker metadata
       id: get_stage1_metadata
@@ -154,8 +154,7 @@ jobs:
         # major
         # major.minor.patch-base_image
         # major.minor-base_image
-        # major-base_image
-        # git-commit-base_image
+        # major-base_imag git-commit-base_image
         # git-commit
         tags: |
             type=raw,value=latest,priority=1000,enable=${{ steps.set_image_variables.outputs.is_default }}

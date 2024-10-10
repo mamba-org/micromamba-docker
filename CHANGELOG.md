@@ -3,6 +3,10 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 9 October 2024
+
+- Fixed/added the following tags: alpine, debian, debian-slim, ubuntu, amazon, cuda
+
 ## 8 October 2024
 
 - Updated to micromamba version 2.0.2
