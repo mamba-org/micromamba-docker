@@ -99,7 +99,7 @@ jobs:
         elif [ "${base_name}" = 'ubuntu' ]; then
           echo 'distro_id=debian' >> $GITHUB_OUTPUT
           echo "tag=ubuntu${base_tag}" >> $GITHUB_OUTPUT
-          echo 'platforms=linux/amd64,linux/arm64,linux/ppc64le' >> $GITHUB_OUTPUT
+          echo 'platforms=linux/amd64,linux/arm64,linux/ppc64le,linux/riscv64' >> $GITHUB_OUTPUT
         else
           echo 'distro_id=debian' >> $GITHUB_OUTPUT
           echo "tag=debian${base_tag}" >> $GITHUB_OUTPUT
