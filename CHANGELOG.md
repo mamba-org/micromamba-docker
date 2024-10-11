@@ -3,6 +3,11 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 10 October 2024
+
+- Update CUDA v12.6.0 images to CUDA v12.6.1
+- Add image based on `ubuntu:24.10`
+
 ## 9 October 2024
 
 - Fixed/added the following tags: alpine, debian, debian-slim, ubuntu, amazon, cuda
