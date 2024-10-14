@@ -238,7 +238,7 @@ jobs:
         labels: ${{ steps.get_metadata.outputs.labels}}
         cache-from: type=registry,ref=ghcr.io/mamba-org/micromamba-cache/cache:${{ steps.set_image_variables.outputs.tag }}
         cache-to: type=registry,ref=ghcr.io/mamba-org/micromamba-cache/cache:${{ steps.set_image_variables.outputs.tag }},mode=max
-    - uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874
+    - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
       with:
         name: ${{ steps.set_image_variables.outputs.tag }}
         path: ${{ steps.get_metadata.outputs.bake-file }}
