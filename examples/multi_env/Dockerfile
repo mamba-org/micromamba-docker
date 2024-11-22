@@ -1,4 +1,4 @@
-FROM mambaorg/micromamba:2.0.2
+FROM mambaorg/micromamba:1.5.11
 
 COPY --chown=$MAMBA_USER:$MAMBA_USER env1.yaml /tmp/env1.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER env2.yaml /tmp/env2.yaml

@@ -1,4 +1,5 @@
+#!/bin/bash
 docker run --rm -v "$(pwd):/tmp" \
-   mambaorg/micromamba:2.0.2 /bin/bash -c "\
+   mambaorg/micromamba:1.5.11 /bin/bash -c "\
      micromamba create --yes --name new_env --file env.yaml \
      && micromamba env export --name new_env --explicit" > env.lock
