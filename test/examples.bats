@@ -10,7 +10,7 @@ setup() {
 
 test_example() {
     ORG="${PROJECT_ROOT}/examples/${1}/Dockerfile"
-    sed -E "s%^FROM mambaorg/micromamba:[^ ]+%FROM --platform=$TARGETPLATFORM ${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
+    sed -E "s%^FROM mambaorg/micromamba:[^ ]+%FROM --platform=\$TARGETPLATFORM ${MICROMAMBA_IMAGE}%" "$ORG" > "${ORG}.test"
     docker build --quiet \
                  "--platform=${DOCKER_PLATFORM}" \
                  "--tag=${MICROMAMBA_IMAGE}-${1}" \
