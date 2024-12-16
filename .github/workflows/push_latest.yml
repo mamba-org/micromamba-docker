@@ -240,7 +240,7 @@ jobs:
         cache-to: type=registry,ref=ghcr.io/mamba-org/micromamba-cache/cache:${{ steps.set_image_variables.outputs.tag }},mode=max
     - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
       with:
-        name: ${{ steps.set_image_variables.outputs.tag }}
+        name: ${{ steps.set_image_variables.outputs.tag }}.metadata
         path: ${{ steps.get_metadata.outputs.bake-file }}
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
@@ -255,6 +255,7 @@ jobs:
       uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16
       with:
         path: artifacts
+        pattern: '*.metadata'
     - name: Format tags
       id: format_tags
       run: |
