@@ -35,7 +35,6 @@ jobs:
          - frolvlad/alpine-glibc:alpine-3.20
          - frolvlad/alpine-glibc:alpine-3.19
          - frolvlad/alpine-glibc:alpine-3.18
-         - frolvlad/alpine-glibc:alpine-3.17
          - public.ecr.aws/amazonlinux/amazonlinux:2023
          - nvidia/cuda:12.6.3-base-ubuntu24.04
          - nvidia/cuda:12.6.3-base-ubuntu22.04
