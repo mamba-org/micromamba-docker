@@ -3,6 +3,10 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 21 December 2024
+
+- Update CUDA v12.6.2 images to CUDA v12.6.3
+
 ## 16 December 2024
 
 - Updated to micromamba version 2.0.5
