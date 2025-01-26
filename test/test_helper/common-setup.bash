@@ -17,9 +17,13 @@ _common_setup() {
                    | tr -d '"' \
                    | cut -d= -f2-)"
     export DISTRO_ID
+    echo "DOCKER_PLATFORM=${DOCKER_PLATFORM}"
+    echo "RUN_FLAGS=${RUN_FLAGS}"
+    echo "BASE_IMAGE=${BASE_IMAGE}"
+    echo "DISTRO_ID=${DISTRO_ID}"
 
     export DOCKER_BUILDKIT=1
-    docker build --quiet \
+    docker build --progress=plain \
                  "--build-arg=BASE_IMAGE=${BASE_IMAGE}" \
                  "--platform=${DOCKER_PLATFORM}" \
                  "--tag=${MICROMAMBA_IMAGE}" \
@@ -29,7 +33,7 @@ _common_setup() {
     build_image() {
 	local docker_file_name="$1"
 	local pre_file_name="${docker_file_name%.Dockerfile}"
-        docker build --quiet \
+        docker build --progress=plain \
                      "--build-arg=BASE_IMAGE=${MICROMAMBA_IMAGE}" \
                      "--platform=${DOCKER_PLATFORM}" \
                      "--tag=${MICROMAMBA_IMAGE}-${pre_file_name}" \
