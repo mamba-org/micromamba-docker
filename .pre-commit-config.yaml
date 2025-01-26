@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.4.0
+  rev: v5.0.0
   hooks:
   - id: check-added-large-files
   - id: check-ast
@@ -24,11 +24,11 @@ repos:
   - id: mixed-line-ending
   - id: check-shebang-scripts-are-executable
 - repo: https://github.com/zricethezav/gitleaks
-  rev: v8.15.3
+  rev: v8.23.2
   hooks:
     - id: gitleaks
 - repo: https://github.com/koalaman/shellcheck-precommit
-  rev: v0.9.0
+  rev: v0.10.0
   hooks:
   - id: shellcheck
     args: ['-x']
@@ -43,6 +43,6 @@ repos:
   - id: markdownlint
     args: ['-s', '.markdownlint_config.rb']
 - repo: https://github.com/hadolint/hadolint
-  rev: v2.12.1-beta
+  rev: v2.13.1-beta
   hooks:
   - id: hadolint-docker
