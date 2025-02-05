@@ -3,6 +3,10 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 5 February 2025
+
+- Updated to micromamba version 2.0.6
+
 ## 21 December 2024
 
 - Removed end of life base image `alpine:3.17`
