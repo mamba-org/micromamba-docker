@@ -1,4 +1,4 @@
-""" define nox sessions for running tests and checks """
+"""define nox sessions for running tests and checks"""
 
 # pylint: disable=missing-function-docstring
 
