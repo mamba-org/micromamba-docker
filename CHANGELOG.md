@@ -6,6 +6,7 @@ This change log covers changes to the docker image and does not include
 ## 5 February 2025
 
 - Updated to micromamba version 2.0.6
+- no longer attempt to source `mamba.sh` in `_activate_current_env.sh`
 
 ## 21 December 2024
 
