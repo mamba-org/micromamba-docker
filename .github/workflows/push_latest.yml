@@ -63,7 +63,7 @@ jobs:
         sudo apt update
         sudo apt-get install --no-install-recommends -y parallel shellcheck software-properties-common apptainer
     - name: Setup nox
-      uses: wntrblm/nox@1199ab3892b1a941f80ff052083d0a571abed79d
+      uses: wntrblm/nox@a74da2c766d4e656d6105639926c31f3aa4a6ca1
     - name: Checkout source
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       with:

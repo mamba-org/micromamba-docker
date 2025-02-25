@@ -23,7 +23,7 @@ jobs:
           sudo apt update
           sudo apt install -y apptainer
       - name: Setup nox
-        uses: wntrblm/nox@1199ab3892b1a941f80ff052083d0a571abed79d
+        uses: wntrblm/nox@a74da2c766d4e656d6105639926c31f3aa4a6ca1
       - name: Run tests
         run: nox -s "default_base_image_tests"
   shellcheck:
@@ -45,7 +45,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Setup nox
-        uses: wntrblm/nox@1199ab3892b1a941f80ff052083d0a571abed79d
+        uses: wntrblm/nox@a74da2c766d4e656d6105639926c31f3aa4a6ca1
       - name: Run tests
         run: nox -s "pylint"
   flake8:
@@ -55,7 +55,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Setup nox
-        uses: wntrblm/nox@1199ab3892b1a941f80ff052083d0a571abed79d
+        uses: wntrblm/nox@a74da2c766d4e656d6105639926c31f3aa4a6ca1
       - name: Run tests
         run: nox -s "flake8"
   mypy:
@@ -65,7 +65,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Setup nox
-        uses: wntrblm/nox@1199ab3892b1a941f80ff052083d0a571abed79d
+        uses: wntrblm/nox@a74da2c766d4e656d6105639926c31f3aa4a6ca1
       - name: Run tests
         run: nox -s "mypy"
   black:
@@ -75,7 +75,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Setup nox
-        uses: wntrblm/nox@1199ab3892b1a941f80ff052083d0a571abed79d
+        uses: wntrblm/nox@a74da2c766d4e656d6105639926c31f3aa4a6ca1
       - name: Run tests
         run: nox -s "black"
   pytest:
@@ -85,7 +85,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Setup nox
-        uses: wntrblm/nox@1199ab3892b1a941f80ff052083d0a571abed79d
+        uses: wntrblm/nox@a74da2c766d4e656d6105639926c31f3aa4a6ca1
       - name: Run tests
         run: nox -s "pytest"
   build_docs:
@@ -95,6 +95,6 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Setup nox
-        uses: wntrblm/nox@1199ab3892b1a941f80ff052083d0a571abed79d
+        uses: wntrblm/nox@a74da2c766d4e656d6105639926c31f3aa4a6ca1
       - name: Run tests
         run: nox -s "build_docs"
