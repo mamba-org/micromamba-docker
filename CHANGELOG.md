@@ -3,6 +3,13 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 15 March 2025
+
+- Updated to micromamba version 2.0.7
+- Add image based on `nvidia/cuda:12.8.1-base-ubuntu24.04`
+- Add image based on `nvidia/cuda:12.8.1-base-ubuntu22.04`
+- Add image based on `nvidia/cuda:12.8.1-base-ubuntu20.04`
+
 ## 10 February 2025
 
 - Reverted to micromamba 2.0.5
