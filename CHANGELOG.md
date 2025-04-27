@@ -5,6 +5,7 @@ This change log covers changes to the docker image and does not include
 
 ## 27 April 2025
 
+- Add image based on `ubuntu:25.04`
 - Add image based on `alpine:3.21`
 - Remove alpine v3.20.x from build pipelines due to an [upstream issue](
   https://github.com/Docker-Hub-frolvlad/docker-alpine-glibc/issues/75).
