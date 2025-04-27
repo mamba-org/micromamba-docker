@@ -12,9 +12,9 @@ env:
   DEFAULT_BASE_IMAGE: 'debian:12-slim'
   LATEST_DEBIAN_BASE_IMAGE: 'debian:12'
   LATEST_DEBIAN_SLIM_BASE_IMAGE: 'debian:12-slim'
-  LATEST_UBUNTU_BASE_IMAGE: 'ubuntu:24.10'
+  LATEST_UBUNTU_BASE_IMAGE: 'ubuntu:25.04'
   LATEST_AMAZON_BASE_IMAGE: 'public.ecr.aws/amazonlinux/amazonlinux:2023'
-  LATEST_ALPINE_BASE_IMAGE: 'frolvlad/alpine-glibc:alpine-3.20'
+  LATEST_ALPINE_BASE_IMAGE: 'frolvlad/alpine-glibc:alpine-3.21'
   LATEST_CUDA_BASE_IMAGE: 'nvidia/cuda:12.8.1-base-ubuntu24.04'
 
 jobs:
@@ -28,11 +28,12 @@ jobs:
          - debian:12
          - debian:11-slim
          - debian:11
+         - ubuntu:25.04
          - ubuntu:24.10
          - ubuntu:24.04
          - ubuntu:22.04
          - ubuntu:20.04
-         - frolvlad/alpine-glibc:alpine-3.20
+         - frolvlad/alpine-glibc:alpine-3.21
          - frolvlad/alpine-glibc:alpine-3.19
          - frolvlad/alpine-glibc:alpine-3.18
          - public.ecr.aws/amazonlinux/amazonlinux:2023

@@ -3,6 +3,16 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 27 April 2025
+
+- Add image based on `ubuntu:25.04`
+- Add image based on `alpine:3.21`
+- Remove alpine v3.20.x from build pipelines due to an [upstream issue](
+  https://github.com/Docker-Hub-frolvlad/docker-alpine-glibc/issues/75).
+  Our existing `alpine3.20` tags will continue to exist, but they will not
+  receive new builds. Therefore, the highest version of `micromamba` that will
+  be accessible via `alpine3.20` tags is `v2.0.8`.
+
 ## 10 April 2025
 
 - Updated to micromamba version 2.1.0
