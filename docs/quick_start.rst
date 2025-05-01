@@ -56,6 +56,8 @@ next two subsections, you *must*:
 
 #. Use the 'shell' form of the ``RUN`` command
 
+#. If using Podman to build the image, specify ``--format=docker`` in the ``podman build`` command
+
 Activating a conda environment for ``RUN`` commands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -65,6 +67,9 @@ during a ``RUN`` command, you must set ``ARG MAMBA_DOCKERFILE_ACTIVATE=1``.
 For example:
 
    .. literalinclude:: ../examples/run_activate/Dockerfile
+
+If you are using Podman to build the image, you must also specify the option
+``--format=docker`` in the ``podman build`` command.
 
 Use the shell form of ``RUN`` with ``micromamba``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
