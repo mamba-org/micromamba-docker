@@ -3,6 +3,10 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 5 May 2025
+
+- Updated to micromamba version 2.1.1
+
 ## 27 April 2025
 
 - Add image based on `ubuntu:25.04`
