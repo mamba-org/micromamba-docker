@@ -3,6 +3,11 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+
+## 14 May 2025
+
+- Set `CONDA_OVERRIDE_CUDA` in cuda images
+
 ## 5 May 2025
 
 - Updated to micromamba version 2.1.1
