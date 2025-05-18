@@ -67,7 +67,7 @@ jobs:
         sudo apt update
         sudo apt-get install --no-install-recommends -y parallel shellcheck software-properties-common apptainer
     - name: Setup nox
-      uses: wntrblm/nox@a74da2c766d4e656d6105639926c31f3aa4a6ca1
+      uses: wntrblm/nox@2254a1ee500bbf66c2a5e4ff5dad030b9f579dcd
     - name: Checkout source
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       with:
@@ -194,7 +194,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build Docker images but do not push them yet
       id: docker_build
-      uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4
+      uses: docker/build-push-action@14487ce63c7a62a4a324b0bfb37086795e31c6c1
       env:
         DOCKER_BUILD_RECORD_UPLOAD: false
       with:
@@ -213,7 +213,7 @@ jobs:
       run: nox -s "image_tests(base_image='${IMAGE}')"
     - name: Push stage1 Docker images
       id: docker_stage1_push
-      uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4
+      uses: docker/build-push-action@14487ce63c7a62a4a324b0bfb37086795e31c6c1
       with:
         file: ${{ steps.set_image_variables.outputs.distro_id }}.Dockerfile
         target: stage1
@@ -228,7 +228,7 @@ jobs:
         cache-to: type=inline
     - name: Push Docker images
       id: docker_push
-      uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4
+      uses: docker/build-push-action@14487ce63c7a62a4a324b0bfb37086795e31c6c1
       env:
         DOCKER_BUILD_RECORD_UPLOAD: false
       with:
@@ -255,7 +255,7 @@ jobs:
     - name: Checkout source
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
     - name: Get artifacts
-      uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:
         path: artifacts
         pattern: '*.metadata'
@@ -293,7 +293,7 @@ jobs:
             '{gsub(/<!-- DOCKER_TAGS_INSERTION_POINT -->/,r)}1' \
             README.md > README_with_tags.md
     - name: Copy GitHub README.md to Dockerhub
-      uses: peter-evans/dockerhub-description@e98e4d1628a5f3be2be7c231e50981aee98723ae
+      uses: peter-evans/dockerhub-description@432a30c9e07499fd01da9f8a49f0faf9e0ca5b77
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
