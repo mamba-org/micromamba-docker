@@ -4,6 +4,12 @@ This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
 
+## 28 May 2025
+
+- Add image based on `nvidia/cuda:12.9.0-base-ubuntu24.04`
+- Add image based on `nvidia/cuda:12.9.0-base-ubuntu22.04`
+- Add image based on `nvidia/cuda:12.9.0-base-ubuntu20.04`
+
 ## 14 May 2025
 
 - Set `CONDA_OVERRIDE_CUDA` in cuda images
