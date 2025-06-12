@@ -24,6 +24,8 @@ jobs:
   build_docker_image_and_push:
     if: github.repository == 'mamba-org/micromamba-docker'
     runs-on: ubuntu-22.04
+    permissions:
+      packages: write
     strategy:
       matrix:
         image:
@@ -316,7 +318,6 @@ jobs:
     runs-on: ubuntu-22.04
     permissions:
       contents: write
-      issues: write
     steps:
     - name: Checkout source
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
