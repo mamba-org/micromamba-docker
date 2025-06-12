@@ -8,6 +8,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: read
+
 env:
   DEFAULT_BASE_IMAGE: 'debian:12-slim'
   LATEST_DEBIAN_BASE_IMAGE: 'debian:12'
@@ -74,6 +77,7 @@ jobs:
     - name: Checkout source
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       with:
+        persist-credentials: false
         submodules: recursive
     - name: Get short git hash
       id: short_hash
@@ -249,7 +253,9 @@ jobs:
         name: ${{ steps.set_image_variables.outputs.tag }}.metadata
         path: ${{ steps.get_metadata.outputs.bake-file }}
     - name: Image digest
-      run: echo ${{ steps.docker_build.outputs.digest }}
+      env:
+        DIGEST: ${{ steps.docker_build.outputs.digest }}
+      run: echo "${DIGEST}"
   update_dockerhub_discription:
     if: github.repository == 'mamba-org/micromamba-docker'
     needs: build_docker_image_and_push
@@ -257,6 +263,8 @@ jobs:
     steps:
     - name: Checkout source
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        persist-credentials: false
     - name: Get artifacts
       uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:
@@ -306,9 +314,14 @@ jobs:
     if: github.repository == 'mamba-org/micromamba-docker'
     needs: build_docker_image_and_push
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+      issues: write
     steps:
     - name: Checkout source
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        persist-credentials: false
     - name: Get micromamba version number
       id: get_version
       run: |
