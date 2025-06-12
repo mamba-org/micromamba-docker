@@ -201,7 +201,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build Docker images but do not push them yet
       id: docker_build
-      uses: docker/build-push-action@1dc73863535b631f98b2378be8619f83b136f4a0
+      uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83
       env:
         DOCKER_BUILD_RECORD_UPLOAD: false
       with:
@@ -220,7 +220,7 @@ jobs:
       run: nox -s "image_tests(base_image='${IMAGE}')"
     - name: Push stage1 Docker images
       id: docker_stage1_push
-      uses: docker/build-push-action@1dc73863535b631f98b2378be8619f83b136f4a0
+      uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83
       with:
         file: ${{ steps.set_image_variables.outputs.distro_id }}.Dockerfile
         target: stage1
@@ -235,7 +235,7 @@ jobs:
         cache-to: type=inline
     - name: Push Docker images
       id: docker_push
-      uses: docker/build-push-action@1dc73863535b631f98b2378be8619f83b136f4a0
+      uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83
       env:
         DOCKER_BUILD_RECORD_UPLOAD: false
       with:
