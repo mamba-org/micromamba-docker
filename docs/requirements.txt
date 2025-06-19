@@ -4,7 +4,6 @@
 #
 #    pip-compile --strip-extras requirements.in
 #
-
 alabaster==1.0.0
     # via sphinx
 babel==2.17.0
@@ -65,5 +64,5 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
-urllib3==2.3.0
+urllib3==2.5.0
     # via requests
