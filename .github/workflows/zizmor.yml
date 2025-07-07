@@ -27,7 +27,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@dcc1a6637b570d406bec5125dce2e2157d914359
+        uses: github/codeql-action/upload-sarif@b69421388d5449cc5a5e1ca344d71926bda69e07
         with:
           # Path to SARIF file relative to the root of the repository
           sarif_file: results.sarif
