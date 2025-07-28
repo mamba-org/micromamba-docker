@@ -1,4 +1,4 @@
-FROM mambaorg/micromamba:2.3.0
+FROM mambaorg/micromamba:2.3.1
 
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.lock /tmp/env.lock
 RUN micromamba install --name base --yes --file /tmp/env.lock \
