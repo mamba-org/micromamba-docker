@@ -138,7 +138,7 @@ jobs:
                           && echo true || echo false)" >> $GITHUB_OUTPUT
     - name: Get stage1 docker metadata
       id: get_stage1_metadata
-      uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804
+      uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f
       with:
         images: |
           ghcr.io/mamba-org/micromamba-cache/stage1
@@ -147,7 +147,7 @@ jobs:
             type=raw,value=${{ steps.set_image_variables.outputs.tag }}
     - name: Get docker metadata
       id: get_metadata
-      uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804
+      uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f
       with:
         images: |
           mambaorg/micromamba
