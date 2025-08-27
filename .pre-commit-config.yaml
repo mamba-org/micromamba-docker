@@ -46,6 +46,7 @@ repos:
   rev: v2.13.1-beta
   hooks:
   - id: hadolint-docker
+    args: ['--ignore', 'DL3018']
 - repo: https://github.com/zizmorcore/zizmor-pre-commit
   rev: v1.9.0
   hooks:
