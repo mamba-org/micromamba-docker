@@ -12,13 +12,13 @@ permissions:
   contents: read
 
 env:
-  DEFAULT_BASE_IMAGE: 'debian:12-slim'
-  LATEST_DEBIAN_BASE_IMAGE: 'debian:12'
-  LATEST_DEBIAN_SLIM_BASE_IMAGE: 'debian:12-slim'
+  DEFAULT_BASE_IMAGE: 'debian:13-slim'
+  LATEST_DEBIAN_BASE_IMAGE: 'debian:13'
+  LATEST_DEBIAN_SLIM_BASE_IMAGE: 'debian:13-slim'
   LATEST_UBUNTU_BASE_IMAGE: 'ubuntu:25.04'
   LATEST_AMAZON_BASE_IMAGE: 'public.ecr.aws/amazonlinux/amazonlinux:2023'
   LATEST_ALPINE_BASE_IMAGE: 'frolvlad/alpine-glibc:alpine-3.21'
-  LATEST_CUDA_BASE_IMAGE: 'nvidia/cuda:12.9.0-base-ubuntu24.04'
+  LATEST_CUDA_BASE_IMAGE: 'nvidia/cuda:13.0.0-base-ubuntu24.04'
 
 jobs:
   build_docker_image_and_push:
@@ -29,12 +29,11 @@ jobs:
     strategy:
       matrix:
         image:
+         - debian:13-slim
+         - debian:13
          - debian:12-slim
          - debian:12
-         - debian:11-slim
-         - debian:11
          - ubuntu:25.04
-         - ubuntu:24.10
          - ubuntu:24.04
          - ubuntu:22.04
          - ubuntu:20.04
@@ -42,9 +41,12 @@ jobs:
          - frolvlad/alpine-glibc:alpine-3.19
          - frolvlad/alpine-glibc:alpine-3.18
          - public.ecr.aws/amazonlinux/amazonlinux:2023
-         - nvidia/cuda:12.9.0-base-ubuntu24.04
-         - nvidia/cuda:12.9.0-base-ubuntu22.04
-         - nvidia/cuda:12.9.0-base-ubuntu20.04
+         - nvidia/cuda:13.0.0-base-ubuntu24.04
+         - nvidia/cuda:13.0.0-base-ubuntu22.04
+         - nvidia/cuda:13.0.0-base-amzn2023
+         - nvidia/cuda:12.9.1-base-ubuntu24.04
+         - nvidia/cuda:12.9.1-base-ubuntu22.04
+         - nvidia/cuda:12.9.1-base-ubuntu20.04
          - nvidia/cuda:12.8.1-base-ubuntu24.04
          - nvidia/cuda:12.8.1-base-ubuntu22.04
          - nvidia/cuda:12.8.1-base-ubuntu20.04

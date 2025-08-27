@@ -3,6 +3,19 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 27 Aug 2025
+
+- Updated to micromamba version 2.3.2
+- Add image based on `debian:13`
+- Add image based on `debian:13-slim`
+- Add image based on `nvidia/cuda:13.0.0-base-ubuntu24.04`
+- Add image based on `nvidia/cuda:13.0.0-base-ubuntu22.04`
+- Add image based on `nvidia/cuda:13.0.0-base-amzn2023`
+- Removed end of life base image `debian:11`
+- Removed end of life base image `debian:11-slim`
+- Removed end of life base image `ubuntu:24.10`
+- Update CUDA v12.9.0 images to CUDA v12.90.
+
 ## 28 July 2025
 
 - Updated to micromamba version 2.3.1
@@ -14,7 +27,6 @@ This change log covers changes to the docker image and does not include
 ## 5 June 2025
 
 - Updated to micromamba version 2.2.0
-
 
 ## 28 May 2025
 
