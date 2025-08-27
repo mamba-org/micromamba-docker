@@ -43,7 +43,6 @@ jobs:
          - public.ecr.aws/amazonlinux/amazonlinux:2023
          - nvidia/cuda:13.0.0-base-ubuntu24.04
          - nvidia/cuda:13.0.0-base-ubuntu22.04
-         - nvidia/cuda:13.0.0-base-amzn2023
          - nvidia/cuda:12.9.1-base-ubuntu24.04
          - nvidia/cuda:12.9.1-base-ubuntu22.04
          - nvidia/cuda:12.9.1-base-ubuntu20.04
