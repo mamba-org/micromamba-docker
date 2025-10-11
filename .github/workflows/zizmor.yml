@@ -7,19 +7,22 @@ on:
   pull_request:
     branches: ["**"]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   zizmor:
     name: zizmor latest via PyPI
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       security-events: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@09d2acae674a48949e3602304ab46fd20ae0c42f
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
           persist-credentials: false
 
-      - uses: hynek/setup-cached-uv@1ca39e33e765c9a53f6816f4e5c3afe0eee3eebc
+      - uses: hynek/setup-cached-uv@3ed6d5fb61a028740e59b7850b96a9d8f98a6262
 
       - name: Run zizmor 🌈
         run: uvx zizmor --format sarif . > results.sarif
