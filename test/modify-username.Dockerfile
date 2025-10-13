@@ -10,7 +10,7 @@ USER root
 # hadolint ignore=DL3018
 RUN if grep -q '^ID=alpine$' /etc/os-release; then \
       apk add --no-cache \
-         shadow; \
+         shadow=4.18.0-r0; \
     fi && \
     usermod "--login=${NEW_MAMBA_USER}" "--home=/home/${NEW_MAMBA_USER}" \
         --move-home "-u ${NEW_MAMBA_USER_ID}" "${MAMBA_USER}" && \
