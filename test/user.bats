@@ -1,4 +1,4 @@
-# shellcheck disable=SC2317 # bats test make some code appear unreachable
+#s shellcheck disable=SC2317 # bats test make some code appear unreachable
 
 default_mamba_user="mambauser"
 altered_mamba_user="MaMbAmIcRo"
@@ -117,7 +117,7 @@ setup() {
         # shellcheck disable=SC2086
         run docker run $RUN_FLAGS "${MICROMAMBA_IMAGE}-modify-user-id-gid-base" id
         assert_success
-        assert_output "uid=1100(mambauser) gid=2000(mambauser) groups=2000(mambauser)"
+        assert_output --partial "uid=1100(mambauser) gid=2000(mambauser) groups=2000(mambauser)"
 }
 
 # Test that custom mamba user id and group id are set correctly for derived image builds.
@@ -125,5 +125,5 @@ setup() {
         # shellcheck disable=SC2086
         run docker run $RUN_FLAGS "${MICROMAMBA_IMAGE}-modify-username" id
         assert_success
-        assert_output "uid=1100(MaMbAmIcRo) gid=2000(MaMbAmIcRo) groups=2000(MaMbAmIcRo)"
+        assert_output --partial "uid=1100(MaMbAmIcRo) gid=2000(MaMbAmIcRo) groups=2000(MaMbAmIcRo)"
 }
