@@ -9,7 +9,6 @@ USER root
 
 # hadolint ignore=DL3018
 RUN if grep -q '^ID=alpine$' /etc/os-release; then \
-      echo http://dl-2.alpinelinux.org/alpine/edge/community/ >> /etc/apk/repositories; \
       apk add --no-cache \
          shadow; \
     fi && \
