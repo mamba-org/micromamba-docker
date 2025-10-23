@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=frolvlad/alpine-glibc:alpine-3.20
+ARG BASE_IMAGE=frolvlad/alpine-glibc:alpine-3.22
 
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed

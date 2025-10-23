@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=debian:12-slim
+ARG BASE_IMAGE=debian:13-slim
 
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
