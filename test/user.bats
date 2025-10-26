@@ -55,7 +55,11 @@ setup() {
 @test "docker run --user=1001:1001 ${MICROMAMBA_IMAGE} whoami" {
     # shellcheck disable=SC2086
     run docker run $RUN_FLAGS --user=1001:1001 "${MICROMAMBA_IMAGE}" whoami
-    [ "$output" = 'whoami: cannot find name for user ID 1001' ] || [ "$output" = 'whoami: unknown uid 1001' ]
+    echo "output: $output"
+    [ "$output" = 'whoami: cannot find name for user ID 1001' ] \
+    || [ "$output" = 'whoami: unknown uid 1001' ] \
+    || [ "$output" = 'I have no name!' ] \
+    || [ "$output" = 'whoami: failed to get username: No such id: 1001' ]
 }
 
 @test "docker run --user=root ${MICROMAMBA_IMAGE} whoami" {
