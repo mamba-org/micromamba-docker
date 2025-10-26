@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=debian:12-slim
+ARG BASE_IMAGE=debian:13-slim
 
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
@@ -26,7 +26,7 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV ENV_NAME="base"
 ENV MAMBA_ROOT_PREFIX="/opt/conda"
 ENV MAMBA_EXE="/bin/micromamba"
-ENV CONDA_OVERRIDE_CUDA=${CUDA_VERSION:-""}
+ENV CONDA_OVERRIDE_CUDA="${CUDA_VERSION:-}"
 
 COPY --from=stage1 "${MAMBA_EXE}" "${MAMBA_EXE}"
 COPY --from=stage1 "${CERT_SOURCE}" "${CERT_SOURCE}"
