@@ -16,7 +16,7 @@ env:
 jobs:
   default_base_image_tests:
     name: default base_image tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
@@ -35,7 +35,7 @@ jobs:
         run: nox -s "default_base_image_tests"
   shellcheck:
     name: shellcheck
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
@@ -49,7 +49,7 @@ jobs:
         run: ./shellcheck -x *.sh test/*.bats
   pylint:
     name: pylint
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
@@ -61,7 +61,7 @@ jobs:
         run: nox -s "pylint"
   flake8:
     name: flake8
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
@@ -73,7 +73,7 @@ jobs:
         run: nox -s "flake8"
   mypy:
     name: mypy
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
@@ -85,7 +85,7 @@ jobs:
         run: nox -s "mypy"
   black:
     name: black
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
@@ -97,7 +97,7 @@ jobs:
         run: nox -s "black"
   pytest:
     name: pytest
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
@@ -109,7 +109,7 @@ jobs:
         run: nox -s "pytest"
   build_docs:
     name: build_docs
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
