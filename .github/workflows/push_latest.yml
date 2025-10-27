@@ -24,7 +24,7 @@ env:
 jobs:
   build_docker_image_and_push:
     if: github.repository == 'mamba-org/micromamba-docker'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       packages: write
     strategy:
@@ -249,7 +249,7 @@ jobs:
   update_dockerhub_discription:
     if: github.repository == 'mamba-org/micromamba-docker'
     needs: build_docker_image_and_push
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
     - name: Checkout source
       uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
@@ -303,7 +303,7 @@ jobs:
   tag_and_release:
     if: github.repository == 'mamba-org/micromamba-docker'
     needs: build_docker_image_and_push
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
     steps:
