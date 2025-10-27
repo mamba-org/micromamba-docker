@@ -6,14 +6,15 @@ This change log covers changes to the docker image and does not include
 ## 27 October 2025
 
 - Updated to micromamba version 2.3.3
+- Remove end of life base image `ubuntu:20.04`
 
 ## 11 Oct 2025
 
 - Add image based on `ubuntu-25.10`
 - Add image based on `alpine:3.22`
 - Update CUDA v13.0.0 images to CUDA v13.0.1.
-- Removed end of life base image `ubuntu-25.04`
-- Removed end of life base image `alpine-3.18`
+- Removed end of life base image `ubuntu:25.04`
+- Removed end of life base image `alpine:3.18`
 
 ## 27 Aug 2025
 
