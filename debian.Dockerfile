@@ -4,7 +4,7 @@ ARG BASE_IMAGE=debian:13-slim
 # curl and openssl installed
 FROM $BASE_IMAGE AS stage1
 ARG TARGETARCH
-ARG VERSION=2.3.2
+ARG VERSION=2.3.3
 RUN apt-get update && apt-get install -y --no-install-recommends \
       bzip2 \
       ca-certificates \

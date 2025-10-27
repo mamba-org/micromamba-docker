@@ -76,7 +76,7 @@ jobs:
         sudo apt update
         sudo apt-get install --no-install-recommends -y parallel shellcheck software-properties-common
     - name: Setup nox
-      uses: wntrblm/nox@2254a1ee500bbf66c2a5e4ff5dad030b9f579dcd
+      uses: wntrblm/nox@d9e5e0c2e39e5122e635d76cd2ba3268d67eb18f
     - name: Checkout source
       uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
       with:
@@ -192,12 +192,12 @@ jobs:
     - name: Setup docker buildx
       uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435
     - name: Login to DockerHub
-      uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1
+      uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Login to GHCR
-      uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1
+      uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef
       with:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
@@ -303,11 +303,11 @@ jobs:
         echo "EOF" >> $GITHUB_ENV
     - name: generate README_with_tags.md
       run: |
-        awk -v r='${{ env.TAGS_MARKDOWN }}' \
+        awk -v r='${TAGS_MARKDOWN}' \
             '{gsub(/<!-- DOCKER_TAGS_INSERTION_POINT -->/,r)}1' \
             README.md > README_with_tags.md
     - name: Copy GitHub README.md to Dockerhub
-      uses: peter-evans/dockerhub-description@432a30c9e07499fd01da9f8a49f0faf9e0ca5b77
+      uses: peter-evans/dockerhub-description@1b9a80c056b620d92cedb9d9b5a223409c68ddfa
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
