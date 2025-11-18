@@ -65,7 +65,7 @@ jobs:
     - name: Setup nox
       uses: wntrblm/nox@d9e5e0c2e39e5122e635d76cd2ba3268d67eb18f
     - name: Checkout source
-      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+      uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
       with:
         persist-credentials: false
         submodules: recursive
@@ -252,7 +252,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - name: Checkout source
-      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+      uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
       with:
         persist-credentials: false
     - name: Get artifacts
@@ -308,7 +308,7 @@ jobs:
       contents: write
     steps:
     - name: Checkout source
-      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+      uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
       with:
         persist-credentials: false
     - name: Get micromamba version number
