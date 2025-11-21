@@ -1,4 +1,4 @@
-FROM mambaorg/micromamba:2.3.3
+FROM mambaorg/micromamba:2.4.0
 
 ARG NEW_MAMBA_USER=new-username
 ARG NEW_MAMBA_USER_ID=57440
