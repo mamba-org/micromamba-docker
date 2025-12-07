@@ -27,7 +27,7 @@ def to_version(ver: str) -> Version:
 
 
 def anaconda_versions(url: str) -> Dict[str, List[Version]]:
-    res = requests.get(url)
+    res = requests.get(url, timeout=60)
     result = res.json()
     out: ArchVersions = {arch: [] for arch in ARCHITECTURES}
     for dist in result:
@@ -41,7 +41,7 @@ def anaconda_versions(url: str) -> Dict[str, List[Version]]:
 
 
 def dockerhub_versions(url: str) -> ArchVersions:
-    dh_res = requests.get(url)
+    dh_res = requests.get(url, timeout=60)
     dh_result = dh_res.json()
     out: ArchVersions = {arch: [] for arch in ARCHITECTURES}
     for release in dh_result["results"]:

@@ -1,10 +1,10 @@
-ARG BASE_IMAGE=debian:12-slim
+ARG BASE_IMAGE=debian:13-slim
 
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
 FROM $BASE_IMAGE AS stage1
 ARG TARGETARCH
-ARG VERSION=2.0.2
+ARG VERSION=2.4.0
 RUN apt-get update && apt-get install -y --no-install-recommends \
       bzip2 \
       ca-certificates \
@@ -26,6 +26,7 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV ENV_NAME="base"
 ENV MAMBA_ROOT_PREFIX="/opt/conda"
 ENV MAMBA_EXE="/bin/micromamba"
+ENV CONDA_OVERRIDE_CUDA="${CUDA_VERSION:-}"
 
 COPY --from=stage1 "${MAMBA_EXE}" "${MAMBA_EXE}"
 COPY --from=stage1 "${CERT_SOURCE}" "${CERT_SOURCE}"

@@ -7,9 +7,5 @@ module = [
 ]
 ignore_missing_imports = true
 
-[tool.pylint.messages_control]
-# first two are for black compatibility
-disable = "bad-continuation, bad-whitespace"
-
 [tool.pylint.format]
 max-line-length = "110"

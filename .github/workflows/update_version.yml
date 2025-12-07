@@ -6,14 +6,23 @@ on:
   schedule:
   - cron: '0 */6 * * *'
 
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   generate_pr_if_new_micromamba:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
     - name: Checkout source
-      uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
+      uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      with:
+        persist-credentials: false
     - name: Set up Python
-      uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3
+      uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c
       with:
         python-version: "3.10"
     - name: Check available versions
@@ -27,10 +36,12 @@ jobs:
         echo "do_pr=${DO_PR}" >> $GITHUB_OUTPUT
     - name: run update.sh
       if: steps.check_version.outputs.do_pr == 'True'
-      run: ./update.sh ${{ steps.check_version.outputs.latest_version }}
+      env:
+        LATEST_VERSION: ${{ steps.check_version.outputs.latest_version }}
+      run: ./update.sh "${LATEST_VERSION}"
     - name: commit updated files
       if: steps.check_version.outputs.do_pr == 'True'
-      uses: peter-evans/create-pull-request@5e914681df9dc83aa4e4905692ca88beb2f9e91f
+      uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
       with:
         branch: "update-${{ steps.check_version.outputs.latest_version }}"
         commit-message: "Update to micromamba version ${{ steps.check_version.outputs.latest_version }}"

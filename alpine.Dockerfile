@@ -1,10 +1,10 @@
-ARG BASE_IMAGE=frolvlad/alpine-glibc:alpine-3.20
+ARG BASE_IMAGE=frolvlad/alpine-glibc:alpine-3.22
 
 # Mutli-stage build to keep final image small. Otherwise end up with
 # curl and openssl installed
 FROM $BASE_IMAGE AS stage1
 ARG TARGETARCH
-ARG VERSION=2.0.2
+ARG VERSION=2.4.0
 # hadolint ignore=DL3018
 RUN apk add --no-cache \
       bash \

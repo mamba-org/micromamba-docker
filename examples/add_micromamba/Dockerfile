@@ -1,5 +1,5 @@
 # bring in the micromamba image so we can copy files from it
-FROM mambaorg/micromamba:2.0.2 as micromamba
+FROM mambaorg/micromamba:2.4.0 as micromamba
 
 # This is the image we are going add micromaba to:
 FROM tomcat:9-jdk17-temurin-focal

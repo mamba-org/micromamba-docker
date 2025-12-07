@@ -55,7 +55,10 @@ setup() {
 @test "docker run --user=1001:1001 ${MICROMAMBA_IMAGE} whoami" {
     # shellcheck disable=SC2086
     run docker run $RUN_FLAGS --user=1001:1001 "${MICROMAMBA_IMAGE}" whoami
-    [ "$output" = 'whoami: cannot find name for user ID 1001' ] || [ "$output" = 'whoami: unknown uid 1001' ]
+    [ "$output" = 'whoami: cannot find name for user ID 1001' ] \
+    || [ "$output" = 'whoami: unknown uid 1001' ] \
+    || [ "$output" = 'I have no name!' ] \
+    || [ "$output" = 'whoami: failed to get username: No such id: 1001' ]
 }
 
 @test "docker run --user=root ${MICROMAMBA_IMAGE} whoami" {
@@ -117,7 +120,7 @@ setup() {
         # shellcheck disable=SC2086
         run docker run $RUN_FLAGS "${MICROMAMBA_IMAGE}-modify-user-id-gid-base" id
         assert_success
-        assert_output "uid=1100(mambauser) gid=2000(mambauser) groups=2000(mambauser)"
+        assert_output --partial "uid=1100(mambauser) gid=2000(mambauser) groups=2000(mambauser)"
 }
 
 # Test that custom mamba user id and group id are set correctly for derived image builds.
@@ -125,5 +128,5 @@ setup() {
         # shellcheck disable=SC2086
         run docker run $RUN_FLAGS "${MICROMAMBA_IMAGE}-modify-username" id
         assert_success
-        assert_output "uid=1100(MaMbAmIcRo) gid=2000(MaMbAmIcRo) groups=2000(MaMbAmIcRo)"
+        assert_output --partial "uid=1100(MaMbAmIcRo) gid=2000(MaMbAmIcRo) groups=2000(MaMbAmIcRo)"
 }

@@ -7,31 +7,37 @@ on:
       - dev
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   default_base_image_tests:
     name: default base_image tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
         with:
           submodules: recursive
-      - name: Install GNU parallel and apptainer
+          persist-credentials: false
+      - name: Install GNU parallel
         run: |
-          sudo apt-get install --no-install-recommends -y parallel software-properties-common
-          sudo add-apt-repository -y ppa:apptainer/ppa 
-          sudo apt update
-          sudo apt install -y apptainer
+          sudo apt-get install --no-install-recommends -y parallel
       - name: Setup nox
-        uses: wntrblm/nox@5656fcedc31a1ea37d016e4d94d00185330cc528
+        uses: wntrblm/nox@0eee2e45758dbd06d48ebb23476439f0f00e5cbd
       - name: Run tests
         run: nox -s "default_base_image_tests"
   shellcheck:
     name: shellcheck
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+        with:
+          persist-credentials: false
       - name: Install curl and xz-utils
         run: sudo apt-get install --no-install-recommends -y curl xz-utils
       - name: Install shellcheck
@@ -40,61 +46,73 @@ jobs:
         run: ./shellcheck -x *.sh test/*.bats
   pylint:
     name: pylint
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+        with:
+          persist-credentials: false
       - name: Setup nox
-        uses: wntrblm/nox@5656fcedc31a1ea37d016e4d94d00185330cc528
+        uses: wntrblm/nox@0eee2e45758dbd06d48ebb23476439f0f00e5cbd
       - name: Run tests
         run: nox -s "pylint"
   flake8:
     name: flake8
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+        with:
+          persist-credentials: false
       - name: Setup nox
-        uses: wntrblm/nox@5656fcedc31a1ea37d016e4d94d00185330cc528
+        uses: wntrblm/nox@0eee2e45758dbd06d48ebb23476439f0f00e5cbd
       - name: Run tests
         run: nox -s "flake8"
   mypy:
     name: mypy
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+        with:
+          persist-credentials: false
       - name: Setup nox
-        uses: wntrblm/nox@5656fcedc31a1ea37d016e4d94d00185330cc528
+        uses: wntrblm/nox@0eee2e45758dbd06d48ebb23476439f0f00e5cbd
       - name: Run tests
         run: nox -s "mypy"
   black:
     name: black
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+        with:
+          persist-credentials: false
       - name: Setup nox
-        uses: wntrblm/nox@5656fcedc31a1ea37d016e4d94d00185330cc528
+        uses: wntrblm/nox@0eee2e45758dbd06d48ebb23476439f0f00e5cbd
       - name: Run tests
         run: nox -s "black"
   pytest:
     name: pytest
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+        with:
+          persist-credentials: false
       - name: Setup nox
-        uses: wntrblm/nox@5656fcedc31a1ea37d016e4d94d00185330cc528
+        uses: wntrblm/nox@0eee2e45758dbd06d48ebb23476439f0f00e5cbd
       - name: Run tests
         run: nox -s "pytest"
   build_docs:
     name: build_docs
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout source
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+        with:
+          persist-credentials: false
       - name: Setup nox
-        uses: wntrblm/nox@5656fcedc31a1ea37d016e4d94d00185330cc528
+        uses: wntrblm/nox@0eee2e45758dbd06d48ebb23476439f0f00e5cbd
       - name: Run tests
         run: nox -s "build_docs"

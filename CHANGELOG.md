@@ -3,6 +3,135 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 7 December 2025
+
+- Removed end of life base image `alpine:3.19`
+- Update CUDA v13.0.1 images to CUDA v13.0.2
+- Start building alpine images for linux/arm64 platform
+
+## 21 November 2025
+
+- Updated to micromamba version 2.4.0
+
+## 27 October 2025
+
+- Updated to micromamba version 2.3.3
+- Remove end of life base image `ubuntu:20.04`
+
+## 11 Oct 2025
+
+- Add image based on `ubuntu-25.10`
+- Add image based on `alpine:3.22`
+- Update CUDA v13.0.0 images to CUDA v13.0.1.
+- Removed end of life base image `ubuntu:25.04`
+- Removed end of life base image `alpine:3.18`
+
+## 27 Aug 2025
+
+- Updated to micromamba version 2.3.2
+- Add image based on `debian:13`
+- Add image based on `debian:13-slim`
+- Add image based on `nvidia/cuda:13.0.0-base-ubuntu24.04`
+- Add image based on `nvidia/cuda:13.0.0-base-ubuntu22.04`
+- Removed end of life base image `debian:11`
+- Removed end of life base image `debian:11-slim`
+- Removed end of life base image `ubuntu:24.10`
+- Update CUDA v12.9.0 images to CUDA v12.9.1.
+
+## 28 July 2025
+
+- Updated to micromamba version 2.3.1
+
+## 16 June 2025
+
+- Updated to micromamba version 2.3.0
+
+## 5 June 2025
+
+- Updated to micromamba version 2.2.0
+
+## 28 May 2025
+
+- Add image based on `nvidia/cuda:12.9.0-base-ubuntu24.04`
+- Add image based on `nvidia/cuda:12.9.0-base-ubuntu22.04`
+- Add image based on `nvidia/cuda:12.9.0-base-ubuntu20.04`
+
+## 14 May 2025
+
+- Set `CONDA_OVERRIDE_CUDA` in cuda images
+
+## 5 May 2025
+
+- Updated to micromamba version 2.1.1
+
+## 27 April 2025
+
+- Add image based on `ubuntu:25.04`
+- Add image based on `alpine:3.21`
+- Remove alpine v3.20.x from build pipelines due to an [upstream issue](
+  https://github.com/Docker-Hub-frolvlad/docker-alpine-glibc/issues/75).
+  Our existing `alpine3.20` tags will continue to exist, but they will not
+  receive new builds. Therefore, the highest version of `micromamba` that will
+  be accessible via `alpine3.20` tags is `v2.0.8`.
+
+## 10 April 2025
+
+- Updated to micromamba version 2.1.0
+
+## 20 March 2025
+
+- Updated to micromamba version 2.0.8
+
+## 16 March 2025
+
+- set `cuda` tag image based on `nvidia/cuda:12.8.1-base-ubuntu24.04`
+
+## 15 March 2025
+
+- Updated to micromamba version 2.0.7
+- Add image based on `nvidia/cuda:12.8.1-base-ubuntu24.04`
+- Add image based on `nvidia/cuda:12.8.1-base-ubuntu22.04`
+- Add image based on `nvidia/cuda:12.8.1-base-ubuntu20.04`
+
+## 10 February 2025
+
+- Reverted to micromamba 2.0.5
+
+## 5 February 2025
+
+- Updated to micromamba version 2.0.6
+- no longer attempt to source `mamba.sh` in `_activate_current_env.sh`
+
+## 21 December 2024
+
+- Removed end of life base image `alpine:3.17`
+- Update CUDA v12.6.2 images to CUDA v12.6.3
+
+## 16 December 2024
+
+- Updated to micromamba version 2.0.5
+
+## 25 November 2024
+
+- Updated to micromamba version 2.0.4
+
+## 6 November 2024
+
+- Updated to micromamba version 2.0.3
+
+## 28 October 2024
+
+- Update CUDA v12.6.1 images to CUDA v12.6.2
+
+## 10 October 2024
+
+- Update CUDA v12.6.0 images to CUDA v12.6.1
+- Add image based on `ubuntu:24.10`
+
+## 9 October 2024
+
+- Fixed/added the following tags: alpine, debian, debian-slim, ubuntu, amazon, cuda
+
 ## 8 October 2024
 
 - Updated to micromamba version 2.0.2

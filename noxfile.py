@@ -1,4 +1,4 @@
-""" define nox sessions for running tests and checks """
+"""define nox sessions for running tests and checks"""
 
 # pylint: disable=missing-function-docstring
 
@@ -7,7 +7,7 @@ from pathlib import Path
 
 import nox
 
-PY_VERSION = "3.10"
+PY_VERSION = "3.13"
 
 
 def get_base_images(file_name):
@@ -52,26 +52,26 @@ nox.options.sessions = [
 ]
 
 PYLINT_DEPS = [
-    "pylint==2.12.2",
-    "nox==2022.1.7",
-    "pytest==7.0.0",  # so "import pytest" doesn't get reported
+    "pylint==3.3.5",
+    "nox==2025.2.9",
+    "pytest==8.3.5",  # so "import pytest" doesn't get reported
 ]
 
 FLAKE8_DEPS = [
-    "flake8==4.0.1",
-    "flake8-bugbear==22.1.11",
-    "flake8-builtins==1.5.3",
-    "flake8-comprehensions==3.8.0",
+    "flake8==7.1.2",
+    "flake8-bugbear==24.12.12",
+    "flake8-builtins==2.5.0",
+    "flake8-comprehensions==3.16.0",
 ]
 
 PYTEST_DEPS = [
-    "pytest==7.0.0",
-    "pytest-mock==3.7.0",
+    "pytest==8.3.5",
+    "pytest-mock==3.14.0",
     "toml==0.10.2",
 ]
 
 MYPY_DEPS = [
-    "mypy==1.9.0",
+    "mypy==1.15.0",
     "types-requests",
 ]
 

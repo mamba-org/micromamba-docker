@@ -1,7 +1,7 @@
-FROM mambaorg/micromamba:2.0.2
+FROM mambaorg/micromamba:2.4.0
 
 RUN micromamba install -y -n base -c conda-forge \
-       pyopenssl=20.0.1 \
+       pyopenssl=24.3.0 \
        python=3.12.7 \
-       requests=2.25.1 && \
+       requests=2.32.3 && \
     micromamba clean --all --yes

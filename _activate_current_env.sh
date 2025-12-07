@@ -20,10 +20,11 @@ fi
 unset __conda_setup
 
 # Attempt to initialize Mamba (might not be installed)
-if [ -f "${MAMBA_ROOT_PREFIX}/etc/profile.d/mamba.sh" ]; then
-    # shellcheck disable=SC1091
-    . "${MAMBA_ROOT_PREFIX}/etc/profile.d/mamba.sh"
+__mamba_setup="$(mamba shell hook --shell bash 2> /dev/null)" || true
+if [ -n "${__mamba_setup}" ]; then
+    eval "$__mamba_setup"
 fi
+unset __mamba_setup
 
 if [[ "${MAMBA_SKIP_ACTIVATE}" == "1" ]]; then
   return

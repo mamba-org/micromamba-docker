@@ -73,10 +73,6 @@ work that supports their needs.
 
 The image maintainers are currently working on or planning to work on:
 
-#. Adding non-Debian based distributions that have community interest
-
-   * Add ``public.ecr.aws/amazonlinux/amazonlinux:2023`` as a base image
-
 #. Better supporting conda environment activation when using
    ``apptainer``/``singularity``
 
