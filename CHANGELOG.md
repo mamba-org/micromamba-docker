@@ -6,6 +6,7 @@ This change log covers changes to the docker image and does not include
 ## 7 December 2025
 
 - Removed end of life base image `alpine:3.19`
+- Update CUDA v13.0.1 images to CUDA v13.0.2
 
 ## 21 November 2025
 

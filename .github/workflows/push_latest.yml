@@ -19,7 +19,7 @@ env:
   LATEST_UBUNTU_BASE_IMAGE: 'ubuntu:25.10'
   LATEST_AMAZON_BASE_IMAGE: 'public.ecr.aws/amazonlinux/amazonlinux:2023'
   LATEST_ALPINE_BASE_IMAGE: 'frolvlad/alpine-glibc:alpine-3.22'
-  LATEST_CUDA_BASE_IMAGE: 'nvidia/cuda:13.0.1-base-ubuntu24.04'
+  LATEST_CUDA_BASE_IMAGE: 'nvidia/cuda:13.0.2-base-ubuntu24.04'
 
 jobs:
   build_docker_image_and_push:
@@ -40,8 +40,8 @@ jobs:
          - frolvlad/alpine-glibc:alpine-3.22
          - frolvlad/alpine-glibc:alpine-3.21
          - public.ecr.aws/amazonlinux/amazonlinux:2023
-         - nvidia/cuda:13.0.1-base-ubuntu24.04
-         - nvidia/cuda:13.0.1-base-ubuntu22.04
+         - nvidia/cuda:13.0.2-base-ubuntu24.04
+         - nvidia/cuda:13.0.2-base-ubuntu22.04
          - nvidia/cuda:12.9.1-base-ubuntu24.04
          - nvidia/cuda:12.9.1-base-ubuntu22.04
          - nvidia/cuda:12.8.1-base-ubuntu24.04
