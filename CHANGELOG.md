@@ -3,6 +3,12 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 7 December 2025
+
+- Removed end of life base image `alpine:3.19`
+- Update CUDA v13.0.1 images to CUDA v13.0.2
+- Start building alpine images for linux/arm64 platform
+
 ## 21 November 2025
 
 - Updated to micromamba version 2.4.0
