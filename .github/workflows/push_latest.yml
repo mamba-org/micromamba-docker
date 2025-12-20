@@ -19,7 +19,7 @@ env:
   LATEST_UBUNTU_BASE_IMAGE: 'ubuntu:25.10'
   LATEST_AMAZON_BASE_IMAGE: 'public.ecr.aws/amazonlinux/amazonlinux:2023'
   LATEST_ALPINE_BASE_IMAGE: 'frolvlad/alpine-glibc:alpine-3.22'
-  LATEST_CUDA_BASE_IMAGE: 'nvidia/cuda:13.0.2-base-ubuntu24.04'
+  LATEST_CUDA_BASE_IMAGE: 'nvidia/cuda:13.1.0-base-ubuntu24.04'
 
 jobs:
   build_docker_image_and_push:
@@ -40,8 +40,8 @@ jobs:
          - frolvlad/alpine-glibc:alpine-3.22
          - frolvlad/alpine-glibc:alpine-3.21
          - public.ecr.aws/amazonlinux/amazonlinux:2023
-         - nvidia/cuda:13.0.2-base-ubuntu24.04
-         - nvidia/cuda:13.0.2-base-ubuntu22.04
+         - nvidia/cuda:13.1.0-base-ubuntu24.04
+         - nvidia/cuda:13.1.0-base-ubuntu22.04
          - nvidia/cuda:12.9.1-base-ubuntu24.04
          - nvidia/cuda:12.9.1-base-ubuntu22.04
          - nvidia/cuda:12.8.1-base-ubuntu24.04
@@ -64,7 +64,7 @@ jobs:
     - name: Setup nox
       uses: wntrblm/nox@0eee2e45758dbd06d48ebb23476439f0f00e5cbd
     - name: Checkout source
-      uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
       with:
         persist-credentials: false
         submodules: recursive
@@ -125,7 +125,7 @@ jobs:
                           && echo true || echo false)" >> $GITHUB_OUTPUT
     - name: Get stage1 docker metadata
       id: get_stage1_metadata
-      uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893
+      uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051
       with:
         images: |
           ghcr.io/mamba-org/micromamba-cache/stage1
@@ -134,7 +134,7 @@ jobs:
             type=raw,value=${{ steps.set_image_variables.outputs.tag }}
     - name: Get docker metadata
       id: get_metadata
-      uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893
+      uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051
       with:
         images: |
           mambaorg/micromamba
@@ -251,7 +251,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - name: Checkout source
-      uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
       with:
         persist-credentials: false
     - name: Get artifacts
@@ -307,7 +307,7 @@ jobs:
       contents: write
     steps:
     - name: Checkout source
-      uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
       with:
         persist-credentials: false
     - name: Get micromamba version number
