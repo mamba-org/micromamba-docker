@@ -12,8 +12,8 @@ if [[ -f /etc/arg_mamba_user && "${MAMBA_USER}" != "$(cat "/etc/arg_mamba_user")
     exit 1
 fi
 
-# if USER is not set and not root
-if [[ ! -v USER && $(id -u) -gt 0 ]]; then
+# if USER and HOME are both not set and we are not root
+if [[ ! -v USER && ! -v HOME && $(id -u) -gt 0 ]]; then
   # should get here if 'docker run...' was passed -u with a numeric UID
   export USER="$MAMBA_USER"
   export HOME="/home/$USER"
