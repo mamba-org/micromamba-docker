@@ -12,11 +12,15 @@ if [[ -f /etc/arg_mamba_user && "${MAMBA_USER}" != "$(cat "/etc/arg_mamba_user")
     exit 1
 fi
 
-# if USER and HOME are both not set and we are not root
-if [[ ! -v USER && ! -v HOME && $(id -u) -gt 0 ]]; then
-  # should get here if 'docker run...' was passed -u with a numeric UID
-  export USER="$MAMBA_USER"
-  export HOME="/home/$USER"
+if [[ $(id -u) -gt 0 ]]; then
+  # if USER is not set
+  if [[ ! -v USER  ]]; then
+    export USER="$MAMBA_USER"
+  fi
+  # if HOME is not
+  if [[ ! -v HOME ]]; then
+    export HOME="/home/$USER"
+  fi
 fi
 
 source _activate_current_env.sh
