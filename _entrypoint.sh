@@ -12,11 +12,15 @@ if [[ -f /etc/arg_mamba_user && "${MAMBA_USER}" != "$(cat "/etc/arg_mamba_user")
     exit 1
 fi
 
-# if USER is not set and not root
-if [[ ! -v USER && $(id -u) -gt 0 ]]; then
-  # should get here if 'docker run...' was passed -u with a numeric UID
-  export USER="$MAMBA_USER"
-  export HOME="/home/$USER"
+if [[ $(id -u) -gt 0 ]]; then
+  if [[ ! -v USER ]]; then
+    export USER="$MAMBA_USER"
+  fi
+  # If a user passes HOME="/", it will still get clobbered.
+  # I don't have a good way to work around that.
+  if [[ $HOME == "/" ]]; then
+    export HOME="/home/$USER"
+  fi
 fi
 
 source _activate_current_env.sh

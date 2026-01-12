@@ -130,3 +130,15 @@ setup() {
         assert_success
         assert_output --partial "uid=1100(MaMbAmIcRo) gid=2000(MaMbAmIcRo) groups=2000(MaMbAmIcRo)"
 }
+
+@test "docker run -e HOME="/foobar" ${MICROMAMBA_IMAGE} /bin/bash -c 'realpath ~'" {
+    # shellcheck disable=SC2086
+    run docker run $RUN_FLAGS -e HOME="/foobar" "${MICROMAMBA_IMAGE}" /bin/bash -c 'realpath ~'
+    assert_output "/foobar"
+}
+
+@test "docker run --user=1001:1001 -e HOME="/foobar" ${MICROMAMBA_IMAGE} /bin/bash -c 'realpath ~'" {
+    # shellcheck disable=SC2086
+    run docker run $RUN_FLAGS --user=1001:1001 -e HOME="/foobar" "${MICROMAMBA_IMAGE}" /bin/bash -c 'realpath ~'
+    assert_output "/foobar"
+}

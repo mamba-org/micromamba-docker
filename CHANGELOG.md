@@ -3,6 +3,11 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 12 January 2026
+
+- No longer clobber `$HOME` values passed via
+  `docker run -e HOME ...` (for `$HOME` values other than `/`).
+
 ## 20 December 2025
 
 - Update CUDA v13.0.2 images to v13.1.0
