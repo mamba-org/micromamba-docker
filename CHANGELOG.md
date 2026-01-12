@@ -5,6 +5,10 @@ This change log covers changes to the docker image and does not include
 
 ## 12 January 2026
 
+- Updated to micromamba version 2.5.0
+
+## 12 January 2026
+
 - No longer clobber `$HOME` values passed via
   `docker run -e HOME ...` (for `$HOME` values other than `/`).
 
