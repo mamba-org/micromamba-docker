@@ -22,7 +22,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: hynek/setup-cached-uv@ae460f75dcef535482cb6754a8ca5ad6aac63ce7
+      - uses: hynek/setup-cached-uv@547e6a40c3f94f7d2973b2abde9ccb9b5325ac06
 
       - name: Run zizmor 🌈
         run: uvx zizmor --format sarif . > results.sarif
