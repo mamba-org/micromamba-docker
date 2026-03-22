@@ -18,11 +18,11 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - name: Checkout source
-      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       with:
         persist-credentials: false
     - name: Set up Python
-      uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+      uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
       with:
         python-version: "3.10"
     - name: Check available versions
@@ -41,7 +41,7 @@ jobs:
       run: ./update.sh "${LATEST_VERSION}"
     - name: commit updated files
       if: steps.check_version.outputs.do_pr == 'True'
-      uses: peter-evans/create-pull-request@98357b18bf14b5342f975ff684046ec3b2a07725
+      uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0
       with:
         branch: "update-${{ steps.check_version.outputs.latest_version }}"
         commit-message: "Update to micromamba version ${{ steps.check_version.outputs.latest_version }}"

@@ -3,12 +3,14 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 21 March 2026
+
+- Resume copying `_apptainer_shell.sh` into images
+- Update CUDA v13.1.0 images to CUDA v13.2.0
+
 ## 12 January 2026
 
 - Updated to micromamba version 2.5.0
-
-## 12 January 2026
-
 - No longer clobber `$HOME` values passed via
   `docker run -e HOME ...` (for `$HOME` values other than `/`).
 

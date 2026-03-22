@@ -30,6 +30,7 @@ COPY --from=stage1 "${MAMBA_EXE}" "${MAMBA_EXE}"
 COPY _dockerfile_initialize_user_accounts.sh /usr/local/bin/_dockerfile_initialize_user_accounts.sh
 COPY _dockerfile_setup_root_prefix.sh /usr/local/bin/_dockerfile_setup_root_prefix.sh
 
+# hadolint ignore=DL3033
 RUN yum update -y && yum install -y \
       shadow-utils \
     && yum clean all \
@@ -39,6 +40,9 @@ RUN yum update -y && yum install -y \
 USER $MAMBA_USER
 
 WORKDIR /tmp
+
+# for use with 'apptainer shell --shell /usr/local/bin/_apptainer_shell.sh ...'
+COPY _apptainer_shell.sh /usr/local/bin/_apptainer_shell.sh
 
 # Script which launches commands passed to "docker run"
 COPY _entrypoint.sh /usr/local/bin/_entrypoint.sh

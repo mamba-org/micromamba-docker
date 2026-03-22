@@ -18,11 +18,11 @@ jobs:
       security-events: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           persist-credentials: false
 
-      - uses: hynek/setup-cached-uv@ae460f75dcef535482cb6754a8ca5ad6aac63ce7
+      - uses: hynek/setup-cached-uv@547e6a40c3f94f7d2973b2abde9ccb9b5325ac06
 
       - name: Run zizmor 🌈
         run: uvx zizmor --format sarif . > results.sarif
