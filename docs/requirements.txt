@@ -22,7 +22,7 @@ imagesize==1.4.1
     # via sphinx
 jinja2==3.1.6
     # via
-    #   -r requirements.in
+    #   -r docs/requirements.in
     #   sphinx
 markupsafe==3.0.2
     # via jinja2
@@ -31,10 +31,10 @@ packaging==24.2
 pygments==2.19.1
     # via sphinx
 readthedocs-sphinx-search==0.3.2
-    # via -r requirements.in
-requests==2.32.4
+    # via -r docs/requirements.in
+requests==2.33.0
     # via
-    #   -r requirements.in
+    #   -r docs/requirements.in
     #   sphinx
 roman-numerals-py==3.1.0
     # via sphinx
@@ -42,14 +42,14 @@ snowballstemmer==2.2.0
     # via sphinx
 sphinx==8.2.3
     # via
-    #   -r requirements.in
+    #   -r docs/requirements.in
     #   sphinx-copybutton
     #   sphinx-rtd-theme
     #   sphinxcontrib-jquery
 sphinx-copybutton==0.5.2
-    # via -r requirements.in
+    # via -r docs/requirements.in
 sphinx-rtd-theme==3.0.2
-    # via -r requirements.in
+    # via -r docs/requirements.in
 sphinxcontrib-applehelp==2.0.0
     # via sphinx
 sphinxcontrib-devhelp==2.0.0
