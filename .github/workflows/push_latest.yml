@@ -16,10 +16,10 @@ env:
   DEFAULT_BASE_IMAGE: 'debian:13-slim'
   LATEST_DEBIAN_BASE_IMAGE: 'debian:13'
   LATEST_DEBIAN_SLIM_BASE_IMAGE: 'debian:13-slim'
-  LATEST_UBUNTU_BASE_IMAGE: 'ubuntu:25.10'
+  LATEST_UBUNTU_BASE_IMAGE: 'ubuntu:26.04'
   LATEST_AMAZON_BASE_IMAGE: 'public.ecr.aws/amazonlinux/amazonlinux:2023'
   LATEST_ALPINE_BASE_IMAGE: 'frolvlad/alpine-glibc:alpine-3.22'
-  LATEST_CUDA_BASE_IMAGE: 'nvidia/cuda:13.2.0-base-ubuntu24.04'
+  LATEST_CUDA_BASE_IMAGE: 'nvidia/cuda:13.2.1-base-ubuntu24.04'
 
 jobs:
   build_docker_image_and_push:
@@ -34,14 +34,14 @@ jobs:
          - debian:13
          - debian:12-slim
          - debian:12
-         - ubuntu:25.10
+         - ubuntu:26.04
          - ubuntu:24.04
          - ubuntu:22.04
          - frolvlad/alpine-glibc:alpine-3.22
          - frolvlad/alpine-glibc:alpine-3.21
          - public.ecr.aws/amazonlinux/amazonlinux:2023
-         - nvidia/cuda:13.2.0-base-ubuntu24.04
-         - nvidia/cuda:13.2.0-base-ubuntu22.04
+         - nvidia/cuda:13.2.1-base-ubuntu24.04
+         - nvidia/cuda:13.2.1-base-ubuntu22.04
          - nvidia/cuda:12.9.1-base-ubuntu24.04
          - nvidia/cuda:12.9.1-base-ubuntu22.04
          - nvidia/cuda:12.8.1-base-ubuntu24.04
@@ -62,7 +62,7 @@ jobs:
         sudo apt update
         sudo apt-get install --no-install-recommends -y parallel shellcheck software-properties-common
     - name: Setup nox
-      uses: wntrblm/nox@0eee2e45758dbd06d48ebb23476439f0f00e5cbd
+      uses: wntrblm/nox@5a277b752f6094150e25237d47c34168e2b7526e
     - name: Checkout source
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       with:
@@ -176,7 +176,7 @@ jobs:
         labels: |
           distro_id=${{ steps.set_image_variables.outputs.distro_id }}
     - name: Setup docker buildx
-      uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
+      uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd
     - name: Login to DockerHub
       uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9
       with:
@@ -190,7 +190,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build Docker images but do not push them yet
       id: docker_build
-      uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83
+      uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294
       env:
         DOCKER_BUILD_RECORD_UPLOAD: false
       with:
@@ -209,7 +209,7 @@ jobs:
       run: nox -s "image_tests(base_image='${IMAGE}')"
     - name: Push stage1 Docker images
       id: docker_stage1_push
-      uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83
+      uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294
       with:
         file: ${{ steps.set_image_variables.outputs.distro_id }}.Dockerfile
         target: stage1
@@ -224,7 +224,7 @@ jobs:
         cache-to: type=inline
     - name: Push Docker images
       id: docker_push
-      uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83
+      uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294
       env:
         DOCKER_BUILD_RECORD_UPLOAD: false
       with:
@@ -334,7 +334,7 @@ jobs:
         create_annotated_tag: true
     - name: Create a GitHub release
       if: steps.last_tag.outputs.previous_tag != steps.get_version.outputs.leading_v_version
-      uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b
+      uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd
       with:
         tag: ${{ steps.create_tag.outputs.new_tag }}
         name: micromamba ${{ steps.create_tag.outputs.new_tag }}
