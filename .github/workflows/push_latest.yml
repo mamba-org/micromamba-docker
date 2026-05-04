@@ -150,7 +150,8 @@ jobs:
         # major
         # major.minor.patch-base_image
         # major.minor-base_image
-        # major-base_imag git-commit-base_image
+        # major-base_imag
+        # git-commit-base_image
         # git-commit
         tags: |
             type=raw,value=latest,priority=1000,enable=${{ steps.set_image_variables.outputs.is_default }}
