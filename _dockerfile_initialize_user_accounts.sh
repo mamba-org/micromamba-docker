@@ -12,7 +12,7 @@ if grep -q '^ID=alpine$' /etc/os-release; then
   user_cmd=('adduser' '-D' '-G' "${MAMBA_USER}")
 else  # debian and redhat-based
   group_cmd=('groupadd')
-  user_cmd=('useradd' '-m' '-g' "${MAMBA_USER_GID}")
+  user_cmd=('useradd' '-l' '-m' '-g' "${MAMBA_USER_GID}")
 fi
 
 if [ ! "$(id -g "${MAMBA_USER}" 2> /dev/null)" == "${MAMBA_USER_GID}" ]; then
