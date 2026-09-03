@@ -3,6 +3,10 @@
 This change log covers changes to the docker image and does not include
 [changes to the micromamba program](https://github.com/mamba-org/mamba/blob/main/CHANGELOG.md).
 
+## 3 September 2026
+
+- pass `useradd` the `-l` flag (no-log-init, do not add the user to the lastlog and faillog databases) for non-alpine images to avoid sparse file issues.
+
 ## 7 August 2026
 
 - Updated to micromamba version 2.9.0
